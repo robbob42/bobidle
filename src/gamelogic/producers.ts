@@ -9,7 +9,8 @@ export default {
         }
       }
     },
-    count: 1
+    count: 0,
+    processingEnabled: false
   },
   claygrabber: {
     key: "claygrabber",
@@ -21,7 +22,8 @@ export default {
         }
       }
     },
-    count: 0
+    count: 0,
+    processingEnabled: false
   },
   fisher: {
     key: "fisher",
@@ -33,7 +35,8 @@ export default {
         }
       }
     },
-    count: 0
+    count: 0,
+    processingEnabled: false
   },
   arborist: {
     key: "arborist",
@@ -45,7 +48,8 @@ export default {
         }
       }
     },
-    count: 0
+    count: 0,
+    processingEnabled: false
   },
   farmer: {
     key: "farmer",
@@ -57,6 +61,7 @@ export default {
         }
       }
     },
-    count: 0
+    count: 0,
+    processingEnabled: false
   }
 }

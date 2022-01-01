@@ -6,6 +6,7 @@ import Game from './gamelogic/game';
 let game: Game;
 
 function init() {
+  // Navigation
   const navSection = document.getElementById('section-nav');
   const navView = makeNavView();
   navSection?.appendChild(navView);
