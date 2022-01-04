@@ -1,5 +1,5 @@
-<div id="basic-button" class="mdc-button mdc-button--raised">Hello</div>
-<div id="zombies"></div>
+<cds-button id="hello-button" status="success">Hello World</cds-button>
+<div id="zombies">Idle Zombies: 1</div>
 
 <div id="warehouse"></div>
 <div id="production"></div>
@@ -19,6 +19,26 @@
   </div>
 </div>
 
-<div id="animating-progress" class="meter">
+<div id="animating-progress" class="meter" style="width: 127px">
   <span style="width:100%;"><span id="progress-inner-span"></span></span>
 </div>
+
+<cds-card aria-labelledby="my-card">
+  <div cds-layout="vertical gap:md">
+    <h2 id="my-card" cds-text="section" cds-layout="p-y:sm">
+      Card Title
+    </h2>
+
+    <cds-divider cds-card-remove-margin></cds-divider>
+
+    <div cds-text="body light" cds-layout="p-y:md">
+      Card Content
+    </div>
+
+    <cds-divider cds-card-remove-margin></cds-divider>
+
+    <div cds-layout="horizontal gap:sm p-y:sm align:vertical-center">
+      <cds-button action="flat-inline">View</cds-button>
+    </div>
+  </div>
+</cds-card>

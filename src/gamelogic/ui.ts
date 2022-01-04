@@ -1,4 +1,7 @@
-import { MDCSwitch } from '@material/switch';
+// import { MDCSwitch } from '@material/switch';
+import '@cds/core/button/register.js';
+import '@cds/core/toggle/register.js';
+import '@cds/core/card/register.js';
 
 import Engine from '../../vendor/continuum/engine';
 import Producer from '../../vendor/continuum/producer';
@@ -60,10 +63,27 @@ export default class UI {
   }
 
   init() {
-    this._engine.resources.zombie
-      .on("RESOURCE_COUNT_UPDATED", (e: resourceEmitType) => {
-        this._zombiesElem.innerHTML = `Zombies: ${this._engine.formatNumber(e.count, 0)}`;
+    this._engine.resources.activezombie
+      .on("RESOURCE_COUNT_UPDATED", () => {
+        this._zombiesElem.innerHTML = `Idle Zombies: ${calcIdleZombies(this._engine)}`;
+
+        for (const key in this._engine.producers) {
+          const producer = this._engine.producers[key as JobTypes];
+
+          const mySwitch = document.getElementById(`${key}-switch`) as HTMLInputElement;
+          if (calcIdleZombies(this._engine) === 0) {
+            if (!producer.processingEnabled) {
+              mySwitch.disabled = true;
+            }
+          } else {
+            mySwitch.disabled = false;
+          }
+        }
       });
+
+
+    const button = document.querySelector('cds-button');
+    if (button) button.action = 'outline';
 
     this._initProducerElements();
     this._initWarehouse();
@@ -142,49 +162,27 @@ export default class UI {
         }
       })
 
-      const p = document.createElement("button");
+      const p = document.createElement("cds-toggle");
       p.id = `${key}-switch`;
-      p.className = 'mdc-switch mdc-switch--unselected';
-      p.ariaRoleDescription = 'switch';
-      p.ariaChecked = 'false';
       p.innerHTML = `
-        <div class="mdc-switch__track"></div>
-        <div class="mdc-switch__handle-track">
-          <div class="mdc-switch__handle">
-            <div class="mdc-switch__shadow">
-              <div class="mdc-elevation-overlay"></div>
-            </div>
-            <div class="mdc-switch__ripple"></div>
-            <div class="mdc-switch__icons">
-              <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
-                <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
-              </svg>
-              <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
-                <path d="M20 13H4v-2h16v2z" />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <label>${key}</label>
+        <input type="checkbox" />
       `;
-      const materialSwitch = new MDCSwitch(p);
+      this._productionElem.appendChild(p);
+      const mySwitch = document.getElementById(`${key}-switch`) as HTMLInputElement;
+
       const switchControl = () => {
-        if(materialSwitch.selected) {
+        if(mySwitch.checked) {
           if(calcIdleZombies(this._engine) > 0) {
             assignZombie(this._engine, key as JobTypes);
           } else {
-            materialSwitch.selected = false;
+            mySwitch.checked = false;
           }
         } else {
           unassignZombie(this._engine, key as JobTypes);
         }
       }
-      p.addEventListener("click", switchControl);
-      this._productionElem.appendChild(p);
-
-      const l = document.createElement("label");
-      l.setAttribute('for', `${key}-switch`);
-      l.innerHTML = key;
-      this._productionElem.appendChild(l);
+      mySwitch.addEventListener("change", switchControl);
 
       const d = document.createElement("div");
       d.id = `${key}-pct`;
