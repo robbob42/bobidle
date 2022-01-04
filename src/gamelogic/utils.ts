@@ -1,9 +1,18 @@
-import { GameEngineType } from './game';
+import { GameEngineType, JobTypes } from './game';
 
-export function calcActiveZombies(engine: GameEngineType): number {
-  return engine.resources.zombie.active
+
+export function calcIdleZombies(engine: GameEngineType): number {
+  return engine.resources.zombie.count - engine.resources.activezombie.count;
 }
 
-export function incrementActiveZombies(engine: GameEngineType, num: number): void {
-  engine.resources.zombie.active += num;
+export function assignZombie(engine: GameEngineType, jobName: JobTypes): void {
+  engine.producers[jobName].incrementBy(1);
+  engine.producers[jobName].processingEnabled = true;
+  engine.resources.activezombie.incrementBy(1);
+}
+
+export function unassignZombie(engine: GameEngineType, jobName: JobTypes): void {
+  engine.producers[jobName].incrementBy(-1);
+  engine.producers[jobName].processingEnabled = false;
+  engine.resources.activezombie.incrementBy(-1);
 }

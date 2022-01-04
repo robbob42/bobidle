@@ -45,8 +45,15 @@ export default{
       currency: "gold",
       amount: 1
     },
-    active: 0,
     count: 1
+  },
+  activezombie: {
+    key: "activezombie",
+    basePrice: {
+      currency: "gold",
+      amount: 1
+    },
+    count: 0
   },
   power: {
     key: "power",

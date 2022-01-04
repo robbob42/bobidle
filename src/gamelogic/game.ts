@@ -5,9 +5,6 @@ import UI from "./ui";
 import resourceList from "./resources";
 import producerList from "./producers"
 
-interface ZombieResource extends Resource {
-  active: number
-}
 
 export interface GameEngineType extends ContinuumEngine {
   resources: {
@@ -16,17 +13,21 @@ export interface GameEngineType extends ContinuumEngine {
     fish: Resource,
     tree: Resource,
     grain: Resource,
-    zombie: ZombieResource,
+    zombie: Resource,
+    activezombie: Resource,
     power: Resource
   },
   producers: {
-    miner: Producer,
-    claygrabber: Producer,
-    fisher: Producer,
-    arborist: Producer,
-    farmer: Producer
+    "miner": Producer,
+    "mucker": Producer,
+    "fisher": Producer,
+    "arborist": Producer,
+    "farmer": Producer
   }
 }
+
+export type JobTypes = 'miner' | 'mucker' | 'fisher' | 'arborist' | 'farmer';
+export type ResourceTypes = 'rock' | 'clay' | 'fish' | 'tree' | 'grain' | 'zombie' | 'activezombie' | 'power';
 
 export default class Game {
   engine;
@@ -45,17 +46,19 @@ export default class Game {
 
     this.createResources();
     this.createProducers();
+
+    this.ui.init();
   }
 
   createResources() {
     for (const res in resourceList) {
-      this.engine.createResource(resourceList[res]);
+      this.engine.createResource(resourceList[res as ResourceTypes]);
     }
   }
 
   createProducers() {
     for (const prod in producerList) {
-      this.engine.createProducer(producerList[prod]);
+      this.engine.createProducer(producerList[prod as JobTypes]);
     }
   }
 

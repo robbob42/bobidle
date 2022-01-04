@@ -1,23 +1,24 @@
 <div id="basic-button" class="mdc-button mdc-button--raised">Hello</div>
-<div id="rocks"></div>
+<div id="zombies"></div>
 
-<button id="rocks-switch" class="mdc-switch mdc-switch--unselected" type="button" role="switch" aria-checked="false">
-  <div class="mdc-switch__track"></div>
-  <div class="mdc-switch__handle-track">
-    <div class="mdc-switch__handle">
-      <div class="mdc-switch__shadow">
-        <div class="mdc-elevation-overlay"></div>
-      </div>
-      <div class="mdc-switch__ripple"></div>
-      <div class="mdc-switch__icons">
-        <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
-          <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" />
-        </svg>
-        <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
-          <path d="M20 13H4v-2h16v2z" />
-        </svg>
-      </div>
+<div id="warehouse"></div>
+<div id="production"></div>
+
+<div style="width: 100px;">
+  <div id="progress" role="progressbar" class="mdc-linear-progress" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0">
+    <div class="mdc-linear-progress__buffer">
+      <div class="mdc-linear-progress__buffer-bar"></div>
+      <div class="mdc-linear-progress__buffer-dots"></div>
+    </div>
+    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+      <span class="mdc-linear-progress__bar-inner"></span>
+    </div>
+    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+      <span class="mdc-linear-progress__bar-inner"></span>
     </div>
   </div>
-</button>
-<label for="basic-switch">Miner</label>
+</div>
+
+<div id="animating-progress" class="meter">
+  <span style="width:100%;"><span id="progress-inner-span"></span></span>
+</div>

@@ -1,2 +1,21 @@
 @use '@material/button/mdc-button';
 @use '@material/switch/styles';
+
+
+.meter {
+  height: 5px;
+  position: relative;
+  background: #f3efe6;
+  overflow: hidden;
+}
+
+.meter span {
+  display: block;
+  height: 100%;
+}
+
+@keyframes progressBar {
+0% { width: 0; }
+99% { width: 100%; }
+100% { width: 0%; }
+}

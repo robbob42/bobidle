@@ -12,11 +12,11 @@ export default {
     count: 0,
     processingEnabled: false
   },
-  claygrabber: {
-    key: "claygrabber",
+  mucker: {
+    key: "mucker",
     outputs: {
       resources: {
-        tree: {
+        clay: {
           productionTime: 1500,
           productionAmount: 1
         }
@@ -29,7 +29,7 @@ export default {
     key: "fisher",
     outputs: {
       resources: {
-        tree: {
+        fish: {
           productionTime: 2000,
           productionAmount: 1
         }

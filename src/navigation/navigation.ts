@@ -1,6 +1,7 @@
 import { renderHtmlTemplate } from './utils';
 import { NavItem, navConfig } from './navigation.config';
 
+
 export function makeNavView(): HTMLDivElement {
   const wrapper = document.createElement('div');
 
