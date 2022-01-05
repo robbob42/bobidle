@@ -3,10 +3,44 @@
 @import '~@cds/core/styles/module.shims.min.css'; // non-evergreen browser shims
 @import '~@cds/city/css/bundles/default.min.css'; // load base font
 
+.body-layout {
+  box-shadow: 0.01rem 0.05rem 0.2rem 0.1rem hsl(198, 0%, 80%);
+  margin: 0;
+}
+
+.body-app-layout {
+  width: 500px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.body-header {
+  background: var(--cds-global-color-blue-1000);
+  color: var(--cds-global-color-gray-0);
+}
+
+.body-sidenav {
+  background: var(--cds-global-color-gray-200);
+  -webkit-box-shadow: -0.05rem 0 0 rgba(0, 0, 0, 0.2) inset;
+  box-shadow: -0.05rem 0 0 rgba(0, 0, 0, 0.2) inset;
+  width: 35%;
+  padding: 0;
+}
+
+.body-sidenav, .body-content {
+  background: var(--cds-global-color-gray-200);
+}
+
+.body-divider {
+  --color: var(--cds-global-color-gray-500);
+}
 
 .meter {
   height: 5px;
+  width: 120%;
   position: relative;
+  top: -18px;
+  left: -10px;
   background: #f3efe6;
   overflow: hidden;
 }
@@ -14,6 +48,7 @@
 .meter span {
   display: block;
   height: 100%;
+  width: 100%;
 }
 
 @keyframes progressBar {

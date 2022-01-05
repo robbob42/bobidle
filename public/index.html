@@ -7,7 +7,29 @@
   <title>BobIdle</title>
 </head>
 <body cds-text="body">
-  <div id="section-nav"></div>
-  <div id="section-content"></div>
+  <div class="body-layout body-app-layout" cds-layout="vertical align:stretch">
+    <header class="body-header" cds-layout="p:md p@md:lg">
+      <div id="section-nav"></div>
+    </header>
+    <div cds-layout="horizontal align:vertical-stretch wrap:none">
+      <nav class="body-sidenav">
+        <div style="width: 100%; text-align: center;">Warehouse</div>
+        <cds-divider class="body-divider"></cds-divider>
+        <div cds-layout="p:md p@md:lg">
+          <div id="warehouse"></div>
+        </div>
+      </nav>
+      <cds-divider class="body-divider" orientation="vertical"></cds-divider>
+      <div cds-layout="vertical align:stretch">
+        <div class="body-content body-scrollable-content">
+          <div cds-layout="vertical gap:md p:lg">
+            <div id="section-content"></div>
+          </div>
+        </div>
+        <cds-divider class="body-divider"></cds-divider>
+        <footer class="body-footer" cds-layout="p-y:md p-x:lg">footer</footer>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

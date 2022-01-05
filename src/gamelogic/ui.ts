@@ -1,7 +1,6 @@
-// import { MDCSwitch } from '@material/switch';
-import '@cds/core/button/register.js';
 import '@cds/core/toggle/register.js';
 import '@cds/core/card/register.js';
+import '@cds/core/divider/register.js';
 
 import Engine from '../../vendor/continuum/engine';
 import Producer from '../../vendor/continuum/producer';
@@ -18,6 +17,12 @@ type outResource = {
 type resourceElemsType = {
   [key: string]: {
     countElem: HTMLElement
+  }
+}
+
+type producerElemsType = {
+  [key: string]: {
+    progressElem: HTMLElement
   }
 }
 
@@ -41,6 +46,7 @@ export default class UI {
   private _zombiesElem;
 
   private _productionElem;
+  private _producerElems;
 
   private _warehouseElem;
   private _resourceElems;
@@ -54,6 +60,7 @@ export default class UI {
     this._zombiesElem = document.getElementById("zombies") as HTMLElement;
 
     this._productionElem = document.getElementById("production") as HTMLElement;
+    this._producerElems = {} as producerElemsType;
 
     this._warehouseElem = document.getElementById("warehouse") as HTMLElement;
     this._resourceElems = {} as resourceElemsType;
@@ -81,10 +88,6 @@ export default class UI {
         }
       });
 
-
-    const button = document.querySelector('cds-button');
-    if (button) button.action = 'outline';
-
     this._initProducerElements();
     this._initWarehouse();
   }
@@ -97,20 +100,21 @@ export default class UI {
     return (((now - outResource.lastProcessed) / outResource.productionTime)*100);
   }
 
-  _removeProgressClass() {
+  _removeProgressClass(producerName: string) {
     const headObjects = document.getElementsByTagName('head')[0];
+    const producerClass = `.${producerName}-progress`;
     for (const obj in headObjects.children) {
       const inrHTML = headObjects.children[obj].innerHTML;
-      if (inrHTML && inrHTML.substring(0, 9) === '.progress') {
+      if (inrHTML && inrHTML.substring(0, producerClass.length) === producerClass) {
         headObjects.removeChild(headObjects.children[obj]);
       }
     }
   }
 
-  _addProgressClass(time: number) {
+  _addProgressClass(producerName: string, time: number) {
     const seconds = time / 1000;
     this._progressStyle = document.createElement('style');
-    this._progressStyle.innerHTML = `.progress {
+    this._progressStyle.innerHTML = `.${producerName}-progress {
       background-color: #e4c465;
       -webkit-animation: progressBar ${seconds}s ease-in-out;
       -webkit-animation-fill-mode:both;
@@ -152,23 +156,44 @@ export default class UI {
       .on("PRODUCER_COUNT_UPDATED", (producer: producerEmitType) => {
         if (producer.obj.count === 1) {
           for (const outResource in producer.obj.outputs.resources) {
-            this._addProgressClass(producer.obj.outputs.resources[outResource].productionTime);
-            this._progressInnerspan.className = 'progress';
+            this._addProgressClass(key, producer.obj.outputs.resources[outResource].productionTime);
+            this._producerElems[key].progressElem.children[0].children[0].className = `${key}-progress`;
           }
         }
         if (producer.obj.count === 0) {
-          this._removeProgressClass();
-          this._progressInnerspan.className = '';
+          this._removeProgressClass(key);
+          this._producerElems[key].progressElem.children[0].children[0].className = '';
         }
-      })
+      });
 
-      const p = document.createElement("cds-toggle");
-      p.id = `${key}-switch`;
-      p.innerHTML = `
+      const s = document.createElement("cds-toggle");
+      s.id = `${key}-switch`;
+      s.innerHTML = `
         <label>${key}</label>
         <input type="checkbox" />
       `;
-      this._productionElem.appendChild(p);
+
+      const p = document.createElement("div");
+      p.id = `${key}-animating-progress`;
+      p.className = 'meter';
+      p.innerHTML = `
+        <span style="width:100%;"><span id="progress-inner-span" class="${key}-progress"></span></span>
+      `;
+
+      this._producerElems[key] = { progressElem: p};
+
+      const c = document.getElementById("cds-card") as HTMLElement;
+      const cln = c.cloneNode(true) as HTMLElement;
+      cln.id = `${key}-card`;
+      cln.innerHTML = `
+        <div cds-layout="vertical gap:md" name="outer-div">
+          <div cds-text="body light" cds-layout="p-y:md" name="switch-container"></div>
+        </div>
+      `;
+
+      cln.children.namedItem('outer-div')?.children.namedItem('switch-container')?.appendChild(p);
+      cln.children.namedItem('outer-div')?.children.namedItem('switch-container')?.appendChild(s);
+      this._productionElem.appendChild(cln);
       const mySwitch = document.getElementById(`${key}-switch`) as HTMLInputElement;
 
       const switchControl = () => {

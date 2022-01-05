@@ -19,18 +19,18 @@ function makeNavLink(navItem: NavItem): HTMLAnchorElement {
   const link = document.createElement('a');
 
   link.textContent = label;
-  link.addEventListener('click', handleNavClick(template, id));
+  // link.addEventListener('click', handleNavClick(template, id));
   link.setAttribute('style', 'padding: 2px; text-decoration: underline;');
 
   return link;
 }
 
-function handleNavClick(
-  template: string,
-  id: string
-): (event: MouseEvent) => void {
-  return function (event: MouseEvent) {
-    event.preventDefault();
-    renderHtmlTemplate(template, id);
-  };
-}
+// function handleNavClick(
+//   template: string,
+//   id: string
+// ): (event: MouseEvent) => void {
+//   return function (event: MouseEvent) {
+//     event.preventDefault();
+//     renderHtmlTemplate(template, id);
+//   };
+// }

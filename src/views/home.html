@@ -1,44 +1,5 @@
-<cds-button id="hello-button" status="success">Hello World</cds-button>
 <div id="zombies">Idle Zombies: 1</div>
 
-<div id="warehouse"></div>
 <div id="production"></div>
 
-<div style="width: 100px;">
-  <div id="progress" role="progressbar" class="mdc-linear-progress" aria-label="Example Progress Bar" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0">
-    <div class="mdc-linear-progress__buffer">
-      <div class="mdc-linear-progress__buffer-bar"></div>
-      <div class="mdc-linear-progress__buffer-dots"></div>
-    </div>
-    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-      <span class="mdc-linear-progress__bar-inner"></span>
-    </div>
-    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-      <span class="mdc-linear-progress__bar-inner"></span>
-    </div>
-  </div>
-</div>
-
-<div id="animating-progress" class="meter" style="width: 127px">
-  <span style="width:100%;"><span id="progress-inner-span"></span></span>
-</div>
-
-<cds-card aria-labelledby="my-card">
-  <div cds-layout="vertical gap:md">
-    <h2 id="my-card" cds-text="section" cds-layout="p-y:sm">
-      Card Title
-    </h2>
-
-    <cds-divider cds-card-remove-margin></cds-divider>
-
-    <div cds-text="body light" cds-layout="p-y:md">
-      Card Content
-    </div>
-
-    <cds-divider cds-card-remove-margin></cds-divider>
-
-    <div cds-layout="horizontal gap:sm p-y:sm align:vertical-center">
-      <cds-button action="flat-inline">View</cds-button>
-    </div>
-  </div>
-</cds-card>
+<cds-card id="cds-card"></cds-card>
