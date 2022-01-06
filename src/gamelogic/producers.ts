@@ -1,3 +1,9 @@
+import { producerOptsType } from '../../vendor/continuum/producer';
+
+type producerListType = {
+  [key: string]: producerOptsType
+}
+
 export default {
   miner: {
     key: "miner",
@@ -64,4 +70,4 @@ export default {
     count: 0,
     processingEnabled: false
   }
-}
+} as producerListType

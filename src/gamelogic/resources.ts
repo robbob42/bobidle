@@ -1,3 +1,8 @@
+import { resourceOptsType } from '../../vendor/continuum/resource';
+
+type resourceListType = {
+  [key: string]: resourceOptsType
+}
 export default{
   rock: {
     key: "rock",
@@ -63,4 +68,4 @@ export default{
     },
     count: 0
   }
-}
+} as resourceListType

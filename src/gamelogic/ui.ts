@@ -1,12 +1,11 @@
-import '@cds/core/toggle/register.js';
-import '@cds/core/card/register.js';
-import '@cds/core/divider/register.js';
+import '@cds/core/toggle/register';
+import '@cds/core/card/register';
+import '@cds/core/divider/register';
 
-import Engine from '../../vendor/continuum/engine';
+import Engine from '../gamelogic/classes/gameengine';
 import Producer from '../../vendor/continuum/producer';
-import Resource from '../../vendor/continuum/resource';
-import { GameEngineType, JobTypes, ResourceTypes } from './game';
 import { calcIdleZombies, assignZombie, unassignZombie } from './utils';
+
 
 type outResource = {
   lastProcessed: number,
@@ -26,21 +25,6 @@ type producerElemsType = {
   }
 }
 
-type resourceEmitType = {
-  obj: Resource,
-  key: string,
-  count: number,
-  delta: number
-}
-
-type producerEmitType = {
-  obj: Producer,
-  key: string,
-  count: number,
-  delta: number
-}
-
-
 export default class UI {
   private _engine;
   private _zombiesElem;
@@ -55,7 +39,7 @@ export default class UI {
   private _progressInnerspan;
 
   constructor(engine: Engine) {
-    this._engine = engine as GameEngineType;
+    this._engine = engine;
 
     this._zombiesElem = document.getElementById("zombies") as HTMLElement;
 
@@ -75,7 +59,7 @@ export default class UI {
         this._zombiesElem.innerHTML = `Idle Zombies: ${calcIdleZombies(this._engine)}`;
 
         for (const key in this._engine.producers) {
-          const producer = this._engine.producers[key as JobTypes];
+          const producer = this._engine.producers[key];
 
           const mySwitch = document.getElementById(`${key}-switch`) as HTMLInputElement;
           if (calcIdleZombies(this._engine) === 0) {
@@ -87,6 +71,11 @@ export default class UI {
           }
         }
       });
+
+    const seedOptions = {
+      key: 'radishSeed'
+    };
+    this._engine.createSeed(seedOptions);
 
     this._initProducerElements();
     this._initWarehouse();
@@ -129,10 +118,10 @@ export default class UI {
 
   _initWarehouse() {
     for (const key in this._engine.resources) {
-      const resource = this._engine.resources[key as ResourceTypes];
+      const resource = this._engine.resources[key];
       if (['rock', 'clay', 'fish', 'tree', 'grain'].includes(key)) {
         resource
-          .on("RESOURCE_COUNT_UPDATED", (e: resourceEmitType) => {
+          .on("RESOURCE_COUNT_UPDATED", (e) => {
             this._resourceElems[key].countElem.innerHTML = `${this._engine.formatNumber(e.count, 0)}`;
           });
 
@@ -150,17 +139,18 @@ export default class UI {
 
   _initProducerElements() {
     for (const key in this._engine.producers) {
-      const producer = this._engine.producers[key as JobTypes];
+      const producer = this._engine.producers[key];
 
       producer
-      .on("PRODUCER_COUNT_UPDATED", (producer: producerEmitType) => {
-        if (producer.obj.count === 1) {
-          for (const outResource in producer.obj.outputs.resources) {
-            this._addProgressClass(key, producer.obj.outputs.resources[outResource].productionTime);
+      .on("PRODUCER_COUNT_UPDATED", (e) => {
+        const prod = e.obj as Producer;
+        if (prod.count === 1) {
+          for (const outResource in prod.outputs.resources) {
+            this._addProgressClass(key, prod.outputs.resources[outResource].productionTime);
             this._producerElems[key].progressElem.children[0].children[0].className = `${key}-progress`;
           }
         }
-        if (producer.obj.count === 0) {
+        if (prod.count === 0) {
           this._removeProgressClass(key);
           this._producerElems[key].progressElem.children[0].children[0].className = '';
         }
@@ -199,12 +189,12 @@ export default class UI {
       const switchControl = () => {
         if(mySwitch.checked) {
           if(calcIdleZombies(this._engine) > 0) {
-            assignZombie(this._engine, key as JobTypes);
+            assignZombie(this._engine, key);
           } else {
             mySwitch.checked = false;
           }
         } else {
-          unassignZombie(this._engine, key as JobTypes);
+          unassignZombie(this._engine, key);
         }
       }
       mySwitch.addEventListener("change", switchControl);
