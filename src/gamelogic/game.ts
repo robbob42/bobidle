@@ -1,7 +1,7 @@
 import UI from "./ui";
 import resourceList from "./resources";
 import producerList from "./producers";
-import Engine from '../gamelogic/classes/gameengine';
+import Gameengine from './classes/GameEngine';
 
 
 export default class Game {
@@ -9,7 +9,7 @@ export default class Game {
   ui;
 
   constructor() {
-    this.engine = new Engine();
+    this.engine = new Gameengine();
     this.ui = new UI(this.engine);
 
     this.initEngine();

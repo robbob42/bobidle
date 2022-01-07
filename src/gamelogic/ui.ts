@@ -2,9 +2,9 @@ import '@cds/core/toggle/register';
 import '@cds/core/card/register';
 import '@cds/core/divider/register';
 
-import Engine from '../gamelogic/classes/gameengine';
-import Producer from '../../vendor/continuum/producer';
 import { calcIdleZombies, assignZombie, unassignZombie } from './utils';
+import Gameengine from './classes/GameEngine';
+import { ContinuumEngine } from './types/Continuum';
 
 
 type outResource = {
@@ -38,7 +38,7 @@ export default class UI {
   private _progressStyle;
   private _progressInnerspan;
 
-  constructor(engine: Engine) {
+  constructor(engine: Gameengine) {
     this._engine = engine;
 
     this._zombiesElem = document.getElementById("zombies") as HTMLElement;
@@ -143,7 +143,7 @@ export default class UI {
 
       producer
       .on("PRODUCER_COUNT_UPDATED", (e) => {
-        const prod = e.obj as Producer;
+        const prod = e.obj as ContinuumEngine.Producer;
         if (prod.count === 1) {
           for (const outResource in prod.outputs.resources) {
             this._addProgressClass(key, prod.outputs.resources[outResource].productionTime);
