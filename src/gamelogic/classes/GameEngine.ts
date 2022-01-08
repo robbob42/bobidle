@@ -1,5 +1,5 @@
 import Seed, { seedOpts } from './Seed';
-import Garden, {GardenOpts } from './Garden';
+import Garden, { GardenOpts } from './Garden';
 import Engine from '../../../vendor/continuum/engine';
 import { ContinuumEngine } from '../types/Continuum';
 

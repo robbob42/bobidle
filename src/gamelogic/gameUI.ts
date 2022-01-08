@@ -17,7 +17,6 @@ export default class gameUI {
     this.gardenElem.appendChild(currentGarden.drawGarden());
   }
 
-
   update() {
     // const now = Date.now();
   }

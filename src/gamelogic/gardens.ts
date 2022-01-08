@@ -8,7 +8,7 @@ export default {
   baby: {
     key: "baby",
     dimensions: {
-      width: 1,
+      width: 2,
       height: 1
     },
     active: true

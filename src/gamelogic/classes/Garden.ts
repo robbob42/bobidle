@@ -1,5 +1,6 @@
 import Entity from '../../../vendor/continuum/entity';
 import { ContinuumEngine } from '../types/Continuum';
+import Plot, { PlotOpts } from './Plot';
 
 
 interface GardenDimensions {
@@ -20,51 +21,50 @@ export interface GardenOpts {
 export default class Garden extends Entity {
   dimensions: GardenDimensions;
   active: boolean;
+  plots: {
+    [key: string]: Plot
+  } = {}
 
   constructor(opts: GardenOpts) {
     super("seed", opts);
 
     this.dimensions = opts.dimensions;
     this.active = opts.active;
+    this.plots = {};
   }
 
   drawGarden(): HTMLElement {
-    const s = document.createElement('span');
-    const topP = document.createElement('p');
-    const middleP = document.createElement('p');
-    const bottomP = document.createElement('p');
+    const gridCols = 12 / this.dimensions.width;
+    const d = document.createElement('div');
+    d.setAttribute('cds-layout', 'grid');
 
-    // Top Line
-    let gardenString = '&nbsp;';
-    for (let i = 1; i <= this.dimensions.width; i++) {
-      gardenString += '__';
+    let plotId = 1;
+
+    for (let i = 1; i <= this.dimensions.height; i++) {
+      for (let i = 1; i <= this.dimensions.width; i++) {
+        // Create Plot object and attach it to this Garden
+        const plot = this.createPlot({key: plotId.toString()});
+
+        // Attach Plot to DOM
+        const DOMplot = plot.drawPlot(gridCols, plotId);
+        d.appendChild(DOMplot);
+        plotId++;
+      }
     }
-    topP.innerHTML = gardenString;
+    return d;
+  }
 
-    // Middle Lines
-    gardenString = '|';
-    for (let i = 1; i <= this.dimensions.width; i++) {
-      gardenString += '&nbsp;&nbsp;';
+  createPlot(opts: PlotOpts) {
+    if ( !opts ) throw "No resource options provided";
+    if ( !opts.key ) throw `Invalid resource .key value provided ${opts.key}`;
+    if (!this.plots[opts.key]) {
+        opts.engine = this.engine;
+        this.plots[opts.key] = new Plot(opts);
     }
-    gardenString += '|';
-    middleP.innerHTML = gardenString;
+    return this.plots[opts.key];
+  }
 
-    // Bottom Line
-    gardenString = '&nbsp;';
-    for (let i = 1; i <= this.dimensions.width; i++) {
-      gardenString += '__';
-    }
-    bottomP.innerHTML = gardenString;
-
-    topP.style.position = 'relative';
-    topP.style.top = '10px';
-    bottomP.style.position = 'relative';
-    bottomP.style.top = '-24px';
-
-    s.appendChild(topP);
-    s.appendChild(middleP);
-    s.appendChild(bottomP);
-
-    return s;
+  plot(key: string) {
+    return this.plots[key];
   }
 }
