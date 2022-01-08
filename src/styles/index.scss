@@ -2,38 +2,61 @@
 @import '~@cds/core/global.min.css'; // clarity global styles
 @import '~@cds/core/styles/module.shims.min.css'; // non-evergreen browser shims
 @import '~@cds/city/css/bundles/default.min.css'; // load base font
+@import '~@cds/core/styles/theme.dark.min.css';
+
+body, html {
+  height: 100%;
+  min-height: 640px;
+}
 
 .body-layout {
   box-shadow: 0.01rem 0.05rem 0.2rem 0.1rem hsl(198, 0%, 80%);
   margin: 0;
+  height: 100%;
+  min-height: 640px;
 }
 
 .body-app-layout {
-  width: 500px;
+  width: 360px;
   overflow: hidden;
   margin: auto;
+  height: 100%;
+  min-height: 640px;
 }
 
 .body-header {
   background: var(--cds-global-color-blue-1000);
   color: var(--cds-global-color-gray-0);
+  max-height: 68px;
 }
 
-.body-sidenav {
-  background: var(--cds-global-color-gray-200);
-  -webkit-box-shadow: -0.05rem 0 0 rgba(0, 0, 0, 0.2) inset;
-  box-shadow: -0.05rem 0 0 rgba(0, 0, 0, 0.2) inset;
-  width: 35%;
-  padding: 0;
-}
-
-.body-sidenav, .body-content {
-  background: var(--cds-global-color-gray-200);
+.body-header div p {
+  width: 100%;
 }
 
 .body-divider {
   --color: var(--cds-global-color-gray-500);
 }
+
+.body-footer {
+  color: var(--cds-global-color-gray-700);
+  -webkit-box-shadow: 0 0.05rem 0 hsl(198, 0%, 70%) inset;
+  box-shadow: 0 0.05rem 0 hsl(198, 0%, 70%) inset;
+  max-height: 68px;
+}
+
+.body-divider {
+  --color: var(--cds-global-color-gray-500);
+}
+
+.section-content {
+  width: 100%;
+}
+
+.garden {
+  font-family: monospace;
+}
+
 
 .meter {
   height: 5px;
@@ -56,3 +79,4 @@
 99% { width: 100%; }
 100% { width: 0%; }
 }
+

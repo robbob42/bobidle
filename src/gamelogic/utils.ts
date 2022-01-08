@@ -1,4 +1,4 @@
-import Gameengine from './classes/GameEngine/index';
+import Gameengine from './classes/GameEngine';
 
 
 export function calcIdleZombies(engine: Gameengine): number {

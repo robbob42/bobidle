@@ -1,6 +1,5 @@
-import UI from "./ui";
-import resourceList from "./resources";
-import producerList from "./producers";
+import UI from "./gameUI";
+import gardenList from './gardens';
 import Gameengine from './classes/GameEngine';
 
 
@@ -19,21 +18,14 @@ export default class Game {
     // create Producers, Resources, modifiers, reactors etc
     this.engine.createCurrency({currency: "gold", amount: 300});
 
-    this.createResources();
-    this.createProducers();
+    this.createGardens();
 
     this.ui.init();
   }
 
-  createResources() {
-    for (const res in resourceList) {
-      this.engine.createResource(resourceList[res]);
-    }
-  }
-
-  createProducers() {
-    for (const prod in producerList) {
-      this.engine.createProducer(producerList[prod]);
+  createGardens() {
+    for (const garden in gardenList) {
+      this.engine.createGarden(gardenList[garden]);
     }
   }
 

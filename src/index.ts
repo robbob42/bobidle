@@ -1,16 +1,15 @@
-import { makeNavView } from './navigation/navigation';
 import { renderHtmlTemplate } from './navigation/utils';
-import homeTemplate from './views/home.html';
+import gameTemplate from './views/game.html';
 import Game from './gamelogic/game';
 
 let game: Game;
 
 function init() {
   // Navigation
-  const navSection = document.getElementById('section-nav');
-  const navView = makeNavView();
-  navSection?.appendChild(navView);
-  renderHtmlTemplate(homeTemplate, 'section-content');
+  // const navSection = document.getElementById('section-nav') as HTMLElement;
+  // const navView = makeNavView();
+  // navSection.appendChild(navView);
+  renderHtmlTemplate(gameTemplate, 'section-content');
 }
 
 init();

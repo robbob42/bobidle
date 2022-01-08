@@ -1,6 +1,7 @@
 import Entity from '../../../vendor/continuum/entity';
 import { ContinuumEngine } from '../types/Continuum';
 
+
 export interface seedOpts {
   key: string,
   count?: number,

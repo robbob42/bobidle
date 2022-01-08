@@ -4,30 +4,28 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BobIdle</title>
+  <title>Plantinator</title>
 </head>
 <body cds-text="body">
   <div class="body-layout body-app-layout" cds-layout="vertical align:stretch">
-    <header class="body-header" cds-layout="p:md p@md:lg">
-      <div id="section-nav"></div>
+    <header class="body-header" cds-layout="p:md" cds-theme="dark">
+      <div cds-layout="vertical gap:lg">
+        <p cds-text="body center message">Plantinator</p>
+        <p cds-text="body center secondary">You puts the seed in the plantinator</p>
+      </div>
     </header>
     <div cds-layout="horizontal align:vertical-stretch wrap:none">
-      <nav class="body-sidenav">
-        <div style="width: 100%; text-align: center;">Warehouse</div>
-        <cds-divider class="body-divider"></cds-divider>
-        <div cds-layout="p:md p@md:lg">
-          <div id="warehouse"></div>
-        </div>
-      </nav>
       <cds-divider class="body-divider" orientation="vertical"></cds-divider>
       <div cds-layout="vertical align:stretch">
         <div class="body-content body-scrollable-content">
           <div cds-layout="vertical gap:md p:lg">
-            <div id="section-content"></div>
+            <div id="section-content" cds-layout="vertical"></div>
           </div>
         </div>
-        <cds-divider class="body-divider"></cds-divider>
-        <footer class="body-footer" cds-layout="p-y:md p-x:lg">footer</footer>
+        <cds-divider class="demo-divider"></cds-divider>
+        <footer class="body-footer" cds-layout="p-y:md p-x:lg">
+          <cds-alert id="game-alert" status="info">This is an alert with a status of "info"</cds-alert>
+        </footer>
       </div>
     </div>
   </div>
