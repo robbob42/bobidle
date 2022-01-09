@@ -1,5 +1,6 @@
 import UI from "./gameUI";
 import gardenList from './gardens';
+import featureList from './features';
 import Gameengine from './classes/GameEngine';
 
 
@@ -19,6 +20,7 @@ export default class Game {
     this.engine.createCurrency({currency: "gold", amount: 300});
 
     this.createGardens();
+    this.createFeatures();
 
     this.ui.init();
   }
@@ -26,6 +28,12 @@ export default class Game {
   createGardens() {
     for (const garden in gardenList) {
       this.engine.createGarden(gardenList[garden]);
+    }
+  }
+
+  createFeatures() {
+    for (const feature in featureList) {
+      this.engine.createFeature(featureList[feature]);
     }
   }
 

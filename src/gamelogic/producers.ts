@@ -1,7 +1,7 @@
-import { producerOptsType } from '../../vendor/continuum/producer';
+import { ContinuumEngine } from './types/Continuum';
 
 type producerListType = {
-  [key: string]: producerOptsType
+  [key: string]: ContinuumEngine.ProducerOpts
 }
 
 export default {

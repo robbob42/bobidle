@@ -73,7 +73,8 @@ export default class UI {
       });
 
     const seedOptions = {
-      key: 'radishSeed'
+      key: 'radishSeed',
+      engine: this._engine
     };
     this._engine.createSeed(seedOptions);
 

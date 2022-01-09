@@ -1,7 +1,7 @@
-import { resourceOptsType } from '../../vendor/continuum/resource';
+import { ContinuumEngine } from './types/Continuum';
 
 type resourceListType = {
-  [key: string]: resourceOptsType
+  [key: string]: ContinuumEngine.ResourceOpts
 }
 export default{
   rock: {

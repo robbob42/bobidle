@@ -1,31 +1,44 @@
-import Entity from '../../../vendor/continuum/entity';
+import GameEntity from './GameEntity';
 import Seed from './Seed';
 import { ContinuumEngine } from '../types/Continuum';
+import GameEngine from './GameEngine';
 
-export interface PlotOpts {
+
+export interface InitPlotOpts {
   key: string,
   count?: number,
   maxCount?: number,
   requirements?: ContinuumEngine.RequirementMap,
-  engine?: ContinuumEngine.Engine,
-  seed?: Seed
+  seed?: Seed,
+  tooltip?: string
 }
 
-export default class Plot extends Entity {
+export type PlotOpts = InitPlotOpts & {
+  engine: GameEngine,
+}
+
+export default class Plot extends GameEntity {
   seed: Seed | undefined;
   active;
   timeRemaining;
+  tooltip;
 
   constructor(opts: PlotOpts) {
     super("plot", opts);
 
     this.active = false;
     this.timeRemaining = 0;
+    this.tooltip = opts.tooltip;
   }
 
   drawPlot(gridCols: number, plotId: number): HTMLElement {
     const click = (plot: Plot) => {
-      // console.log(elem);
+      const plotName = `Plot ${this.key}`;
+      let seedInfo = 'Currently Empty';
+      if (this.seed) {
+        seedInfo = `Seed: ${this.seed.key}`
+      }
+      this.engine.setMessage(`${plotName}<br />${seedInfo}`, 'info');
       plot;
     }
 
@@ -63,5 +76,9 @@ export default class Plot extends Entity {
     s.appendChild(bottomP);
 
     return s;
+  }
+
+  plantSeed(seed: Seed) {
+    this.seed = seed;
   }
 }

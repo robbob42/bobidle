@@ -1,7 +1,7 @@
-import { GardenOpts } from './classes/Garden';
+import { InitGardenOpts } from './classes/Garden';
 
 type GardenList = {
-  [key: string]: GardenOpts
+  [key: string]: InitGardenOpts
 }
 
 export default {

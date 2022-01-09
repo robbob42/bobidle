@@ -1,6 +1,7 @@
-import Entity from '../../../vendor/continuum/entity';
+import GameEntity from './GameEntity';
 import { ContinuumEngine } from '../types/Continuum';
 import Plot, { PlotOpts } from './Plot';
+import GameEngine from './GameEngine';
 
 
 interface GardenDimensions {
@@ -8,22 +9,25 @@ interface GardenDimensions {
   height: number
 }
 
-export interface GardenOpts {
+export interface InitGardenOpts {
   key: string,
   count?: number,
   maxCount?: number,
   requirements?: ContinuumEngine.RequirementMap,
-  engine?: ContinuumEngine.Engine,
   dimensions: GardenDimensions,
   active: boolean
 }
 
-export default class Garden extends Entity {
+export type GardenOpts = InitGardenOpts & {
+  engine: GameEngine,
+}
+
+export default class Garden extends GameEntity {
   dimensions: GardenDimensions;
   active: boolean;
   plots: {
     [key: string]: Plot
-  } = {}
+  } = {};
 
   constructor(opts: GardenOpts) {
     super("seed", opts);
@@ -43,7 +47,7 @@ export default class Garden extends Entity {
     for (let i = 1; i <= this.dimensions.height; i++) {
       for (let i = 1; i <= this.dimensions.width; i++) {
         // Create Plot object and attach it to this Garden
-        const plot = this.createPlot({key: plotId.toString()});
+        const plot = this.createPlot({key: plotId.toString(), engine: this.engine});
 
         // Attach Plot to DOM
         const DOMplot = plot.drawPlot(gridCols, plotId);
