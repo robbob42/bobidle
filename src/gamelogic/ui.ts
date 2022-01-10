@@ -72,11 +72,11 @@ export default class UI {
         }
       });
 
-    const seedOptions = {
-      key: 'radishSeed',
-      engine: this._engine
-    };
-    this._engine.createSeed(seedOptions);
+    // const seedOptions = {
+    //   key: 'radishSeed',
+    //   engine: this._engine
+    // };
+    // this._engine.createSeed(seedOptions);
 
     this._initProducerElements();
     this._initWarehouse();

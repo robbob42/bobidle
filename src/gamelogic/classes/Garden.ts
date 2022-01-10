@@ -71,4 +71,12 @@ export default class Garden extends GameEntity {
   plot(key: string) {
     return this.plots[key];
   }
+
+  highlightAvailablePlots() {
+    for (const plot in this.plots) {
+      if (!this.plots[plot].seed) {
+        this.plots[plot].highlightPlot(true);
+      }
+    }
+  }
 }

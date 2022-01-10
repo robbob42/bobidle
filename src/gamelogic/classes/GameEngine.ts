@@ -4,6 +4,14 @@ import Feature, { FeatureOpts } from './Feature';
 import Engine from '../../../vendor/continuum/engine';
 import { ContinuumEngine } from '../types/Continuum';
 
+interface MsgOpts {
+  msg: string,
+  entity?: unknown,
+  entityType?: string,
+  callback?: () => void,
+  status?: string
+}
+
 export default class Gameengine extends Engine {
   seeds: {
     [key: string]: Seed;
@@ -16,10 +24,12 @@ export default class Gameengine extends Engine {
   } = {};
   gardens: {
     [key: string]: Garden
-  } = {}
+  } = {};
   features: {
     [key: string]: Feature
-  } = {}
+  } = {};
+  selectedEntity: unknown;
+  selectedEntityType: string | undefined;
 
   constructor() {
     super();
@@ -63,10 +73,13 @@ export default class Gameengine extends Engine {
     return this.gardens[activeGarden[0]];
   }
 
-  setMessage(msg: string, status?: string) {
+  setMessage(opts: MsgOpts) {
     const msgDom = document.getElementById('game-alert') as HTMLElement;
-    msgDom.innerHTML = msg;
+    this.selectedEntity = opts.entity;
+    this.selectedEntityType = opts.entityType;
 
-    status && msgDom.setAttribute('status', status);
+    opts.callback && opts.callback();
+    opts.status && msgDom.setAttribute('status', opts.status);
+    msgDom.innerHTML = opts.msg;
   }
 }
