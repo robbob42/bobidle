@@ -64,7 +64,7 @@ export default class Seed extends Entity {
 
   drawSeed(): HTMLElement {
     const callback = () => {
-      this.engine.gardens['baby'].highlightAvailablePlots();
+      this.engine.activeGarden().highlightAvailablePlots(true);
     }
     const click = (seed: Seed) => {
       const msgOpts = {

@@ -14,8 +14,18 @@
         <p cds-text="body center secondary">You puts the seed in the plantinator</p>
       </div>
     </header>
-    <div cds-layout="horizontal align:vertical-stretch wrap:none">
-      <cds-divider class="body-divider" orientation="vertical"></cds-divider>
+    <div cds-layout="vertical">
+      <cds-alert-group id="body-message-container" type="banner" status="info" class="body-message" style="display: none;">
+        <cds-alert>
+          <cds-icon shape="block" solid role="img"></cds-icon>
+          <span id="body-message">This example is a banner alert a user</span>
+          <cds-alert-actions>
+            <cds-button id="unselect-button" action="outline">Unselect</cds-button>
+          </cds-alert-actions>
+        </cds-alert>
+      </cds-alert-group>
+      <div id="body-message-blank" class="body-message-blank"></div>
+      <cds-divider class="body-divider" orientation="horizontal"></cds-divider>
       <div cds-layout="vertical align:stretch">
         <div class="body-content body-scrollable-content">
           <div cds-layout="vertical gap:md p:lg">
@@ -23,8 +33,6 @@
             <div id="feature-first-seed" style="width: 100%; text-align: center;"></div>
           </div>
         </div>
-        <cds-divider class="demo-divider"></cds-divider>
-          <div id="feature-footer" class="body-footer"></div>
       </div>
     </div>
   </div>

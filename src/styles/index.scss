@@ -38,11 +38,13 @@ body, html {
   --color: var(--cds-global-color-gray-500);
 }
 
-.body-footer {
-  color: var(--cds-global-color-gray-700);
-  -webkit-box-shadow: 0 0.05rem 0 hsl(198, 0%, 70%) inset;
-  box-shadow: 0 0.05rem 0 hsl(198, 0%, 70%) inset;
-  max-height: 68px;
+.body-message cds-alert {
+  height: 63px;
+}
+
+.body-message-blank {
+  height: 67px;
+  width: 100%;
 }
 
 .body-divider {

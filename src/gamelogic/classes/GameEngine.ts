@@ -74,12 +74,33 @@ export default class Gameengine extends Engine {
   }
 
   setMessage(opts: MsgOpts) {
-    const msgDom = document.getElementById('game-alert') as HTMLElement;
+    const msgDom = document.getElementById('body-message') as HTMLElement;
+    const msgContainerDom = document.getElementById('body-message-container') as HTMLElement;
+    const msgBlankDom = document.getElementById('body-message-blank') as HTMLElement;
+
+    msgBlankDom.style.display = 'none';
+    msgContainerDom.style.display = 'block';
     this.selectedEntity = opts.entity;
     this.selectedEntityType = opts.entityType;
 
     opts.callback && opts.callback();
     opts.status && msgDom.setAttribute('status', opts.status);
     msgDom.innerHTML = opts.msg;
+  }
+
+  unselect() {
+    const msgDom = document.getElementById('body-message') as HTMLElement;
+    const msgContainerDom = document.getElementById('body-message-container') as HTMLElement;
+    const msgBlankDom = document.getElementById('body-message-blank') as HTMLElement;
+    const activeGarden = this.activeGarden();
+
+    msgBlankDom.style.display = 'block';
+    msgContainerDom.style.display = 'none';
+    this.selectedEntity = {};
+    this.selectedEntityType = '';
+
+    msgDom.innerHTML = '';
+
+    activeGarden.highlightAvailablePlots(false);
   }
 }

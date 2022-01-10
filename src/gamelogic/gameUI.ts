@@ -1,6 +1,9 @@
 import '@cds/core/alert/register.js';
+import '@cds/core/icon/register.js';
+import { ClarityIcons, blockIcon } from '@cds/core/icon';
 
 import Gameengine from './classes/GameEngine';
+import Garden from './classes/Garden';
 import { EmitPlanted } from './classes/Plot';
 import { convertHMS } from './utils';
 
@@ -8,6 +11,7 @@ import { convertHMS } from './utils';
 export default class gameUI {
   engine;
   gardenElem;
+  activeGarden: Garden | undefined;
 
   constructor(engine: Gameengine) {
     this.engine = engine;
@@ -15,8 +19,13 @@ export default class gameUI {
   }
 
   init() {
-    const currentGarden = this.engine.activeGarden();
-    this.gardenElem.appendChild(currentGarden.drawGarden());
+    ClarityIcons.addIcons(blockIcon);
+
+    const unselectButton = document.getElementById('unselect-button') as HTMLElement;
+    unselectButton.addEventListener('click', () => this.engine.unselect());
+
+    this.activeGarden = this.engine.activeGarden();
+    this.gardenElem.appendChild(this.activeGarden.drawGarden());
 
     for (const feature in this.engine.features) {
       if (this.engine.features[feature].visible) {
@@ -25,31 +34,35 @@ export default class gameUI {
       }
     }
 
-    this.engine.gardens['baby'].plots['1']
-      .on('SEED_PLANTED', (opts: EmitPlanted) => {
-        const firstSeedDom = document.getElementById('feature-first-seed');
-        if (firstSeedDom) firstSeedDom.style.display = 'none';
+    for (const plot in this.activeGarden.plots) {
+      this.activeGarden.plots[plot]
+        .on('SEED_PLANTED', (opts: EmitPlanted) => {
+          const firstSeedDom = document.getElementById('feature-first-seed');
+          if (firstSeedDom) firstSeedDom.style.display = 'none';
 
-        opts.plot.beginTime = Date.now();
-        opts.plot.endTime = Date.now() + opts.seed.productionTime;
-        opts.plot.timeRemaining = opts.seed.productionTime / 1000;
+          // Display seed to DOM
+          const plotSpan = document.getElementById(`plot-${opts.plot.key}-highlight`) as HTMLElement;
+          plotSpan.style.backgroundColor = '#DDDDDD';
+          plotSpan.style.color = opts.seed.color;
+          plotSpan.innerHTML = '.';
 
-        // Display seed to DOM
-        const plotSpan = document.getElementById(`plot-${opts.plot.key}-highlight`) as HTMLElement;
-        plotSpan.style.backgroundColor = '#DDDDDD';
-        plotSpan.style.color = opts.seed.color;
-        plotSpan.innerHTML = '.';
+          // Display counter to DOM
+          const domElement = document.getElementById(`plot-${opts.plot.key}`) as HTMLElement;
+          const parent = domElement.parentElement as HTMLElement;
 
-        // Display counter to DOM
-        opts.plot.enableCounter();
-      })
+          const d = document.createElement('div');
+          d.setAttribute('cds-layout', 'container:center col:12');
+          d.id = `plot-${opts.plot.key}-counter`;
+          parent.appendChild(d);
+        })
 
+    }
     const seedOptions = {
       id: 1,
       entityType: 'resource',
       entityKey: 'radish',
       productionAmount: 1,
-      productionTime: 10000,
+      productionTime: 20000,
       baseCost: {
         currency: 'gold',
         amount: 1
@@ -63,32 +76,52 @@ export default class gameUI {
   }
 
   update() {
-    if (this.engine.gardens['baby'].plots['1'].endTime >= Date.now()) {
-      if (Math.floor((this.engine.gardens['baby'].plots['1'].endTime - Date.now()) / 1000) !== this.engine.gardens['baby'].plots['1'].timeRemaining) {
-        const totalTime = this.engine.gardens['baby'].plots['1'].endTime - this.engine.gardens['baby'].plots['1'].beginTime;
-        const currentTime = Date.now() - this.engine.gardens['baby'].plots['1'].beginTime;
-        const currentPct = currentTime / totalTime;
+    // 'for' loop in charge of seed icons and timer updates
+    for (const plotKey in this.activeGarden?.plots) {
+      const plot = this.activeGarden?.plots[plotKey];
 
-        const currentIcon = document.getElementById('plot-1-highlight') as HTMLElement;
-        const seed = this.engine.gardens['baby'].plots['1'].seed;
+      // Only run inner checks on plots with active seeds
+      if (plot && this.activeGarden && plot.endTime >= Date.now()) {
 
-        if (currentPct < .50 && currentIcon.innerHTML !== '.') {
-          currentIcon.innerHTML = '.';
-        } else if (seed && currentPct >= .50 && currentPct < 1 && currentIcon.innerHTML !== seed.key.charAt(0).toLowerCase()) {
-          currentIcon.innerHTML = seed.key.charAt(0).toLowerCase();
+        // The 'update()' function runs ~60 times per second, so limit it to only make DOM updates once per second
+        if (plot.calculateSecondsRemaining() !== plot.timeRemaining) {
+          // currentPct: float between 0 - 1
+          const currentPct = plot.calculatePctComplete();
+          const counterElem = document.getElementById(`plot-${plot.key}-counter`) as HTMLElement;
+          const currentIconElem = document.getElementById(`plot-${plot.key}-highlight`) as HTMLElement;
+          const seed = plot.seed;
+
+          // Update DOM seed:
+          //  At 50% completion, change from baby seed character to medium seed character
+          if (currentPct < .50 && currentIconElem.innerHTML !== '.') {
+            currentIconElem.innerHTML = '.';
+          } else if (seed && currentPct >= .50 && currentPct < 1 && currentIconElem.innerHTML !== seed.key.charAt(0).toLowerCase()) {
+            currentIconElem.innerHTML = seed.key.charAt(0).toLowerCase();
+          }
+
+          // Decrement timeRemaining
+          plot.timeRemaining = plot.timeRemaining - 1;
+
+          // Update DOM timer
+          counterElem.innerHTML = convertHMS(plot.timeRemaining);
         }
 
-        this.engine.gardens['baby'].plots['1'].timeRemaining = this.engine.gardens['baby'].plots['1'].timeRemaining - 1;
+        // Because of the parent 'if' statement, this block will only get run once, on the final passthrough
+        if (plot.timeRemaining === 0) {
+          const currentIcon = document.getElementById(`plot-${plot.key}-highlight`) as HTMLElement;
+          const seed = plot.seed;
+          const counterElem = document.getElementById(`plot-${plot.key}-counter`) as HTMLElement;
 
-        const counter = document.getElementById('plot-1-counter') as HTMLElement;
-        counter.innerHTML = convertHMS(this.engine.gardens['baby'].plots['1'].timeRemaining);
-      }
-      if (this.engine.gardens['baby'].plots['1'].timeRemaining === 0) {
-        const currentIcon = document.getElementById('plot-1-highlight') as HTMLElement;
-        const seed = this.engine.gardens['baby'].plots['1'].seed;
-        if (seed) currentIcon.innerHTML = seed.key.charAt(0).toUpperCase();
-        this.engine.gardens['baby'].plots['1'].endTime = 0;
-        this.engine.gardens['baby'].plots['1'].beginTime = 0;
+          // At 100% completion, change to adult seed character
+          if (seed) currentIcon.innerHTML = seed.key.charAt(0).toUpperCase();
+
+          // Reset counters
+          plot.endTime = 0;
+          plot.beginTime = 0;
+
+          // Update DOM timer
+          counterElem.innerHTML = convertHMS(plot.timeRemaining);
+        }
       }
     }
   }

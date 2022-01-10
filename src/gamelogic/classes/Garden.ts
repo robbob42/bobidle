@@ -72,10 +72,10 @@ export default class Garden extends GameEntity {
     return this.plots[key];
   }
 
-  highlightAvailablePlots() {
+  highlightAvailablePlots(highlight: boolean) {
     for (const plot in this.plots) {
       if (!this.plots[plot].seed) {
-        this.plots[plot].highlightPlot(true);
+        this.plots[plot].highlightPlot(highlight);
       }
     }
   }

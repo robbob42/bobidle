@@ -108,19 +108,24 @@ export default class Plot extends GameEntity {
     this.engine.setMessage(msgOpts);
     this.highlightPlot(false);
 
+    this.beginTime = Date.now();
+    this.endTime = Date.now() + this.seed.productionTime;
+    this.timeRemaining = this.seed.productionTime / 1000;
+
     this.emit("SEED_PLANTED", {
       plot: this,
       seed: seed
     });
   }
 
-  enableCounter() {
-    const domElement = document.getElementById(`plot-${this.key}`) as HTMLElement;
-    const parent = domElement.parentElement as HTMLElement;
+  calculateSecondsRemaining() {
+    if (!this.endTime) return 0;
+    return Math.floor((this.endTime - Date.now()) / 1000)
+  }
 
-    const d = document.createElement('div');
-    d.setAttribute('cds-layout', 'container:center col:12');
-    d.id = `plot-${this.key}-counter`;
-    parent.appendChild(d);
+  calculatePctComplete() {
+    const totalTime = this.endTime - this.beginTime;
+    const currentTime = Date.now() - this.beginTime;
+    return currentTime / totalTime;
   }
 }
