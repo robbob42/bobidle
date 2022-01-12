@@ -22,6 +22,11 @@ export interface EmitPlanted {
   seed: Seed
 }
 
+export interface EmitHarvested {
+  plot: Plot,
+  seed: Seed
+}
+
 export default class Plot extends GameEntity {
   seed: Seed | undefined;
   active;
@@ -40,10 +45,38 @@ export default class Plot extends GameEntity {
     this.tooltip = opts.tooltip;
   }
 
+  processOutputs() {
+    if (this.seed && this.seed.outputs) {
+      // Loop through all of the seed outputs
+      // Jankiness due to making TypeScript happy
+      let category: keyof typeof this.seed.outputs;
+      for (category in this.seed.outputs) {
+        const outputs = this.seed.outputs[category];
+
+        for (const output in outputs) {
+          const outputRule = outputs[output];
+          const gameObj = this.engine[category][output];
+
+          gameObj.incrementBy(outputRule.productionAmount);
+        }
+      }
+    }
+
+    this.emit("SEED_HARVESTED", {
+      plot: this,
+      seed: this.seed
+    });
+
+    this.engine.unselect();
+    this.seed = undefined;
+  }
+
   drawPlot(gridCols: number, plotId: number): HTMLElement {
     const click = () => {
       if (this.engine.selectedEntityType === 'seed') {
         this.plantSeed(this.engine.selectedEntity as Seed);
+      } else if (this.seed && this.timeRemaining === 0) {
+        this.processOutputs();
       } else {
         const plotName = `Plot ${this.key}`;
         let seedInfo = 'Currently Empty';
@@ -51,7 +84,10 @@ export default class Plot extends GameEntity {
           seedInfo = `Seed: ${this.seed.key}`
         }
         const msgOpts = {
-          msg: `${plotName}<br />${seedInfo}`,
+          msg: {
+            title: plotName,
+            body: seedInfo
+          },
           entity: this,
           entityType: 'plot',
         }
@@ -98,10 +134,12 @@ export default class Plot extends GameEntity {
     if (this.seed) {
       seedInfo = `Seed: ${this.seed.key}`
     }
-    const msg = `${plotName}<br />${seedInfo}`;
 
     const msgOpts = {
-      msg: `${msg}`,
+      msg: {
+        title: plotName,
+        body: seedInfo
+      },
       entity: this,
       entityType: 'plot',
     }
@@ -111,6 +149,8 @@ export default class Plot extends GameEntity {
     this.beginTime = Date.now();
     this.endTime = Date.now() + this.seed.productionTime;
     this.timeRemaining = this.seed.productionTime / 1000;
+
+    this.engine.seeds[seed.key].incrementBy(-1);
 
     this.emit("SEED_PLANTED", {
       plot: this,

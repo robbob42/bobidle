@@ -1,11 +1,15 @@
-import Seed, { SeedOpts } from './Seed';
+import Seed, { InitSeedOpts } from './Seed';
 import Garden, { InitGardenOpts } from './Garden';
-import Feature, { FeatureOpts } from './Feature';
+import Feature, { InitFeatureOpts } from './Feature';
+import GameResource, { InitGameResourceOpts } from './GameResource';
 import Engine from '../../../vendor/continuum/engine';
 import { ContinuumEngine } from '../types/Continuum';
 
 interface MsgOpts {
-  msg: string,
+  msg: {
+    title: string,
+    body?: string
+  }
   entity?: unknown,
   entityType?: string,
   callback?: () => void,
@@ -17,7 +21,7 @@ export default class Gameengine extends Engine {
     [key: string]: Seed;
   } = {};
   resources: {
-    [key: string]: ContinuumEngine.Resource;
+    [key: string]: GameResource;
   } = {};
   producers: {
     [key: string]: ContinuumEngine.Producer;
@@ -35,14 +39,30 @@ export default class Gameengine extends Engine {
     super();
   }
 
-  createSeed(opts: SeedOpts) {
+  createSeed(opts: InitSeedOpts) {
     if ( !opts ) throw 'No resource options provided';
     if ( !opts.key ) throw `Invalid resource .key value provided ${opts.key}`;
     if (!this.seeds[opts.key]) {
-        opts.engine = this;
-        this.seeds[opts.key] = new Seed(opts);
+      const engineOpts = {
+        ...opts,
+        engine: this
+      }
+      this.seeds[opts.key] = new Seed(engineOpts);
     }
     return this.seeds[opts.key];
+  }
+
+  createGameResource(opts: InitGameResourceOpts) {
+    if ( !opts ) throw 'No resource options provided';
+    if ( !opts.key ) throw `Invalid resource .key value provided ${opts.key}`;
+    if (!this.resources[opts.key]) {
+      const engineOpts = {
+        ...opts,
+        engine: this
+      }
+      this.resources[opts.key] = new GameResource(engineOpts);
+    }
+    return this.resources[opts.key];
   }
 
   createGarden(opts: InitGardenOpts) {
@@ -58,12 +78,15 @@ export default class Gameengine extends Engine {
     return this.gardens[opts.key];
   }
 
-  createFeature(opts: FeatureOpts) {
+  createFeature(opts: InitFeatureOpts) {
     if ( !opts ) throw 'No resource options provided';
     if ( !opts.key ) throw `Invalid resource .key value provided ${opts.key}`;
     if (!this.features[opts.key]) {
-        opts.engine = this;
-        this.features[opts.key] = new Feature(opts);
+      const engineOpts = {
+        ...opts,
+        engine: this
+      }
+      this.features[opts.key] = new Feature(engineOpts);
     }
     return this.features[opts.key];
   }
@@ -85,7 +108,7 @@ export default class Gameengine extends Engine {
 
     opts.callback && opts.callback();
     opts.status && msgDom.setAttribute('status', opts.status);
-    msgDom.innerHTML = opts.msg;
+    msgDom.innerHTML = `<span style="font-weight: bold; text-decoration: underline">${opts.msg.title}</span><br />${opts.msg.body}`
   }
 
   unselect() {

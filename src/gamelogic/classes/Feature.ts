@@ -1,22 +1,32 @@
 import Entity from '../../../vendor/continuum/entity';
 import { ContinuumEngine } from '../types/Continuum';
+import Gameengine from './GameEngine';
 
 
-export interface FeatureOpts {
+export interface InitFeatureOpts {
   key: string,
-  count?: number,
-  maxCount?: number,
-  requirements?: ContinuumEngine.RequirementMap,
-  engine?: ContinuumEngine.Engine,
   parentId: string,
   domElement: HTMLElement,
-  visible: boolean
+  visible: boolean,
+  replaceId?: string,
+  count?: number,
+  maxCount?: number,
+  requirements?: ContinuumEngine.RequirementMap
+}
+
+export type FeatureOpts = InitFeatureOpts & {
+  engine: Gameengine,
+}
+
+export interface EmitFeatureUnlocked {
+  feature: Feature
 }
 
 export default class Feature extends Entity {
   parentId;
   domElement;
   visible;
+  replaceId;
 
   constructor(opts: FeatureOpts) {
     super("feature", opts);
@@ -24,5 +34,13 @@ export default class Feature extends Entity {
     this.parentId = opts.parentId;
     this.domElement = opts.domElement;
     this.visible = opts.visible;
+    this.replaceId = opts.replaceId || null;
+  }
+
+  incrementBy(val: number): number {
+    this.emit("FEATURE_UNLOCKED", {
+      feature: this
+    });
+    return val;
   }
 }

@@ -1,6 +1,8 @@
 import UI from "./gameUI";
 import gardenList from './gardens';
 import featureList from './features';
+import seedList from './seeds';
+import resourceList from './resources';
 import Gameengine from './classes/GameEngine';
 
 
@@ -21,6 +23,8 @@ export default class Game {
 
     this.createGardens();
     this.createFeatures();
+    this.createSeeds();
+    this.createResources();
 
     this.ui.init();
   }
@@ -34,6 +38,18 @@ export default class Game {
   createFeatures() {
     for (const feature in featureList) {
       this.engine.createFeature(featureList[feature]);
+    }
+  }
+
+  createSeeds() {
+    for (const seed in seedList) {
+      this.engine.createSeed(seedList[seed]);
+    }
+  }
+
+  createResources() {
+    for (const resource in resourceList) {
+      this.engine.createGameResource(resourceList[resource]);
     }
   }
 

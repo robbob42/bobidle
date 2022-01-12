@@ -83,3 +83,14 @@ body, html {
 100% { width: 0%; }
 }
 
+.seed-button {
+  --border-width: 2px;
+  --text-transform: none;
+  --padding: 5px;
+}
+
+.resource-button {
+  --border-width: 2px;
+  --text-transform: none;
+  --padding: 5px;
+}

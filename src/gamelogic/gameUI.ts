@@ -1,11 +1,13 @@
 import '@cds/core/alert/register.js';
 import '@cds/core/icon/register.js';
-import { ClarityIcons, blockIcon } from '@cds/core/icon';
+import '@cds/core/divider/register.js';
+import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon } from '@cds/core/icon';
 
 import Gameengine from './classes/GameEngine';
 import Garden from './classes/Garden';
-import { EmitPlanted } from './classes/Plot';
-import { convertHMS } from './utils';
+import { EmitPlanted, EmitHarvested } from './classes/Plot';
+import { convertHMS, selectTab, updateInventory, updateResources } from './utils';
+import { EmitFeatureUnlocked } from './classes/Feature';
 
 
 export default class gameUI {
@@ -20,6 +22,8 @@ export default class gameUI {
 
   init() {
     ClarityIcons.addIcons(blockIcon);
+    ClarityIcons.addIcons(blocksGroupIcon);
+    ClarityIcons.addIcons(dataClusterIcon);
 
     const unselectButton = document.getElementById('unselect-button') as HTMLElement;
     unselectButton.addEventListener('click', () => this.engine.unselect());
@@ -54,25 +58,59 @@ export default class gameUI {
           d.setAttribute('cds-layout', 'container:center col:12');
           d.id = `plot-${opts.plot.key}-counter`;
           parent.appendChild(d);
+
+          // Update inventory
+          updateInventory(opts.seed);
         })
+      this.activeGarden.plots[plot]
+        .on('SEED_HARVESTED', (opts: EmitHarvested) => {
+          // Display seed to DOM
+          const plotSpan = document.getElementById(`plot-${opts.plot.key}-highlight`) as HTMLElement;
+          plotSpan.style.backgroundColor = '#FFFFFF';
+          plotSpan.innerHTML = '';
 
+          // Remove counter from DOM
+          const domElement = document.getElementById(`plot-${opts.plot.key}`) as HTMLElement;
+          const parent = domElement.parentElement as HTMLElement;
+          const timer = parent.lastElementChild as HTMLElement;
+          parent.removeChild(timer);
+
+          // Update inventory for the seed, and any of its children seed
+          updateInventory(opts.seed);
+          if (opts.seed.outputs.seeds) {
+            for (const seedKey in opts.seed.outputs.seeds) {
+              updateInventory(this.engine.seeds[seedKey]);
+            }
+          }
+          if (opts.seed.outputs.resources) {
+            for (const resourceKey in opts.seed.outputs.resources) {
+              updateResources(this.engine.resources[resourceKey]);
+            }
+          }
+        })
     }
-    const seedOptions = {
-      id: 1,
-      entityType: 'resource',
-      entityKey: 'radish',
-      productionAmount: 1,
-      productionTime: 20000,
-      baseCost: {
-        currency: 'gold',
-        amount: 1
-      },
-      key: 'radish',
-      engine: this.engine
-    };
-    const radishSeed = this.engine.createSeed(seedOptions);
 
-    document.getElementById('feature-first-seed')?.appendChild(radishSeed.drawSeed());
+    for(const featureKey in this.engine.features) {
+      this.engine.features[featureKey]
+        .on('FEATURE_UNLOCKED', (opts: EmitFeatureUnlocked) => {
+          const parent = document.getElementById(opts.feature.parentId) as HTMLElement;
+          if (opts.feature.replaceId) {
+            const replaceElement = document.getElementById(opts.feature.replaceId) as HTMLElement;
+            parent.replaceChild(opts.feature.domElement, replaceElement);
+          } else {
+            parent.appendChild(opts.feature.domElement);
+          }
+
+          // Update Inventory in case the inventory was just unlocked
+          for (const seedKey in this.engine.seeds) {
+            selectTab('inventory');
+            const seed = this.engine.seeds[seedKey];
+            updateInventory(seed);
+          }
+        });
+    }
+
+    document.getElementById('feature-first-seed')?.appendChild(this.engine.seeds['InventoryTab'].drawSeed());
   }
 
   update() {
@@ -121,6 +159,9 @@ export default class gameUI {
 
           // Update DOM timer
           counterElem.innerHTML = convertHMS(plot.timeRemaining);
+
+
+          // this.engine.features['lowerhalf'].unlockFeature();
         }
       }
     }

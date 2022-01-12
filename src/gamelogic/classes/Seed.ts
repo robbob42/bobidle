@@ -1,22 +1,42 @@
 import Entity from '../../../vendor/continuum/entity';
 import { ContinuumEngine } from '../types/Continuum';
 import GameEngine from './GameEngine';
+import { stringToColour } from '../utils';
 
+
+interface GameOutputRule {
+  productionAmount: number,
+}
+
+interface GameOutputMap {
+  resources?: {
+    [key: string]: GameOutputRule
+  },
+  producers?: {
+    [key: string]: GameOutputRule
+  },
+  features?: {
+    [key: string]: GameOutputRule
+  },
+  seeds?: {
+    [key: string]: GameOutputRule
+  }
+}
 
 export interface InitSeedOpts {
   key: string,
-  id: number,
-  engine: GameEngine,
-  entityType: string,
-  entityKey: string,
-  productionAmount: number,
-  productionTime: number
-  baseCost: ContinuumEngine.CurrencyOpts;
-  costCoefficient?: number;
+  productionTime: number,
+  baseCost: ContinuumEngine.CurrencyOpts,
+  outputs: GameOutputMap,
+  costCoefficient?: number,
   count?: number,
   maxCount?: number,
   requirements?: ContinuumEngine.RequirementMap,
   color?: string,
+  tooltip?: {
+    title?: string,
+    body?: string
+  }
 }
 
 export type SeedOpts = InitSeedOpts & {
@@ -24,42 +44,26 @@ export type SeedOpts = InitSeedOpts & {
 }
 
 export default class Seed extends Entity {
-  id;
   engine;
-  entityType;
   color;
-  productionAmount;
   productionTime;
-  tooltip;
   baseCost;
   costCoefficient;
+  outputs;
+  tooltip;
 
   constructor(opts: SeedOpts) {
     super("seed", opts);
-    this.id = opts.id;
     this.engine = opts.engine;
-    this.entityType = opts.entityType;
-    this.color = this.stringToColour(opts.key);
-    this.productionAmount = opts.productionAmount;
+    this.color = stringToColour(opts.key);
     this.productionTime = opts.productionTime;
-    this.tooltip = `${opts.key} seed`;
     this.baseCost = opts.baseCost;
     this.costCoefficient = opts.costCoefficient || 1;
-  }
-
-  stringToColour(str: string) {
-    let hash = 0;
-    if (str.length === 0) return str;
-    for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        hash = hash & hash;
-    }
-    const rgb = [0, 0, 0];
-    for (let i = 0; i < 3; i++) {
-        const value = (hash >> (i * 8)) & 255;
-        rgb[i] = value;
-    }
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    this.outputs = opts.outputs || { resources: {}, producers: {}, features: {}, seeds: {} };
+    this.tooltip = {
+      title: `Seed: ${opts.key}`,
+      body: opts.tooltip?.body || ''
+    };
   }
 
   drawSeed(): HTMLElement {
@@ -68,7 +72,10 @@ export default class Seed extends Entity {
     }
     const click = (seed: Seed) => {
       const msgOpts = {
-        msg: `${this.tooltip}`,
+        msg: {
+          title: this.tooltip.title,
+          body: this.tooltip.body
+        },
         entity: this,
         entityType: 'seed',
         callback: callback,
@@ -79,16 +86,15 @@ export default class Seed extends Entity {
     }
 
 
-    const s = document.createElement('span');
-    s.id = `seed-${this.key}-${this.id}`;
-    s.style.fontSize = '20px';
-    s.style.fontWeight = 'bold';
-    s.style.color = this.stringToColour(this.key);
-    s.style.padding = '10px';
-    s.style.cursor = 'pointer';
-    s.innerHTML = '()';
-    s.addEventListener('click', () => {click(this)})
+    const b = document.createElement('cds-icon-button');
+    const styleStr = `--background: white; --border-color: ${stringToColour(this.key)}; --color: ${stringToColour(this.key)}`;
 
-    return s;
+    b.setAttribute('aria-label', this.key);
+    b.className = 'seed-button';
+    b.setAttribute('style', styleStr);
+    b.innerHTML = `(${this.key.charAt(0).toLowerCase()})`;
+    b.addEventListener('click', () => {click(this)})
+
+    return b;
   }
 }

@@ -4,20 +4,19 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plantinator</title>
+  <title>Everything Garden</title>
 </head>
 <body cds-text="body">
   <div class="body-layout body-app-layout" cds-layout="vertical align:stretch">
     <header class="body-header" cds-layout="p:md" cds-theme="dark">
       <div cds-layout="vertical gap:lg">
-        <p cds-text="body center message">Plantinator</p>
-        <p cds-text="body center secondary">You puts the seed in the plantinator</p>
+        <p cds-text="body center message">Everything Garden</p>
+        <p cds-text="body center secondary">Grow everything!  Just plant the seed in the plot!</p>
       </div>
     </header>
-    <div cds-layout="vertical">
+    <div id="body-content" cds-layout="vertical">
       <cds-alert-group id="body-message-container" type="banner" status="info" class="body-message" style="display: none;">
         <cds-alert>
-          <cds-icon shape="block" solid role="img"></cds-icon>
           <span id="body-message">This example is a banner alert a user</span>
           <cds-alert-actions>
             <cds-button id="unselect-button" action="outline">Unselect</cds-button>
@@ -34,6 +33,25 @@
           </div>
         </div>
       </div>
+      <!-- <div id="lower-half" layout tall style="height: 50%" cds-layout="vertical gap:md align:top">
+        <div id="lower-half-tabs-section" cds-layout="vertical gap:md">
+          <div id="tabs" cds-layout="horizontal gap:md align:top p:md" style="height: 45px">
+            <cds-placeholder>
+              <cds-icon-button id="tab-inventory" action="outline" aria-label="Inventory"><cds-icon shape="blocks-group"></cds-icon></cds-icon-button>
+            </cds-placeholder>
+            <cds-divider orientation="vertical"></cds-divider>
+          </div>
+          <cds-divider orientation="horizontal"></cds-divider>
+        </div>
+        <div id="lower-half-contect-section">
+          <div id="tab-content" cds-layout="vertical align:stretch p:sm">
+            <div id="tab-content-inventory" class="tab-content" cds-layout="grid cols:3 gap:md align:horizontal-center">
+              <cds-placeholder cds-layout="container: center" style="text-align: center;"><span>seed button</span><br /><span id="inventory-radish-count">radish x 1</span></cds-placeholder>
+              <cds-placeholder>2</cds-placeholder>
+            </div>
+          </div>
+        </div>
+      </div> -->
     </div>
   </div>
 </body>
