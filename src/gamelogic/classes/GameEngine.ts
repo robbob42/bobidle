@@ -4,6 +4,7 @@ import Feature, { InitFeatureOpts } from './Feature';
 import GameResource, { InitGameResourceOpts } from './GameResource';
 import Engine from '../../../vendor/continuum/engine';
 import { ContinuumEngine } from '../types/Continuum';
+import Currency from '../../../vendor/continuum/currency';
 
 interface MsgOpts {
   msg: {
@@ -17,6 +18,9 @@ interface MsgOpts {
 }
 
 export default class Gameengine extends Engine {
+  currencies: {
+    [key: string]: ContinuumEngine.Currency;
+  } = {};
   seeds: {
     [key: string]: Seed;
   } = {};
@@ -37,6 +41,14 @@ export default class Gameengine extends Engine {
 
   constructor() {
     super();
+  }
+
+  createCurrency(type: string, initialValue: number) {
+    if ( !type ) throw `Invalid currency type provided ${type}`;
+    if (!this.currencies[type]) {
+      this.currencies[type] = new Currency(type, initialValue);
+    }
+    return this.currencies[type];
   }
 
   createSeed(opts: InitSeedOpts) {

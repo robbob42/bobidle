@@ -48,6 +48,26 @@ lowerHalfDiv.appendChild(tabsContentDiv);
 // ResourceTab
 const resourceTabsDiv = createTabsDOM(tabs2DomOpts);
 
+// Money Display
+const moneyIcon = document.createElement('cds-icon');
+const moneyIconHolder = document.createElement('cds-placeholder');
+const moneyHolder = document.createElement('cds-placeholder');
+const moneyLayout = document.createElement('div');
+
+moneyIcon.setAttribute('shape', 'coin-bag');
+moneyIcon.setAttribute('size', 'md');
+moneyIconHolder.setAttribute('cds-layout', 'horizontal gap:md align:vertical-center');
+moneyHolder.id = 'money-display';
+moneyHolder.className = 'coin-display';
+moneyHolder.innerHTML = '1';
+moneyLayout.setAttribute('cds-layout', 'horizontal gap:md p:sm align:right');
+
+moneyIconHolder.appendChild(moneyIcon);
+moneyLayout.appendChild(moneyIconHolder);
+moneyLayout.appendChild(moneyHolder);
+
+
+
 type FeatureList = {
   [key: string]: InitFeatureOpts
 }
@@ -70,6 +90,13 @@ export default {
     replaceId: 'lower-half-tabs-section',
     parentId: 'lower-half',
     domElement: resourceTabsDiv,
+    visible: false
+  },
+  moneyDisplay: {
+    key: 'moneyDisplay',
+    firstChildId: 'garden-content',
+    parentId: 'garden-content',
+    domElement: moneyLayout,
     visible: false
   }
 } as FeatureList

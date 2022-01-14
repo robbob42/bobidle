@@ -1,12 +1,14 @@
 import '@cds/core/alert/register.js';
 import '@cds/core/icon/register.js';
 import '@cds/core/divider/register.js';
-import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon } from '@cds/core/icon';
+import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon,
+          coinBagIcon } from '@cds/core/icon';
 
 import Gameengine from './classes/GameEngine';
 import Garden from './classes/Garden';
 import { EmitPlanted, EmitHarvested } from './classes/Plot';
-import { convertHMS, selectTab, updateInventory, updateResources } from './utils';
+import { convertHMS, selectTab, updateInventory, updateResources,
+          updateMoneyDisplay } from './utils';
 import { EmitFeatureUnlocked } from './classes/Feature';
 
 
@@ -24,6 +26,7 @@ export default class gameUI {
     ClarityIcons.addIcons(blockIcon);
     ClarityIcons.addIcons(blocksGroupIcon);
     ClarityIcons.addIcons(dataClusterIcon);
+    ClarityIcons.addIcons(coinBagIcon);
 
     const unselectButton = document.getElementById('unselect-button') as HTMLElement;
     unselectButton.addEventListener('click', () => this.engine.unselect());
@@ -87,6 +90,11 @@ export default class gameUI {
               updateResources(this.engine.resources[resourceKey]);
             }
           }
+          if (opts.seed.outputs.currencies) {
+            for (const resourceKey in opts.seed.outputs.currencies) {
+              updateMoneyDisplay(this.engine.currencies[resourceKey].value);
+            }
+          }
         })
     }
 
@@ -94,7 +102,10 @@ export default class gameUI {
       this.engine.features[featureKey]
         .on('FEATURE_UNLOCKED', (opts: EmitFeatureUnlocked) => {
           const parent = document.getElementById(opts.feature.parentId) as HTMLElement;
-          if (opts.feature.replaceId) {
+          if (opts.feature.firstChildId) {
+            const parent = document.getElementById(opts.feature.parentId) as HTMLElement;
+            parent.insertBefore(opts.feature.domElement, parent.firstChild);
+          } else if (opts.feature.replaceId) {
             const replaceElement = document.getElementById(opts.feature.replaceId) as HTMLElement;
             parent.replaceChild(opts.feature.domElement, replaceElement);
           } else {
@@ -102,8 +113,15 @@ export default class gameUI {
           }
 
           // Update Inventory in case the inventory was just unlocked
-          for (const seedKey in this.engine.seeds) {
+          if (opts.feature.key === 'lowerhalf') {
             selectTab('inventory');
+          }
+
+          if (opts.feature.key === 'resourceTab') {
+            selectTab('resources');
+          }
+
+          for (const seedKey in this.engine.seeds) {
             const seed = this.engine.seeds[seedKey];
             updateInventory(seed);
           }

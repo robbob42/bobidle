@@ -46,7 +46,7 @@ export default {
         }
       },
       seeds: {
-        moneyTab: {
+        moneyDisplay: {
           productionAmount: 1
         }
       },
@@ -62,24 +62,48 @@ export default {
     color: stringToColour('resourceTab'),
     count: 0
   },
-  moneyTab: {
-    key: 'moneyTab',
+  moneyDisplay: {
+    key: 'moneyDisplay',
     productionTime: 3000,
     baseCost: {
       currency: 'gold',
       amount: 1
     },
     outputs: {
+      currencies: {
+        coin: {
+          productionAmount: 1
+        }
+      },
       features: {
-        moneyTab: {
+        moneyDisplay: {
+          productionAmount: 1
+        }
+      },
+      seeds: {
+        marketTab: {
           productionAmount: 1
         }
       }
     },
     tooltip: {
-      body: 'Who wants to start generating money?'
+      body: 'A great way to view your money!'
     },
-    color: stringToColour('moneyTab'),
+    color: stringToColour('moneyDisplay'),
+    count: 0
+  },
+  marketTab: {
+    key: 'marketTab',
+    productionTime: 3000,
+    baseCost: {
+      currency: 'gold',
+      amount: 1
+    },
+    outputs: {},
+    tooltip: {
+      body: 'Ready to start buying and selling?'
+    },
+    color: stringToColour('marketTab'),
     count: 0
   },
   radish: {

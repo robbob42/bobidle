@@ -87,10 +87,26 @@ body, html {
   --border-width: 2px;
   --text-transform: none;
   --padding: 5px;
+  outline: 'none';
+  outline-width: 0ch;
 }
 
 .resource-button {
   --border-width: 2px;
   --text-transform: none;
   --padding: 5px;
+  outline: 'none';
+  outline-width: 0ch;
+}
+
+.tab-button {
+  outline: 'none';
+  outline-width: 0ch;
+}
+
+.coin-display {
+  text-align: right;
+  padding: 5px;
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-container-border-color);
+  width: 30%;
 }

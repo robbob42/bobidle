@@ -26,29 +26,56 @@
       <div id="body-message-blank" class="body-message-blank"></div>
       <cds-divider class="body-divider" orientation="horizontal"></cds-divider>
       <div cds-layout="vertical align:stretch">
-        <div class="body-content body-scrollable-content">
+        <div id="garden-content" class="body-content body-scrollable-content">
+          <!-- <div cds-layout="horizontal gap:md p:sm align:right">
+            <cds-placeholder cds-layout="horizontal gap:md align:vertical-center">
+              <cds-icon shape="coin-bag" size="md"></cds-icon>
+            </cds-placeholder>
+            <cds-placeholder id="money-display" class="coin-display"></cds-placeholder>
+          </div> -->
           <div cds-layout="vertical gap:md p:lg">
             <div id="section-content" cds-layout="vertical"></div>
             <div id="feature-first-seed" style="width: 100%; text-align: center;"></div>
           </div>
         </div>
       </div>
-      <!-- <div id="lower-half" layout tall style="height: 50%" cds-layout="vertical gap:md align:top">
+      <!-- <div id="lower-half" layout="true" tall="true" cds-layout="vertical gap:md align:top" style="height: 50%;">
         <div id="lower-half-tabs-section" cds-layout="vertical gap:md">
-          <div id="tabs" cds-layout="horizontal gap:md align:top p:md" style="height: 45px">
+          <div id="tabs" cds-layout="horizontal gap:md align:top p:md" style="height: 45px;">
             <cds-placeholder>
-              <cds-icon-button id="tab-inventory" action="outline" aria-label="Inventory"><cds-icon shape="blocks-group"></cds-icon></cds-icon-button>
+              <cds-icon-button action="flat" aria-label="Inventory" id="tab-inventory" tabindex="0" role="button" status="primary" size="md" aria-disabled="false">
+                <cds-icon shape="blocks-group"></cds-icon>
+              </cds-icon-button>
+            </cds-placeholder>
+            <cds-divider orientation="vertical"></cds-divider>
+            <cds-placeholder>
+              <cds-icon-button action="flat" aria-label="Resources" id="tab-resources" tabindex="0" role="button" status="primary" size="md" aria-disabled="false">
+                <cds-icon shape="data-cluster"></cds-icon>
+              </cds-icon-button>
             </cds-placeholder>
             <cds-divider orientation="vertical"></cds-divider>
           </div>
-          <cds-divider orientation="horizontal"></cds-divider>
         </div>
-        <div id="lower-half-contect-section">
-          <div id="tab-content" cds-layout="vertical align:stretch p:sm">
-            <div id="tab-content-inventory" class="tab-content" cds-layout="grid cols:3 gap:md align:horizontal-center">
-              <cds-placeholder cds-layout="container: center" style="text-align: center;"><span>seed button</span><br /><span id="inventory-radish-count">radish x 1</span></cds-placeholder>
-              <cds-placeholder>2</cds-placeholder>
-            </div>
+        <cds-divider orientation="horizontal"></cds-divider>
+        <div id="tab-content" cds-layout="vertical align:stretch">
+          <div id="tab-content-inventory" class="tab-content" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: grid">
+            <cds-placeholder style="text-align: center; display: none;">
+              <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
+              <br>
+              <span id="inventory-resourceTab-count">x 1</span>
+            </cds-placeholder>
+            <cds-placeholder style="text-align: center;">
+              <cds-icon-button aria-label="moneyTab" class="seed-button" style="--background: white; --border-color: rgb(181, 110, 48); --color: rgb(181, 110, 48)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(m)</cds-icon-button>
+              <br>
+              <span id="inventory-moneyTab-count">x 1</span>
+            </cds-placeholder>
+          </div>
+          <div id="tab-content-resources" class="tab-content" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: none">
+            <cds-placeholder style="text-align: center;">
+              <cds-icon-button aria-label="radish" class="resource-button" style="--background: white; --border-color: rgb(73, 108, 14); --color: rgb(73, 108, 14)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">{r}</cds-icon-button>
+              <br>
+              <span id="resources-radish-count">x 1</span>
+            </cds-placeholder>
           </div>
         </div>
       </div> -->

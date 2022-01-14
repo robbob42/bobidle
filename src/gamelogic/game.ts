@@ -19,7 +19,7 @@ export default class Game {
 
   initEngine() {
     // create Producers, Resources, modifiers, reactors etc
-    this.engine.createCurrency({currency: "gold", amount: 300});
+    this.engine.createCurrency("coin", 1);
 
     this.createGardens();
     this.createFeatures();

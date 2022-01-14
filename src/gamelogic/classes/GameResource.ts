@@ -37,17 +37,21 @@ export default class GameResource extends Resource {
       this.engine.activeGarden().highlightAvailablePlots(false);
     }
     const click = () => {
+      if (this.engine.selectedEntity === this) {
+        this.engine.unselect();
+      } else {
       const msgOpts = {
-        msg: {
-          title: this.tooltip.title,
-          body: this.tooltip.body
-        },
-        entity: this,
-        entityType: 'resource',
-        callback: callback,
-        msgStatus: 'info'
+          msg: {
+            title: this.tooltip.title,
+            body: this.tooltip.body
+          },
+          entity: this,
+          entityType: 'resource',
+          callback: callback,
+          msgStatus: 'info'
+        }
+        this.engine.setMessage(msgOpts);
       }
-      this.engine.setMessage(msgOpts);
     }
 
 

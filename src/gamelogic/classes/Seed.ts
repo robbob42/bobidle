@@ -9,6 +9,9 @@ interface GameOutputRule {
 }
 
 interface GameOutputMap {
+  currencies?: {
+    [key: string]: GameOutputRule
+  },
   resources?: {
     [key: string]: GameOutputRule
   },
@@ -59,7 +62,7 @@ export default class Seed extends Entity {
     this.productionTime = opts.productionTime;
     this.baseCost = opts.baseCost;
     this.costCoefficient = opts.costCoefficient || 1;
-    this.outputs = opts.outputs || { resources: {}, producers: {}, features: {}, seeds: {} };
+    this.outputs = opts.outputs || { currencies: {}, resources: {}, producers: {}, features: {}, seeds: {} };
     this.tooltip = {
       title: `Seed: ${opts.key}`,
       body: opts.tooltip?.body || ''
@@ -70,19 +73,22 @@ export default class Seed extends Entity {
     const callback = () => {
       this.engine.activeGarden().highlightAvailablePlots(true);
     }
-    const click = (seed: Seed) => {
-      const msgOpts = {
-        msg: {
-          title: this.tooltip.title,
-          body: this.tooltip.body
-        },
-        entity: this,
-        entityType: 'seed',
-        callback: callback,
-        msgStatus: 'info'
+    const click = () => {
+      if (this.engine.selectedEntity === this) {
+        this.engine.unselect();
+      } else {
+        const msgOpts = {
+          msg: {
+            title: this.tooltip.title,
+            body: this.tooltip.body
+          },
+          entity: this,
+          entityType: 'seed',
+          callback: callback,
+          msgStatus: 'info'
+        }
+        this.engine.setMessage(msgOpts);
       }
-      this.engine.setMessage(msgOpts);
-      seed;
     }
 
 
@@ -93,7 +99,7 @@ export default class Seed extends Entity {
     b.className = 'seed-button';
     b.setAttribute('style', styleStr);
     b.innerHTML = `(${this.key.charAt(0).toLowerCase()})`;
-    b.addEventListener('click', () => {click(this)})
+    b.addEventListener('click', () => {click()});
 
     return b;
   }

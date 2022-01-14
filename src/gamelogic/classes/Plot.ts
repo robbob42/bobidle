@@ -73,25 +73,29 @@ export default class Plot extends GameEntity {
 
   drawPlot(gridCols: number, plotId: number): HTMLElement {
     const click = () => {
-      if (this.engine.selectedEntityType === 'seed') {
-        this.plantSeed(this.engine.selectedEntity as Seed);
-      } else if (this.seed && this.timeRemaining === 0) {
-        this.processOutputs();
+      if (this.engine.selectedEntity === this && !this.seed) {
+        this.engine.unselect();
       } else {
-        const plotName = `Plot ${this.key}`;
-        let seedInfo = 'Currently Empty';
-        if (this.seed) {
-          seedInfo = `Seed: ${this.seed.key}`
+        if (this.engine.selectedEntityType === 'seed') {
+          this.plantSeed(this.engine.selectedEntity as Seed);
+        } else if (this.seed && this.timeRemaining === 0) {
+          this.processOutputs();
+        } else {
+          const plotName = `Plot ${this.key}`;
+          let seedInfo = 'Currently Empty';
+          if (this.seed) {
+            seedInfo = `Seed: ${this.seed.key}`
+          }
+          const msgOpts = {
+            msg: {
+              title: plotName,
+              body: seedInfo
+            },
+            entity: this,
+            entityType: 'plot',
+          }
+          this.engine.setMessage(msgOpts);
         }
-        const msgOpts = {
-          msg: {
-            title: plotName,
-            body: seedInfo
-          },
-          entity: this,
-          entityType: 'plot',
-        }
-        this.engine.setMessage(msgOpts);
       }
     }
 

@@ -9,6 +9,7 @@ export interface InitFeatureOpts {
   domElement: HTMLElement,
   visible: boolean,
   replaceId?: string,
+  firstChildId?: string,
   count?: number,
   maxCount?: number,
   requirements?: ContinuumEngine.RequirementMap
@@ -27,6 +28,7 @@ export default class Feature extends Entity {
   domElement;
   visible;
   replaceId;
+  firstChildId;
 
   constructor(opts: FeatureOpts) {
     super("feature", opts);
@@ -35,6 +37,7 @@ export default class Feature extends Entity {
     this.domElement = opts.domElement;
     this.visible = opts.visible;
     this.replaceId = opts.replaceId || null;
+    this.firstChildId = opts.firstChildId || null;
   }
 
   incrementBy(val: number): number {

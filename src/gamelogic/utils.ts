@@ -90,6 +90,7 @@ export function addTab(name: string, icon: string, parentDom: HTMLElement) {
   iconButton.appendChild(tabIcon);
   iconButton.id = `tab-${name}`;
   iconButton.addEventListener('click', onTabBtnClick);
+  iconButton.className = 'tab-button';
   cdsButton.appendChild(iconButton);
   vertDivider.setAttribute('orientation', 'vertical');
 
@@ -181,4 +182,9 @@ export function updateResources(resource: GameResource) {
     const parent = s?.parentElement;
     if (parent) parent.style.display = 'none';
   }
+}
+
+export function updateMoneyDisplay(amt: number) {
+  const moneyDisplay = document.getElementById('money-display') as HTMLElement;
+  moneyDisplay.innerHTML = amt.toString(10);
 }
