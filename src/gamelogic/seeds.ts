@@ -99,11 +99,67 @@ export default {
       currency: 'gold',
       amount: 1
     },
-    outputs: {},
+    outputs: {
+      features: {
+        marketTab: {
+          productionAmount: 1
+        }
+      },
+      seeds: {
+        marketUpg1: {
+          productionAmount: 1
+        }
+      }
+    },
     tooltip: {
       body: 'Ready to start buying and selling?'
     },
     color: stringToColour('marketTab'),
+    count: 0
+  },
+  marketUpg1: {
+    key: 'marketUpg1',
+    productionTime: 3000,
+    baseCost: {
+      currency: 'gold',
+      amount: 1
+    },
+    outputs: {
+      features: {
+        marketUpg1: {
+          productionAmount: 1
+        }
+      },
+      seeds: {
+        marketTabUpg2: {
+          productionAmount: 1
+        }
+      }
+    },
+    tooltip: {
+      body: 'Can\'t do much with that market.  Let\'s upgrade it!'
+    },
+    color: stringToColour('marketUpg1'),
+    count: 0
+  },
+  marketUpg2: {
+    key: 'marketUpg2',
+    productionTime: 3000,
+    baseCost: {
+      currency: 'gold',
+      amount: 1
+    },
+    outputs: {
+      features: {
+        marketUpg2: {
+          productionAmount: 1
+        }
+      }
+    },
+    tooltip: {
+      body: 'Still not happy with your market?  Keep upgrading!'
+    },
+    color: stringToColour('marketUpg1'),
     count: 0
   },
   radish: {

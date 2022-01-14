@@ -54,11 +54,17 @@
               </cds-icon-button>
             </cds-placeholder>
             <cds-divider orientation="vertical"></cds-divider>
+            <cds-placeholder>
+              <cds-icon-button action="flat" aria-label="Market" id="tab-market" tabindex="0" role="button" status="primary" size="md" aria-disabled="false">
+                <cds-icon shape="store"></cds-icon>
+              </cds-icon-button>
+            </cds-placeholder>
+            <cds-divider orientation="vertical"></cds-divider>
           </div>
         </div>
         <cds-divider orientation="horizontal"></cds-divider>
         <div id="tab-content" cds-layout="vertical align:stretch">
-          <div id="tab-content-inventory" class="tab-content" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: grid">
+          <div id="tab-content-inventory" class="tab-content" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: none">
             <cds-placeholder style="text-align: center; display: none;">
               <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
               <br>
@@ -75,6 +81,11 @@
               <cds-icon-button aria-label="radish" class="resource-button" style="--background: white; --border-color: rgb(73, 108, 14); --color: rgb(73, 108, 14)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">{r}</cds-icon-button>
               <br>
               <span id="resources-radish-count">x 1</span>
+            </cds-placeholder>
+          </div>
+          <div id="tab-content-market" class="tab-content" cds-layout="" style="display: grid">
+            <cds-placeholder style="text-align: center;">
+              asdf
             </cds-placeholder>
           </div>
         </div>

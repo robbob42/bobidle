@@ -2,7 +2,7 @@ import '@cds/core/alert/register.js';
 import '@cds/core/icon/register.js';
 import '@cds/core/divider/register.js';
 import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon,
-          coinBagIcon } from '@cds/core/icon';
+          coinBagIcon, storeIcon } from '@cds/core/icon';
 
 import Gameengine from './classes/GameEngine';
 import Garden from './classes/Garden';
@@ -27,6 +27,7 @@ export default class gameUI {
     ClarityIcons.addIcons(blocksGroupIcon);
     ClarityIcons.addIcons(dataClusterIcon);
     ClarityIcons.addIcons(coinBagIcon);
+    ClarityIcons.addIcons(storeIcon);
 
     const unselectButton = document.getElementById('unselect-button') as HTMLElement;
     unselectButton.addEventListener('click', () => this.engine.unselect());

@@ -20,6 +20,14 @@ const tabs2DomOpts = [
     icon: 'data-cluster'
   }
 ];
+// Add Market
+const tabs3DomOpts = [
+  ...tabs2DomOpts,
+  {
+    name: 'market',
+    icon: 'store'
+  }
+];
 const tabsContentOpts = [
   {
     name: 'inventory',
@@ -28,6 +36,10 @@ const tabsContentOpts = [
   {
     name: 'resources',
     layout: 'grid cols:2 gap:md align:horizontal-center'
+  },
+  {
+    name: 'market',
+    layout: ''
   }
 ];
 const tabsDiv = createTabsDOM(tabs1DomOpts);
@@ -66,6 +78,8 @@ moneyIconHolder.appendChild(moneyIcon);
 moneyLayout.appendChild(moneyIconHolder);
 moneyLayout.appendChild(moneyHolder);
 
+// Market
+const marketTabsDiv = createTabsDOM(tabs3DomOpts);
 
 
 type FeatureList = {
@@ -97,6 +111,13 @@ export default {
     firstChildId: 'garden-content',
     parentId: 'garden-content',
     domElement: moneyLayout,
+    visible: false
+  },
+  marketTab: {
+    key: 'marketTab',
+    replaceId: 'lower-half-tabs-section',
+    parentId: 'lower-half',
+    domElement: marketTabsDiv,
     visible: false
   }
 } as FeatureList
