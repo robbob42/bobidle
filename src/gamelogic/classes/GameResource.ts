@@ -61,7 +61,7 @@ export default class GameResource extends Resource {
     b.setAttribute('aria-label', this.key);
     b.className = 'resource-button';
     b.setAttribute('style', styleStr);
-    b.innerHTML = `{${this.key.charAt(0).toLowerCase()}}`;
+    b.innerHTML = `}${this.key.charAt(0).toUpperCase()}{`;
     b.addEventListener('click', () => {click()})
 
     return b;

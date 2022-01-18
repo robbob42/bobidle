@@ -1,14 +1,15 @@
 import '@cds/core/alert/register.js';
 import '@cds/core/icon/register.js';
 import '@cds/core/divider/register.js';
+import '@cds/core/navigation/register.js';
 import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon,
-          coinBagIcon, storeIcon } from '@cds/core/icon';
+          coinBagIcon, storeIcon, shoppingCartIcon, dollarBillIcon } from '@cds/core/icon';
 
 import Gameengine from './classes/GameEngine';
 import Garden from './classes/Garden';
 import { EmitPlanted, EmitHarvested } from './classes/Plot';
 import { convertHMS, selectTab, updateInventory, updateResources,
-          updateMoneyDisplay } from './utils';
+          updateMoneyDisplay, updateMarketSell, updateMarketBuy } from './utils';
 import { EmitFeatureUnlocked } from './classes/Feature';
 
 
@@ -28,6 +29,8 @@ export default class gameUI {
     ClarityIcons.addIcons(dataClusterIcon);
     ClarityIcons.addIcons(coinBagIcon);
     ClarityIcons.addIcons(storeIcon);
+    ClarityIcons.addIcons(shoppingCartIcon);
+    ClarityIcons.addIcons(dollarBillIcon);
 
     const unselectButton = document.getElementById('unselect-button') as HTMLElement;
     unselectButton.addEventListener('click', () => this.engine.unselect());
@@ -63,6 +66,10 @@ export default class gameUI {
           d.id = `plot-${opts.plot.key}-counter`;
           parent.appendChild(d);
 
+          // Hide timer placeholder
+          const placeholder = document.getElementById(`plot-${opts.plot.key}-timerspacer`) as HTMLElement;
+          placeholder.style.display = 'none';
+
           // Update inventory
           updateInventory(opts.seed);
         })
@@ -78,6 +85,10 @@ export default class gameUI {
           const parent = domElement.parentElement as HTMLElement;
           const timer = parent.lastElementChild as HTMLElement;
           parent.removeChild(timer);
+
+          // Show timer placeholder
+          const placeholder = document.getElementById(`plot-${opts.plot.key}-timerspacer`) as HTMLElement;
+          placeholder.style.display = '';
 
           // Update inventory for the seed, and any of its children seed
           updateInventory(opts.seed);
@@ -120,6 +131,42 @@ export default class gameUI {
 
           if (opts.feature.key === 'resourceTab') {
             selectTab('resources');
+          }
+
+          if (opts.feature.key === 'marketBuyTab' || opts.feature.key === 'marketSellTab') {
+            const marketClick = () => {
+              const marketNav = document.getElementById('market-group');
+              if (marketNav?.getAttribute('expanded') === 'true') {
+                marketNav?.setAttribute('expanded', 'false');
+              } else {
+                marketNav?.setAttribute('expanded', 'true');
+              }
+            }
+            const market = document.getElementById('market');
+            market?.addEventListener('click', marketClick);
+          }
+
+          if (opts.feature.key === 'marketBuyTab') {
+            for (const seedKey in this.engine.seeds) {
+              const seed = this.engine.seeds[seedKey];
+
+              if (seed.baseCost) {
+                updateMarketBuy(seed);
+              }
+            }
+
+            selectTab('buy');
+          }
+
+          if (opts.feature.key === 'marketSellTab') {
+            for (const resourceKey in this.engine.resources) {
+              const resource = this.engine.resources[resourceKey];
+
+              if (resource.basePrice) {
+                updateMarketSell(resource);
+              }
+            }
+            selectTab('sell');
           }
 
           for (const seedKey in this.engine.seeds) {

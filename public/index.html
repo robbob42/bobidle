@@ -17,16 +17,16 @@
     <div id="body-content" cds-layout="vertical">
       <cds-alert-group id="body-message-container" type="banner" status="info" class="body-message" style="display: none;">
         <cds-alert>
-          <span id="body-message">This example is a banner alert a user</span>
+          <span id="body-message"></span>
           <cds-alert-actions>
-            <cds-button id="unselect-button" action="outline">Unselect</cds-button>
+            <cds-button id="unselect-button" action="outline">Dismiss</cds-button>
           </cds-alert-actions>
         </cds-alert>
       </cds-alert-group>
       <div id="body-message-blank" class="body-message-blank"></div>
       <cds-divider class="body-divider" orientation="horizontal"></cds-divider>
-      <div cds-layout="vertical align:stretch">
-        <div id="garden-content" class="body-content body-scrollable-content">
+      <div cds-layout="vertical align: horizontal-center">
+        <cds-placeholder id="garden-content" cds-layout="container:fill">
           <!-- <div cds-layout="horizontal gap:md p:sm align:right">
             <cds-placeholder cds-layout="horizontal gap:md align:vertical-center">
               <cds-icon shape="coin-bag" size="md"></cds-icon>
@@ -37,35 +37,72 @@
             <div id="section-content" cds-layout="vertical"></div>
             <div id="feature-first-seed" style="width: 100%; text-align: center;"></div>
           </div>
-        </div>
+        </cds-placeholder>
       </div>
-      <!-- <div id="lower-half" layout="true" tall="true" cds-layout="vertical gap:md align:top" style="height: 50%;">
-        <div id="lower-half-tabs-section" cds-layout="vertical gap:md">
-          <div id="tabs" cds-layout="horizontal gap:md align:top p:md" style="height: 45px;">
-            <cds-placeholder>
-              <cds-icon-button action="flat" aria-label="Inventory" id="tab-inventory" tabindex="0" role="button" status="primary" size="md" aria-disabled="false">
-                <cds-icon shape="blocks-group"></cds-icon>
-              </cds-icon-button>
-            </cds-placeholder>
-            <cds-divider orientation="vertical"></cds-divider>
-            <cds-placeholder>
-              <cds-icon-button action="flat" aria-label="Resources" id="tab-resources" tabindex="0" role="button" status="primary" size="md" aria-disabled="false">
-                <cds-icon shape="data-cluster"></cds-icon>
-              </cds-icon-button>
-            </cds-placeholder>
-            <cds-divider orientation="vertical"></cds-divider>
-            <cds-placeholder>
-              <cds-icon-button action="flat" aria-label="Market" id="tab-market" tabindex="0" role="button" status="primary" size="md" aria-disabled="false">
-                <cds-icon shape="store"></cds-icon>
-              </cds-icon-button>
-            </cds-placeholder>
-            <cds-divider orientation="vertical"></cds-divider>
+
+      <!-- Lower Half -->
+      <!-- <div id="lower-half-wrapper" cds-layout="vertical wrap:none align:stretch">
+        <cds-divider class="body-divider" cds-layout="align:shrink"></cds-divider>
+        <div id="lower-half" layout="true" tall="true" cds-layout="horizontal wrap:none align:stretch">
+
+        <cds-navigation
+          role='list'
+          id='navigation'
+          cds-layout="p: lg"
+          style="--background: var(--cds-global-color-blue-1000);"
+        >
+          <div slot="cds-navigation-substart">
+            <div style="background-color: var(--cds-global-color-blue-1000); color: var(--cds-global-color-gray-0)">
+              <p>Menu</p>
+            </div>
+            <cds-divider cds-layout="m-y:md"></cds-divider>
           </div>
-        </div>
-        <cds-divider orientation="horizontal"></cds-divider>
-        <div id="tab-content" cds-layout="vertical align:stretch">
-          <div id="tab-content-inventory" class="tab-content" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: none">
-            <cds-placeholder style="text-align: center; display: none;">
+          <cds-navigation-item style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
+            <a href="#">
+              <cds-icon shape="blocks-group" size="sm"></cds-icon>
+              Inventory
+            </a>
+          </cds-navigation-item>
+          <cds-navigation-item style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
+            <a href="#">
+              <cds-icon shape="data-cluster" size="sm"></cds-icon>
+              Resources
+            </a>
+          </cds-navigation-item>
+          <cds-navigation-group id="store-group">
+            <cds-navigation-start id="store" style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
+              <cds-icon shape="store" size="sm"></cds-icon>
+              Store
+            </cds-navigation-start>
+            <cds-navigation-item style="--background: var(--cds-global-color-blue-800); --color: var(--cds-global-color-gray-0)">
+              <a href="#">
+                <cds-icon shape="store" size="sm"></cds-icon>
+                Buy
+              </a>
+            </cds-navigation-item>
+            <cds-navigation-item style="--background: var(--cds-global-color-blue-800); --color: var(--cds-global-color-gray-0)">
+              <a href="#">
+                <cds-icon shape="store" size="sm"></cds-icon>
+                Sell
+              </a>
+            </cds-navigation-item>
+          </cds-navigation-group>
+        </cds-navigation>
+
+        <cds-divider orientation="vertical"></cds-divider>
+
+        <div id="tab-content" cds-layout="vertical">
+          <section id="tab-content-inventory" cds-layout="grid cols:2 gap:lg p:lg align:horizontal-center" style="display: grid;">
+            <cds-placeholder cds-layout="col:12">
+              Seeds
+              <cds-divider orientation="horizontal"></cds-divider>
+            </cds-placeholder>
+            <cds-placeholder style="text-align: center;">
+              <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
+              <br>
+              <span id="inventory-resourceTab-count">x 1</span>
+            </cds-placeholder>
+            <cds-placeholder style="text-align: center;">
               <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
               <br>
               <span id="inventory-resourceTab-count">x 1</span>
@@ -75,21 +112,27 @@
               <br>
               <span id="inventory-moneyTab-count">x 1</span>
             </cds-placeholder>
-          </div>
-          <div id="tab-content-resources" class="tab-content" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: none">
+          </section>
+          <section id="tab-content-resources" cds-layout="grid cols:2 gap:lg p:lg align:horizontal-center" style="display: none;">
+            <cds-placeholder cds-layout="col:12">
+              Produce
+              <cds-divider orientation="horizontal"></cds-divider>
+            </cds-placeholder>
             <cds-placeholder style="text-align: center;">
               <cds-icon-button aria-label="radish" class="resource-button" style="--background: white; --border-color: rgb(73, 108, 14); --color: rgb(73, 108, 14)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">{r}</cds-icon-button>
               <br>
               <span id="resources-radish-count">x 1</span>
             </cds-placeholder>
-          </div>
-          <div id="tab-content-market" class="tab-content" cds-layout="" style="display: grid">
-            <cds-placeholder style="text-align: center;">
-              asdf
-            </cds-placeholder>
-          </div>
+          </section>
+          <section id="tab-content-market" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: none;">
+            <a href="#" cds-text="link">Application content link 42</a>
+          </section>
+        </div>
         </div>
       </div> -->
+
+      <cds-navigation id="cds-navigation" style="display: none;"></cds-navigation>
+      <cds-navigation-item id="cds-navigation-item" style="display: none"></cds-navigation-item>
     </div>
   </div>
 </body>

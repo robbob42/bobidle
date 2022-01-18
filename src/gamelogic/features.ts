@@ -25,37 +25,102 @@ const tabs3DomOpts = [
   ...tabs2DomOpts,
   {
     name: 'market',
-    icon: 'store'
+    group: {
+      groupId: 'market-group',
+      navStartId: 'market',
+      groupIcon: 'store'
+    }
+  }
+];
+// Add Market Buy
+const tabs4DomOpts = [
+  ...tabs2DomOpts,
+  {
+    name: 'market',
+    group: {
+      groupId: 'market-group',
+      navStartId: 'market',
+      groupIcon: 'store',
+      tabs: [
+        {
+          name: 'buy',
+          icon: 'shopping-cart'
+        }
+      ]
+    }
+  }
+];
+// Add Market Sell
+const tabs5DomOpts = [
+  ...tabs2DomOpts,
+  {
+    name: 'market',
+    group: {
+      groupId: 'market-group',
+      navStartId: 'market',
+      groupIcon: 'store',
+      tabs: [
+        {
+          name: 'buy',
+          icon: 'shopping-cart'
+        },
+        {
+          name: 'sell',
+          icon: 'dollar-bill'
+        }
+      ]
+    }
   }
 ];
 const tabsContentOpts = [
   {
     name: 'inventory',
-    layout: 'grid cols:2 gap:md align:horizontal-center'
+    display: 'Seeds',
+    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
   },
   {
     name: 'resources',
-    layout: 'grid cols:2 gap:md align:horizontal-center'
+    display: 'Produce',
+    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
   },
   {
     name: 'market',
-    layout: ''
+    display: 'Market',
+    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
+  },
+  {
+    name: 'buy',
+    display: 'Buy',
+    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
+  },
+  {
+    name: 'sell',
+    display: 'Sell',
+    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
   }
 ];
 const tabsDiv = createTabsDOM(tabs1DomOpts);
 const tabsContentDiv = createTabContentDOM(tabsContentOpts);
 const horizDivider = document.createElement('cds-divider');
+const vertDivider = document.createElement('cds-divider');
 const lowerHalfDiv = document.createElement('div');
+const lowerHalfWrapper = document.createElement('div');
 
-horizDivider.setAttribute('orientation', 'horizontal');
+vertDivider.setAttribute('orientation', 'vertical');
 lowerHalfDiv.id = 'lower-half';
 lowerHalfDiv.setAttribute('layout', 'true');
 lowerHalfDiv.setAttribute('tall', 'true');
-lowerHalfDiv.setAttribute('cds-layout', 'vertical gap:md align:top');
-lowerHalfDiv.style.height = '50%';
+lowerHalfDiv.setAttribute('cds-layout', 'horizontal wrap:none align:stretch');
 lowerHalfDiv.appendChild(tabsDiv);
-lowerHalfDiv.appendChild(horizDivider);
+lowerHalfDiv.appendChild(vertDivider);
 lowerHalfDiv.appendChild(tabsContentDiv);
+horizDivider.setAttribute('orientation', 'horizontal');
+horizDivider.className = 'body-divider';
+horizDivider.setAttribute('cds-layout', 'align:shrink');
+lowerHalfWrapper.id = 'lower-half-wrapper';
+lowerHalfWrapper.setAttribute('cds-layout', 'vertical wrap:none align:stretch');
+lowerHalfWrapper.appendChild(horizDivider);
+lowerHalfWrapper.appendChild(lowerHalfDiv);
 
 // ResourceTab
 const resourceTabsDiv = createTabsDOM(tabs2DomOpts);
@@ -81,6 +146,12 @@ moneyLayout.appendChild(moneyHolder);
 // Market
 const marketTabsDiv = createTabsDOM(tabs3DomOpts);
 
+// Market
+const marketBuyTabsDiv = createTabsDOM(tabs4DomOpts);
+
+// Market
+const marketSellTabsDiv = createTabsDOM(tabs5DomOpts);
+
 
 type FeatureList = {
   [key: string]: InitFeatureOpts
@@ -96,12 +167,12 @@ export default {
   lowerHalf: {
     key: 'lowerhalf',
     parentId: 'body-content',
-    domElement: lowerHalfDiv,
+    domElement: lowerHalfWrapper,
     visible: false
   },
   resourceTab: {
     key: 'resourceTab',
-    replaceId: 'lower-half-tabs-section',
+    replaceId: 'navigation',
     parentId: 'lower-half',
     domElement: resourceTabsDiv,
     visible: false
@@ -115,9 +186,23 @@ export default {
   },
   marketTab: {
     key: 'marketTab',
-    replaceId: 'lower-half-tabs-section',
+    replaceId: 'navigation',
     parentId: 'lower-half',
     domElement: marketTabsDiv,
+    visible: false
+  },
+  marketBuyTab: {
+    key: 'marketBuyTab',
+    replaceId: 'navigation',
+    parentId: 'lower-half',
+    domElement: marketBuyTabsDiv,
+    visible: false
+  },
+  marketSellTab: {
+    key: 'marketSellTab',
+    replaceId: 'navigation',
+    parentId: 'lower-half',
+    domElement: marketSellTabsDiv,
     visible: false
   }
 } as FeatureList

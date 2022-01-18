@@ -29,8 +29,8 @@ interface GameOutputMap {
 export interface InitSeedOpts {
   key: string,
   productionTime: number,
-  baseCost: ContinuumEngine.CurrencyOpts,
   outputs: GameOutputMap,
+  baseCost?: ContinuumEngine.CurrencyOpts,
   costCoefficient?: number,
   count?: number,
   maxCount?: number,

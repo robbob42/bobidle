@@ -3,6 +3,20 @@ import Seed from './classes/Seed';
 import GameResource from './classes/GameResource';
 
 
+type tabDOMOpts = {
+  name: string,
+  icon?: string,
+  group?: {
+    groupId: string,
+    navStartId: string,
+    groupIcon: string,
+    tabs?: {
+      name: string,
+      icon: string
+    }[]
+  }
+}[]
+
 export function calcIdleZombies(engine: Gameengine): number {
   return engine.resources.zombie.count - engine.resources.activezombie.count;
 }
@@ -55,81 +69,140 @@ export function stringToColour(str: string) {
 }
 
 // UI Utils
-export function createTabsDOM(tabs: {name: string, icon: string}[]) {
-  const tabsSectionDiv = document.createElement('div');
-  const tabsDiv = document.createElement('div');
+export function createTabsDOM(tabs: tabDOMOpts) {
+  const pMenu = document.createElement('p');
+  const subDiv = document.createElement('div');
+  const divider = document.createElement('cds-divider');
+  const subStart = document.createElement('div');
+  const cdsNavClone = document.getElementById('cds-navigation') as HTMLElement;
+  const cdsNav = cdsNavClone.cloneNode() as HTMLElement;
 
-  tabsSectionDiv.id = 'lower-half-tabs-section';
-  tabsSectionDiv.setAttribute('cds-layout', 'vertical gap:md');
-  tabsDiv.id = 'tabs';
-  tabsDiv.setAttribute('cds-layout', 'horizontal gap:md align:top p:md');
-  tabsDiv.style.height = '45px';
+  pMenu.innerHTML = 'Menu';
+  subDiv.style.backgroundColor = 'var(--cds-global-color-blue-1000)';
+  subDiv.style.color = 'var(--cds-global-color-gray-0)';
+  subDiv.appendChild(pMenu);
+  divider.setAttribute('cds-layout', 'm-y:md');
+  subStart.setAttribute('slot', 'cds-navigation-substart');
+  subStart.appendChild(subDiv);
+  subStart.appendChild(divider);
+  cdsNav.style.display = '';
+  cdsNav.setAttribute('role', 'list');
+  cdsNav.id = 'navigation';
+  cdsNav.style.setProperty('--background', 'var(--cds-global-color-blue-1000)')
+  cdsNav.appendChild(subStart);
 
   for (const tabKey in tabs) {
     const tab = tabs[tabKey];
-    addTab(tab.name, tab.icon, tabsDiv);
+    let newTab = document.createElement('div') as HTMLElement;
+    if (tab.group) {
+      const navGroupIcon = document.createElement('cds-icon');
+      const navGroupStart = document.createElement('cds-navigation-start');
+      newTab = document.createElement('cds-navigation-group');
+
+      navGroupIcon.setAttribute('shape', tab.group.groupIcon);
+      navGroupIcon.setAttribute('size','sm');
+      navGroupStart.id = tab.group.navStartId;
+      navGroupStart.style.setProperty('--background','var(--cds-global-color-blue-1000)');
+      navGroupStart.style.setProperty('--color','var(--cds-global-color-gray-0)');
+      navGroupStart.innerHTML = tab.name;
+      navGroupStart.appendChild(navGroupIcon);
+      newTab.id = tab.group.groupId;
+      newTab.appendChild(navGroupStart);
+
+      if (tab.group.tabs) {
+        for (const groupKey in tab.group.tabs) {
+          const groupTab = tab.group.tabs[groupKey];
+          const newGroupTab = addTab(groupTab.name, groupTab.icon);
+
+          newTab.appendChild(newGroupTab);
+        }
+      }
+    } else if (tab.icon) {
+      newTab = addTab(tab.name, tab.icon);
+    }
+
+    cdsNav.appendChild(newTab);
   }
 
-  tabsSectionDiv.appendChild(tabsDiv);
-  return tabsSectionDiv;
+  return cdsNav;
 }
 
-export function addTab(name: string, icon: string, parentDom: HTMLElement) {
+export function addTab(name: string, icon: string): HTMLElement {
+  const cdsIcon = document.createElement('cds-icon');
+  const navA = document.createElement('a');
+  const navItemClone = document.getElementById('cds-navigation-item') as HTMLElement;
+  const navItem = navItemClone.cloneNode() as HTMLElement;
+
   const onTabBtnClick = () => {
     selectTab(name);
   }
 
-  const cdsButton = document.createElement('cds-placeholder');
-  const vertDivider = document.createElement('cds-divider');
-  const tabIcon = document.createElement('cds-icon');
-  const iconButton = document.createElement('cds-icon-button');
+  cdsIcon.setAttribute('shape', icon);
+  cdsIcon.setAttribute('size', 'sm');
+  navA.innerHTML = name;
+  navA.setAttribute('href', '#');
+  navA.appendChild(cdsIcon);
+  navItem.style.display = '';
+  navItem.style.setProperty('--background', 'var(--cds-global-color-blue-1000)');
+  navItem.style.setProperty('--color', 'var(--cds-global-color-gray-0)');
+  navItem.id = `navigation-item-${name}`;
+  navItem.appendChild(navA);
+  navItem.addEventListener('click', onTabBtnClick);
 
-  tabIcon.setAttribute('shape', icon);
-  iconButton.setAttribute('action', 'flat');
-  iconButton.setAttribute('aria-label', name.charAt(0).toUpperCase() + name.slice(1));
-  iconButton.appendChild(tabIcon);
-  iconButton.id = `tab-${name}`;
-  iconButton.addEventListener('click', onTabBtnClick);
-  iconButton.className = 'tab-button';
-  cdsButton.appendChild(iconButton);
-  vertDivider.setAttribute('orientation', 'vertical');
-
-  parentDom.appendChild(cdsButton);
-  parentDom.appendChild(vertDivider);
+  return navItem;
 }
 
-export function createTabContentDOM(tabs: {name: string, layout: string}[]) {
+export function createTabContentDOM(tabs: {name: string, display: string, layout: string}[]) {
   const tabContentDiv = document.createElement('div');
 
   tabContentDiv.id = 'tab-content';
-  tabContentDiv.setAttribute('cds-layout', 'vertical align:stretch');
+  tabContentDiv.setAttribute('cds-layout', 'vertical');
 
   for (const tabKey in tabs) {
     const tab = tabs[tabKey];
 
-    tabContentDiv.appendChild(createUniqueTabDOM(tab.name, tab.layout));
+    tabContentDiv.appendChild(createUniqueTabDOM(tab.name, tab.display, tab.layout));
   }
   return tabContentDiv;
 }
 
-export function createUniqueTabDOM(name: string, layout: string) {
-  const tabContentDiv = document.createElement('div');
+export function createUniqueTabDOM(name: string, display: string, layout: string) {
+  const cdsPlaceholder = document.createElement('cds-placeholder');
+  const divider = document.createElement('cds-divider');
+  const section = document.createElement('section');
 
-  tabContentDiv.id = `tab-content-${name}`;
-  tabContentDiv.className = 'tab-content';
-  tabContentDiv.setAttribute('cds-layout', layout);
-  tabContentDiv.style.display = 'none';
+  divider.setAttribute('orientation', 'horizontal');
+  divider.setAttribute('cds-layout', 'col:12');
+  cdsPlaceholder.setAttribute('cds-layout', 'col:12');
+  cdsPlaceholder.innerHTML = display;
+  section.id = `tab-content-${name}`;
+  section.style.display = 'none';
+  section.setAttribute('cds-layout', layout);
+  section.appendChild(cdsPlaceholder);
+  section.appendChild(divider);
 
-  return tabContentDiv;
+  return section;
 }
 
 export function selectTab(tabName: string) {
-  const tabContent = document.getElementsByClassName('tab-content');
-  for (let i = 0; i < tabContent.length; i++) {
-    if (tabContent[i].id === `tab-content-${tabName}`) {
-      tabContent[i].setAttribute('style', 'display: grid');
+  const tabContent = document.getElementById('tab-content') as HTMLElement;
+  const navIcons = document.getElementById('navigation') as HTMLElement;
+  const tabs = tabContent.children;
+  const navIconsChildren = navIcons.children;
+
+  for (let i = 0; i < tabs.length; i++) {
+    if (tabs[i].id === `tab-content-${tabName}`) {
+      tabs[i].setAttribute('style', 'display: grid');
     } else {
-      tabContent[i].setAttribute('style', 'display: none');
+      tabs[i].setAttribute('style', 'display: none');
+    }
+  }
+
+  for (let i = 0; i < navIconsChildren.length; i++) {
+    if (navIconsChildren[i].id === `navigation-item-${tabName}`) {
+      navIconsChildren[i].setAttribute('active', 'true');
+    } else {
+      navIconsChildren[i].removeAttribute('active');
     }
   }
 }
@@ -168,6 +241,52 @@ export function updateResources(resource: GameResource) {
       const seedBtn = resource.drawResource();
       const sp = document.createElement('span');
       sp.id = `resources-${resource.key}-count`;
+      sp.innerHTML = `x ${resource.count}`;
+
+      p.style.textAlign = 'center';
+      p.appendChild(seedBtn);
+      p.appendChild(document.createElement('br'));
+      p.appendChild(sp);
+      i?.appendChild(p);
+    } else {
+      s.innerHTML = `x ${resource.count}`;
+    }
+  } else {
+    const parent = s?.parentElement;
+    if (parent) parent.style.display = 'none';
+  }
+}
+
+export function updateMarketBuy(seed: Seed) {
+  const s = document.getElementById(`buy-${seed.key}-count`);
+
+  if (!s) {
+    const i = document.getElementById('tab-content-buy');
+    const p = document.createElement('cds-placeholder');
+    const seedBtn = seed.drawSeed();
+    const sp = document.createElement('span');
+
+    sp.id = `buy-${seed.key}-count`;
+    sp.innerHTML = `x ${seed.count}`;
+    p.style.textAlign = 'center';
+    p.appendChild(seedBtn);
+    p.appendChild(document.createElement('br'));
+    p.appendChild(sp);
+    i?.appendChild(p);
+  } else {
+    s.innerHTML = `x ${seed.count}`;
+  }
+}
+
+export function updateMarketSell(resource: GameResource) {
+  const s = document.getElementById(`sell-${resource.key}-count`);
+  if (resource.count !== 0) {
+    if (!s) {
+      const i = document.getElementById('tab-content-sell');
+      const p = document.createElement('cds-placeholder');
+      const seedBtn = resource.drawResource();
+      const sp = document.createElement('span');
+      sp.id = `sell-${resource.key}-count`;
       sp.innerHTML = `x ${resource.count}`;
 
       p.style.textAlign = 'center';

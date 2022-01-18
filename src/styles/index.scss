@@ -34,16 +34,12 @@ body, html {
   width: 100%;
 }
 
-.body-divider {
-  --color: var(--cds-global-color-gray-500);
-}
-
 .body-message cds-alert {
-  height: 63px;
+  height: 73px;
 }
 
 .body-message-blank {
-  height: 67px;
+  height: 77px;
   width: 100%;
 }
 
@@ -60,6 +56,10 @@ body, html {
   width: 100%;
 }
 
+.docs-story [id*='story--'] {
+  position: relative;
+  min-height: 400px;
+}
 
 .meter {
   height: 5px;
@@ -77,12 +77,6 @@ body, html {
   width: 100%;
 }
 
-@keyframes progressBar {
-0% { width: 0; }
-99% { width: 100%; }
-100% { width: 0%; }
-}
-
 .seed-button {
   --border-width: 2px;
   --text-transform: none;
@@ -95,11 +89,6 @@ body, html {
   --border-width: 2px;
   --text-transform: none;
   --padding: 5px;
-  outline: 'none';
-  outline-width: 0ch;
-}
-
-.tab-button {
   outline: 'none';
   outline-width: 0ch;
 }
