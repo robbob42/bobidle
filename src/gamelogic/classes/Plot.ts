@@ -125,8 +125,10 @@ export default class Plot extends GameEntity {
     const plotDom = document.getElementById(`plot-${this.key}-highlight`) as HTMLElement;
     if (highlight) {
       plotDom.style.backgroundColor = '#BBBBBB';
+      plotDom.style.boxShadow = '0 0 10px #000';
     } else {
       plotDom.style.backgroundColor = '#FFFFFF';
+      plotDom.style.boxShadow = '';
     }
   }
 

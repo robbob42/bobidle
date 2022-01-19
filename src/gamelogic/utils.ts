@@ -78,7 +78,7 @@ export function createTabsDOM(tabs: tabDOMOpts) {
   const cdsNav = cdsNavClone.cloneNode() as HTMLElement;
 
   pMenu.innerHTML = 'Menu';
-  subDiv.style.backgroundColor = 'var(--cds-global-color-blue-1000)';
+  subDiv.style.backgroundColor = 'var(--cds-global-color-construction-900)';
   subDiv.style.color = 'var(--cds-global-color-gray-0)';
   subDiv.appendChild(pMenu);
   divider.setAttribute('cds-layout', 'm-y:md');
@@ -88,7 +88,7 @@ export function createTabsDOM(tabs: tabDOMOpts) {
   cdsNav.style.display = '';
   cdsNav.setAttribute('role', 'list');
   cdsNav.id = 'navigation';
-  cdsNav.style.setProperty('--background', 'var(--cds-global-color-blue-1000)')
+  cdsNav.style.setProperty('--background', 'var(--cds-global-color-construction-900)')
   cdsNav.appendChild(subStart);
 
   for (const tabKey in tabs) {
@@ -102,7 +102,7 @@ export function createTabsDOM(tabs: tabDOMOpts) {
       navGroupIcon.setAttribute('shape', tab.group.groupIcon);
       navGroupIcon.setAttribute('size','sm');
       navGroupStart.id = tab.group.navStartId;
-      navGroupStart.style.setProperty('--background','var(--cds-global-color-blue-1000)');
+      navGroupStart.style.setProperty('--background','var(--cds-global-color-construction-900)');
       navGroupStart.style.setProperty('--color','var(--cds-global-color-gray-0)');
       navGroupStart.innerHTML = tab.name;
       navGroupStart.appendChild(navGroupIcon);
@@ -132,6 +132,7 @@ export function addTab(name: string, icon: string): HTMLElement {
   const navA = document.createElement('a');
   const navItemClone = document.getElementById('cds-navigation-item') as HTMLElement;
   const navItem = navItemClone.cloneNode() as HTMLElement;
+  const badge = document.createElement('cds-badge');
 
   const onTabBtnClick = () => {
     selectTab(name);
@@ -142,11 +143,18 @@ export function addTab(name: string, icon: string): HTMLElement {
   navA.innerHTML = name;
   navA.setAttribute('href', '#');
   navA.appendChild(cdsIcon);
+  badge.id = `navigation-${name}-badge`;
+  badge.innerHTML = '1';
+  badge.style.position = 'relative';
+  badge.style.left = '-6px';
+  badge.setAttribute('color', 'gray');
+  // badge.style.display = 'none';
   navItem.style.display = '';
-  navItem.style.setProperty('--background', 'var(--cds-global-color-blue-1000)');
+  navItem.style.setProperty('--background', 'var(--cds-global-color-construction-900)');
   navItem.style.setProperty('--color', 'var(--cds-global-color-gray-0)');
   navItem.id = `navigation-item-${name}`;
   navItem.appendChild(navA);
+  navItem.appendChild(badge);
   navItem.addEventListener('click', onTabBtnClick);
 
   return navItem;

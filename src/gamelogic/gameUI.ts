@@ -2,6 +2,7 @@ import '@cds/core/alert/register.js';
 import '@cds/core/icon/register.js';
 import '@cds/core/divider/register.js';
 import '@cds/core/navigation/register.js';
+import '@cds/core/badge/register.js';
 import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon,
           coinBagIcon, storeIcon, shoppingCartIcon, dollarBillIcon } from '@cds/core/icon';
 

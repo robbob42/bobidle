@@ -9,7 +9,7 @@ type FeatureList = {
 export default {
   firstSeed: {
     key: 'InventoryTab',
-    productionTime: 3000,
+    productionTime: 10000,
     outputs: {
       features: {
         lowerhalf: {
@@ -30,7 +30,7 @@ export default {
   },
   resourceTab: {
     key: 'resourceTab',
-    productionTime: 3000,
+    productionTime: 10000,
     outputs: {
       features: {
         resourceTab: {
@@ -56,7 +56,7 @@ export default {
   },
   moneyDisplay: {
     key: 'moneyDisplay',
-    productionTime: 3000,
+    productionTime: 10000,
     outputs: {
       currencies: {
         coin: {
@@ -82,7 +82,7 @@ export default {
   },
   marketTab: {
     key: 'marketTab',
-    productionTime: 3000,
+    productionTime: 10000,
     outputs: {
       features: {
         marketTab: {
@@ -103,7 +103,7 @@ export default {
   },
   marketUpg1: {
     key: 'marketUpg1',
-    productionTime: 3000,
+    productionTime: 10000,
     outputs: {
       features: {
         marketBuyTab: {
@@ -127,7 +127,7 @@ export default {
   },
   marketUpg2: {
     key: 'marketUpg2',
-    productionTime: 3000,
+    productionTime: 10000,
     outputs: {
       features: {
         marketSellTab: {
@@ -143,7 +143,7 @@ export default {
   },
   radish: {
     key: 'radish',
-    productionTime: 3000,
+    productionTime: 10000,
     baseCost: {
       currency: 'gold',
       amount: 1
