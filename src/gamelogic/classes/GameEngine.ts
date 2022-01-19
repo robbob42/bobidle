@@ -9,6 +9,7 @@ import Currency from '../../../vendor/continuum/currency';
 interface MsgOpts {
   msg: {
     title: string,
+    DomElement?: HTMLElement,
     body?: string
   }
   entity?: unknown,
@@ -121,6 +122,9 @@ export default class Gameengine extends Engine {
     opts.callback && opts.callback();
     opts.status && msgDom.setAttribute('status', opts.status);
     msgDom.innerHTML = `<span style="font-weight: bold; text-decoration: underline">${opts.msg.title}</span><br />${opts.msg.body}`
+    if (opts.msg.DomElement) {
+      msgDom.appendChild(opts.msg.DomElement);
+    }
   }
 
   unselect() {

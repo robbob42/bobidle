@@ -212,6 +212,19 @@ export function selectTab(tabName: string) {
     } else {
       navIconsChildren[i].removeAttribute('active');
     }
+
+    // Loop through sub groups
+    if (navIconsChildren[i].id.includes('group')) {
+      const groupChildren = navIconsChildren[i].children;
+      for (let j = 0; j < groupChildren.length; j++) {
+        if (groupChildren[j].id === `navigation-item-${tabName}`) {
+          groupChildren[j].setAttribute('active', 'true');
+          navIconsChildren[i].setAttribute('expanded', 'true');
+        } else {
+          groupChildren[j].removeAttribute('active');
+        }
+      }
+    }
   }
 }
 
@@ -221,7 +234,7 @@ export function updateInventory(seed: Seed) {
     if (!s) {
       const i = document.getElementById('tab-content-inventory');
       const p = document.createElement('cds-placeholder');
-      const seedBtn = seed.drawSeed();
+      const seedBtn = seed.drawSeed('inventory');
       const sp = document.createElement('span');
       sp.id = `inventory-${seed.key}-count`;
       sp.innerHTML = `x ${seed.count}`;
@@ -233,6 +246,9 @@ export function updateInventory(seed: Seed) {
       i?.appendChild(p);
     } else {
       s.innerHTML = `x ${seed.count}`;
+
+      const parent = s?.parentElement;
+      if (parent) parent.style.display = '';
     }
   } else {
     const parent = s?.parentElement;
@@ -246,7 +262,7 @@ export function updateResources(resource: GameResource) {
     if (!s) {
       const i = document.getElementById('tab-content-resources');
       const p = document.createElement('cds-placeholder');
-      const seedBtn = resource.drawResource();
+      const seedBtn = resource.drawResource('resources');
       const sp = document.createElement('span');
       sp.id = `resources-${resource.key}-count`;
       sp.innerHTML = `x ${resource.count}`;
@@ -258,6 +274,9 @@ export function updateResources(resource: GameResource) {
       i?.appendChild(p);
     } else {
       s.innerHTML = `x ${resource.count}`;
+
+      const parent = s?.parentElement;
+      if (parent) parent.style.display = '';
     }
   } else {
     const parent = s?.parentElement;
@@ -271,15 +290,10 @@ export function updateMarketBuy(seed: Seed) {
   if (!s) {
     const i = document.getElementById('tab-content-buy');
     const p = document.createElement('cds-placeholder');
-    const seedBtn = seed.drawSeed();
-    const sp = document.createElement('span');
+    const seedBtn = seed.drawSeed('market');
 
-    sp.id = `buy-${seed.key}-count`;
-    sp.innerHTML = `x ${seed.count}`;
     p.style.textAlign = 'center';
     p.appendChild(seedBtn);
-    p.appendChild(document.createElement('br'));
-    p.appendChild(sp);
     i?.appendChild(p);
   } else {
     s.innerHTML = `x ${seed.count}`;
@@ -292,7 +306,7 @@ export function updateMarketSell(resource: GameResource) {
     if (!s) {
       const i = document.getElementById('tab-content-sell');
       const p = document.createElement('cds-placeholder');
-      const seedBtn = resource.drawResource();
+      const seedBtn = resource.drawResource('market');
       const sp = document.createElement('span');
       sp.id = `sell-${resource.key}-count`;
       sp.innerHTML = `x ${resource.count}`;
@@ -304,6 +318,9 @@ export function updateMarketSell(resource: GameResource) {
       i?.appendChild(p);
     } else {
       s.innerHTML = `x ${resource.count}`;
+
+      const parent = s?.parentElement;
+      if (parent) parent.style.display = '';
     }
   } else {
     const parent = s?.parentElement;
@@ -311,7 +328,12 @@ export function updateMarketSell(resource: GameResource) {
   }
 }
 
-export function updateMoneyDisplay(amt: number) {
+export function updateMoneyDisplay(amt?: number, engine?: Gameengine) {
   const moneyDisplay = document.getElementById('money-display') as HTMLElement;
-  moneyDisplay.innerHTML = amt.toString(10);
+
+  if (amt) {
+    moneyDisplay.innerHTML = amt.toString(10);
+  } else if (engine) {
+    moneyDisplay.innerHTML = engine.currencies['coin'].value.toString();
+  }
 }

@@ -1,7 +1,7 @@
 import Entity from '../../../vendor/continuum/entity';
 import { ContinuumEngine } from '../types/Continuum';
 import GameEngine from './GameEngine';
-import { stringToColour } from '../utils';
+import { stringToColour, updateInventory, updateMoneyDisplay } from '../utils';
 
 
 interface GameOutputRule {
@@ -69,30 +69,59 @@ export default class Seed extends Entity {
     };
   }
 
-  drawSeed(): HTMLElement {
-    const callback = () => {
-      this.engine.activeGarden().highlightAvailablePlots(true);
-    }
-    const click = () => {
-      if (this.engine.selectedEntity === this) {
-        this.engine.unselect();
-      } else {
-        const msgOpts = {
-          msg: {
-            title: this.tooltip.title,
-            body: this.tooltip.body
-          },
-          entity: this,
-          entityType: 'seed',
-          callback: callback,
-          msgStatus: 'info'
+  drawSeed(location: string): HTMLElement {
+    const b = document.createElement('cds-icon-button');
+    let click = () => {b};
+
+    if (location === 'inventory') {
+      // Inventory Seed Button
+      const callback = () => {
+        this.engine.activeGarden().highlightAvailablePlots(true);
+      }
+      click = () => {
+        if (this.engine.selectedEntity === this) {
+          this.engine.unselect();
+        } else {
+          const msgOpts = {
+            msg: {
+              title: this.tooltip.title,
+              body: this.tooltip.body
+            },
+            entity: this,
+            entityType: 'seed',
+            callback: callback,
+            msgStatus: 'info'
+          }
+          this.engine.setMessage(msgOpts);
         }
-        this.engine.setMessage(msgOpts);
+      }
+
+
+    } else if (location === 'market') {
+      // Market Seed Button
+      click = () => {
+        if (this.engine.selectedEntity === this) {
+          this.engine.unselect();
+        } else {
+          const title = `Buy ${this.key}`;
+          const btn = document.createElement('cds-button');
+          btn.addEventListener('click', () => this.purchaseSeed());
+          btn.innerHTML = 'Buy 1';
+          const msgOpts = {
+            msg: {
+              title: title,
+              body: '',
+              DomElement: btn
+            },
+            entity: this,
+            entityType: 'seed',
+            msgStatus: 'info'
+          }
+          this.engine.setMessage(msgOpts);
+        }
       }
     }
 
-
-    const b = document.createElement('cds-icon-button');
     const styleStr = `--background: white; --border-color: ${stringToColour(this.key)}; --color: ${stringToColour(this.key)}`;
 
     b.setAttribute('aria-label', this.key);
@@ -102,5 +131,17 @@ export default class Seed extends Entity {
     b.addEventListener('click', () => {click()});
 
     return b;
+  }
+
+  purchaseSeed() {
+    const curr = this.baseCost?.currency;
+    const amt = this.baseCost?.amount;
+    if (curr && amt && this.engine.currencies[curr] && this.engine.currencies[curr].value >= amt) {
+      this.engine.currencies[curr].incrementBy(-amt);
+      const rtn = this.incrementBy(1);
+
+      if (rtn) updateInventory(this);
+      if (rtn) updateMoneyDisplay(undefined, this.engine);
+    }
   }
 }

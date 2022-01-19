@@ -101,6 +101,7 @@ export default class gameUI {
           if (opts.seed.outputs.resources) {
             for (const resourceKey in opts.seed.outputs.resources) {
               updateResources(this.engine.resources[resourceKey]);
+              updateMarketSell(this.engine.resources[resourceKey]);
             }
           }
           if (opts.seed.outputs.currencies) {
@@ -177,7 +178,7 @@ export default class gameUI {
         });
     }
 
-    document.getElementById('feature-first-seed')?.appendChild(this.engine.seeds['InventoryTab'].drawSeed());
+    document.getElementById('feature-first-seed')?.appendChild(this.engine.seeds['InventoryTab'].drawSeed('inventory'));
   }
 
   update() {

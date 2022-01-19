@@ -4,11 +4,11 @@ type resourceListType = {
   [key: string]: ContinuumEngine.ResourceOpts
 }
 export default{
-  rock: {
+  radish: {
     key: "radish",
     basePrice: {
-      currency: "gold",
-      amount: 1
+      currency: "coin",
+      amount: 2
     },
     count: 0
   }

@@ -133,7 +133,7 @@ moneyIcon.setAttribute('size', 'md');
 moneyIconHolder.setAttribute('cds-layout', 'horizontal gap:md align:vertical-center');
 moneyHolder.id = 'money-display';
 moneyHolder.className = 'coin-display';
-moneyHolder.innerHTML = '1';
+moneyHolder.innerHTML = '0';
 moneyLayout.setAttribute('cds-layout', 'horizontal gap:md p:sm align:right');
 
 moneyIconHolder.appendChild(moneyIcon);
