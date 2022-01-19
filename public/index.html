@@ -6,133 +6,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Everything Garden</title>
 </head>
-<body cds-text="body">
-  <div class="body-layout body-app-layout" cds-layout="vertical align:stretch">
-    <header class="body-header" cds-layout="p:md" cds-theme="dark">
-      <div cds-layout="vertical gap:lg">
-        <p cds-text="body center message">Everything Garden</p>
-        <p cds-text="body center secondary">Grow everything!  Just plant the seed in the plot!</p>
-      </div>
-    </header>
-    <div id="body-content" cds-layout="vertical">
-      <cds-alert-group id="body-message-container" type="banner" status="info" class="body-message" style="display: none;">
-        <cds-alert>
-          <span id="body-message"></span>
-          <cds-alert-actions>
-            <cds-button id="unselect-button" action="outline">Dismiss</cds-button>
-          </cds-alert-actions>
-        </cds-alert>
-      </cds-alert-group>
-      <div id="body-message-blank" class="body-message-blank"></div>
-      <cds-divider class="body-divider" orientation="horizontal"></cds-divider>
-      <div cds-layout="vertical align: horizontal-center">
-        <cds-placeholder id="garden-content" cds-layout="container:fill">
-          <!-- <div cds-layout="horizontal gap:md p:sm align:right">
-            <cds-placeholder cds-layout="horizontal gap:md align:vertical-center">
-              <cds-icon shape="coin-bag" size="md"></cds-icon>
-            </cds-placeholder>
-            <cds-placeholder id="money-display" class="coin-display"></cds-placeholder>
-          </div> -->
-          <div cds-layout="vertical gap:md p:lg">
-            <div id="section-content" cds-layout="vertical"></div>
-            <div id="feature-first-seed" style="width: 100%; text-align: center;"></div>
+<body cds-text="body" cds-layout="horizontal align:vertical-stretch">
+  <div cds-layout="horizontal align:horizontal-center">
+    <div class="body-layout body-app-layout" cds-layout="vertical align:stretch">
+      <div style='width: 350px' cds-layout="vertical align:stretch">
+        <header class="body-header" cds-layout="p:md" cds-theme="dark">
+          <div cds-layout="vertical gap:sm">
+            <p cds-text="body center message">Everything Garden</p>
+            <p cds-text="body center secondary">Grow everything!  Just plant the seed in the plot!</p>
           </div>
-        </cds-placeholder>
-      </div>
+        </header>
+        <div id="body-content" cds-layout="vertical align: stretch">
+          <cds-alert-group id="body-message-container" type="banner" status="info" class="body-message" style="display: none;">
+            <cds-alert>
+              <span id="body-message"></span>
+              <cds-alert-actions>
+                <cds-button id="unselect-button" action="outline">Dismiss</cds-button>
+              </cds-alert-actions>
+            </cds-alert>
+          </cds-alert-group>
+          <div id="body-message-blank" class="body-message-blank"></div>
+          <cds-divider class="body-divider" orientation="horizontal"></cds-divider>
+          <div cds-layout="vertical align: horizontal-center">
+            <cds-placeholder id="garden-content" cds-layout="container:fill">
+              <!-- <div cds-layout="horizontal gap:md p:sm align:right">
+                <cds-placeholder cds-layout="horizontal gap:md align:vertical-center">
+                  <cds-icon shape="coin-bag" size="md"></cds-icon>
+                </cds-placeholder>
+                <cds-placeholder id="money-display" class="coin-display"></cds-placeholder>
+              </div> -->
+              <div cds-layout="vertical gap:md p:lg">
+                <div id="section-content" cds-layout="vertical"></div>
+                <div id="feature-first-seed" style="width: 100%; text-align: center;"></div>
+              </div>
+            </cds-placeholder>
+          </div>
 
-      <!-- Lower Half -->
-      <!-- <div id="lower-half-wrapper" cds-layout="vertical wrap:none align:stretch">
-        <cds-divider class="body-divider" cds-layout="align:shrink"></cds-divider>
-        <div id="lower-half" layout="true" tall="true" cds-layout="horizontal wrap:none align:stretch">
+          <!-- Lower Half -->
+          <!-- <div id="lower-half-wrapper" cds-layout="vertical wrap:none align:stretch">
+            <cds-divider class="body-divider" cds-layout="align:shrink"></cds-divider>
+            <div id="lower-half" layout="true" tall="true" cds-layout="horizontal wrap:none align:stretch">
 
-        <cds-navigation
-          role='list'
-          id='navigation'
-          cds-layout="p: lg"
-          style="--background: var(--cds-global-color-blue-1000);"
-        >
-          <div slot="cds-navigation-substart">
-            <div style="background-color: var(--cds-global-color-blue-1000); color: var(--cds-global-color-gray-0)">
-              <p>Menu</p>
+            <cds-navigation
+              role='list'
+              id='navigation'
+              cds-layout="p: lg"
+              style="--background: var(--cds-global-color-blue-1000);"
+            >
+              <div slot="cds-navigation-substart">
+                <div style="background-color: var(--cds-global-color-blue-1000); color: var(--cds-global-color-gray-0)">
+                  <p>Menu</p>
+                </div>
+                <cds-divider cds-layout="m-y:md"></cds-divider>
+              </div>
+              <cds-navigation-item style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
+                <a href="#">
+                  <cds-icon shape="blocks-group" size="sm"></cds-icon>
+                  Inventory
+                </a>
+              </cds-navigation-item>
+              <cds-navigation-item style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
+                <a href="#">
+                  <cds-icon shape="data-cluster" size="sm"></cds-icon>
+                  Resources
+                </a>
+              </cds-navigation-item>
+              <cds-navigation-group id="store-group">
+                <cds-navigation-start id="store" style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
+                  <cds-icon shape="store" size="sm"></cds-icon>
+                  Store
+                </cds-navigation-start>
+                <cds-navigation-item style="--background: var(--cds-global-color-blue-800); --color: var(--cds-global-color-gray-0)">
+                  <a href="#">
+                    <cds-icon shape="store" size="sm"></cds-icon>
+                    Buy
+                  </a>
+                </cds-navigation-item>
+                <cds-navigation-item style="--background: var(--cds-global-color-blue-800); --color: var(--cds-global-color-gray-0)">
+                  <a href="#">
+                    <cds-icon shape="store" size="sm"></cds-icon>
+                    Sell
+                  </a>
+                </cds-navigation-item>
+              </cds-navigation-group>
+            </cds-navigation>
+
+            <cds-divider orientation="vertical"></cds-divider>
+
+            <div id="tab-content" cds-layout="vertical">
+              <section id="tab-content-inventory" cds-layout="grid cols:2 gap:lg p:lg align:horizontal-center" style="display: grid;">
+                <cds-placeholder cds-layout="col:12">
+                  Seeds
+                  <cds-divider orientation="horizontal"></cds-divider>
+                </cds-placeholder>
+                <cds-placeholder style="text-align: center;">
+                  <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
+                  <br>
+                  <span id="inventory-resourceTab-count">x 1</span>
+                </cds-placeholder>
+                <cds-placeholder style="text-align: center;">
+                  <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
+                  <br>
+                  <span id="inventory-resourceTab-count">x 1</span>
+                </cds-placeholder>
+                <cds-placeholder style="text-align: center;">
+                  <cds-icon-button aria-label="moneyTab" class="seed-button" style="--background: white; --border-color: rgb(181, 110, 48); --color: rgb(181, 110, 48)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(m)</cds-icon-button>
+                  <br>
+                  <span id="inventory-moneyTab-count">x 1</span>
+                </cds-placeholder>
+              </section>
+              <section id="tab-content-resources" cds-layout="grid cols:2 gap:lg p:lg align:horizontal-center" style="display: none;">
+                <cds-placeholder cds-layout="col:12">
+                  Produce
+                  <cds-divider orientation="horizontal"></cds-divider>
+                </cds-placeholder>
+                <cds-placeholder style="text-align: center;">
+                  <cds-icon-button aria-label="radish" class="resource-button" style="--background: white; --border-color: rgb(73, 108, 14); --color: rgb(73, 108, 14)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">{r}</cds-icon-button>
+                  <br>
+                  <span id="resources-radish-count">x 1</span>
+                </cds-placeholder>
+              </section>
+              <section id="tab-content-market" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: none;">
+                <a href="#" cds-text="link">Application content link 42</a>
+              </section>
             </div>
-            <cds-divider cds-layout="m-y:md"></cds-divider>
-          </div>
-          <cds-navigation-item style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
-            <a href="#">
-              <cds-icon shape="blocks-group" size="sm"></cds-icon>
-              Inventory
-            </a>
-          </cds-navigation-item>
-          <cds-navigation-item style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
-            <a href="#">
-              <cds-icon shape="data-cluster" size="sm"></cds-icon>
-              Resources
-            </a>
-          </cds-navigation-item>
-          <cds-navigation-group id="store-group">
-            <cds-navigation-start id="store" style="--background: var(--cds-global-color-blue-1000); --color: var(--cds-global-color-gray-0)">
-              <cds-icon shape="store" size="sm"></cds-icon>
-              Store
-            </cds-navigation-start>
-            <cds-navigation-item style="--background: var(--cds-global-color-blue-800); --color: var(--cds-global-color-gray-0)">
-              <a href="#">
-                <cds-icon shape="store" size="sm"></cds-icon>
-                Buy
-              </a>
-            </cds-navigation-item>
-            <cds-navigation-item style="--background: var(--cds-global-color-blue-800); --color: var(--cds-global-color-gray-0)">
-              <a href="#">
-                <cds-icon shape="store" size="sm"></cds-icon>
-                Sell
-              </a>
-            </cds-navigation-item>
-          </cds-navigation-group>
-        </cds-navigation>
+            </div>
+          </div> -->
 
-        <cds-divider orientation="vertical"></cds-divider>
-
-        <div id="tab-content" cds-layout="vertical">
-          <section id="tab-content-inventory" cds-layout="grid cols:2 gap:lg p:lg align:horizontal-center" style="display: grid;">
-            <cds-placeholder cds-layout="col:12">
-              Seeds
-              <cds-divider orientation="horizontal"></cds-divider>
-            </cds-placeholder>
-            <cds-placeholder style="text-align: center;">
-              <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
-              <br>
-              <span id="inventory-resourceTab-count">x 1</span>
-            </cds-placeholder>
-            <cds-placeholder style="text-align: center;">
-              <cds-icon-button aria-label="resourceTab" class="seed-button" style="--background: white; --border-color: rgb(167, 96, 149); --color: rgb(167, 96, 149)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(r)</cds-icon-button>
-              <br>
-              <span id="inventory-resourceTab-count">x 1</span>
-            </cds-placeholder>
-            <cds-placeholder style="text-align: center;">
-              <cds-icon-button aria-label="moneyTab" class="seed-button" style="--background: white; --border-color: rgb(181, 110, 48); --color: rgb(181, 110, 48)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(m)</cds-icon-button>
-              <br>
-              <span id="inventory-moneyTab-count">x 1</span>
-            </cds-placeholder>
-          </section>
-          <section id="tab-content-resources" cds-layout="grid cols:2 gap:lg p:lg align:horizontal-center" style="display: none;">
-            <cds-placeholder cds-layout="col:12">
-              Produce
-              <cds-divider orientation="horizontal"></cds-divider>
-            </cds-placeholder>
-            <cds-placeholder style="text-align: center;">
-              <cds-icon-button aria-label="radish" class="resource-button" style="--background: white; --border-color: rgb(73, 108, 14); --color: rgb(73, 108, 14)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">{r}</cds-icon-button>
-              <br>
-              <span id="resources-radish-count">x 1</span>
-            </cds-placeholder>
-          </section>
-          <section id="tab-content-market" cds-layout="grid cols:2 gap:md align:horizontal-center" style="display: none;">
-            <a href="#" cds-text="link">Application content link 42</a>
-          </section>
+          <cds-navigation id="cds-navigation" style="display: none;"></cds-navigation>
+          <cds-navigation-item id="cds-navigation-item" style="display: none"></cds-navigation-item>
         </div>
-        </div>
-      </div> -->
-
-      <cds-navigation id="cds-navigation" style="display: none;"></cds-navigation>
-      <cds-navigation-item id="cds-navigation-item" style="display: none"></cds-navigation-item>
+      </div>
     </div>
   </div>
 </body>

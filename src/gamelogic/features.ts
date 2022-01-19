@@ -102,17 +102,14 @@ const tabsContentOpts = [
 const tabsDiv = createTabsDOM(tabs1DomOpts);
 const tabsContentDiv = createTabContentDOM(tabsContentOpts);
 const horizDivider = document.createElement('cds-divider');
-const vertDivider = document.createElement('cds-divider');
 const lowerHalfDiv = document.createElement('div');
 const lowerHalfWrapper = document.createElement('div');
 
-vertDivider.setAttribute('orientation', 'vertical');
 lowerHalfDiv.id = 'lower-half';
 lowerHalfDiv.setAttribute('layout', 'true');
 lowerHalfDiv.setAttribute('tall', 'true');
 lowerHalfDiv.setAttribute('cds-layout', 'horizontal wrap:none align:stretch');
 lowerHalfDiv.appendChild(tabsDiv);
-lowerHalfDiv.appendChild(vertDivider);
 lowerHalfDiv.appendChild(tabsContentDiv);
 horizDivider.setAttribute('orientation', 'horizontal');
 horizDivider.className = 'body-divider';

@@ -6,28 +6,23 @@
 
 body, html {
   height: 100%;
-  min-height: 640px;
 }
 
 .body-layout {
   box-shadow: 0.01rem 0.05rem 0.2rem 0.1rem hsl(198, 0%, 80%);
-  margin: 0;
-  height: 100%;
-  min-height: 640px;
 }
 
 .body-app-layout {
-  width: 360px;
   overflow: hidden;
   margin: auto;
   height: 100%;
-  min-height: 640px;
 }
 
 .body-header {
   background: var(--cds-global-color-blue-1000);
   color: var(--cds-global-color-gray-0);
   max-height: 68px;
+  width: 350px;
 }
 
 .body-header div p {
