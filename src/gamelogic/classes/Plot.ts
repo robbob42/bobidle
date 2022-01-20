@@ -1,4 +1,4 @@
-import GameEntity from './GameEntity';
+import GameEntity, { cardObj } from './GameEntity';
 import Seed from './Seed';
 import { ContinuumEngine } from '../types/Continuum';
 import GameEngine from './GameEngine';
@@ -75,31 +75,40 @@ export default class Plot extends GameEntity {
   }
 
   drawPlot(gridCols: number, plotId: number): HTMLElement {
+    const msg: cardObj = {
+      key: this.key,
+      type: 'plot',
+      title: `${this.display}`,
+      body: `This is a plot.  Once a seed is planted, it will show up here.`,
+      actions: ''
+    }
+
     const click = () => {
-      if (this.engine.selectedEntity === this && !this.seed) {
-        this.engine.unselect();
-      } else {
-        if (this.engine.selectedEntityType === 'seed') {
-          this.plantSeed(this.engine.selectedEntity as Seed);
-        } else if (this.seed && this.timeRemaining === 0) {
-          this.processOutputs();
-        } else {
-          const plotName = `Plot ${this.key}`;
-          let seedInfo = 'Currently Empty';
-          if (this.seed) {
-            seedInfo = `Seed: ${this.seed.display}`
-          }
-          const msgOpts = {
-            msg: {
-              title: plotName,
-              body: seedInfo
-            },
-            entity: this,
-            entityType: 'plot',
-          }
-          this.engine.setMessage(msgOpts);
-        }
-      }
+      this.toggleCard(msg);
+      // if (this.engine.selectedEntity === this && !this.seed) {
+      //   this.engine.unselect();
+      // } else {
+      //   if (this.engine.selectedEntityType === 'seed') {
+      //     this.plantSeed(this.engine.selectedEntity as Seed);
+      //   } else if (this.seed && this.timeRemaining === 0) {
+      //     this.processOutputs();
+      //   } else {
+      //     const plotName = `Plot ${this.key}`;
+      //     let seedInfo = 'Currently Empty';
+      //     if (this.seed) {
+      //       seedInfo = `Seed: ${this.seed.display}`
+      //     }
+      //     const msgOpts = {
+      //       msg: {
+      //         title: plotName,
+      //         body: seedInfo
+      //       },
+      //       entity: this,
+      //       entityType: 'plot',
+      //     }
+      //     this.engine.setMessage(msgOpts);
+      //   }
+      // }
     }
 
     const d = document.createElement('div');
@@ -111,17 +120,10 @@ export default class Plot extends GameEntity {
     d.style.verticalAlign = 'middle';
     d.style.lineHeight = '50px';
     d.style.cursor = 'pointer';
-    d.setAttribute('cds-layout', `container:center col:${gridCols}`);
+    d.style.margin = 'auto';
     d.addEventListener('click', () => {click()});
 
-    const p = document.createElement('p');
-    p.id = `plot-${plotId}-highlight`;
-    p.style.width = '100%';
-    p.style.height = '100%';
-    p.style.margin = '0';
-    d.appendChild(p);
-
-    return d;
+    return this.drawEntity(d);
   }
 
   highlightPlot(highlight: boolean) {

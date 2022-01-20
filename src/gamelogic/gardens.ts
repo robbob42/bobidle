@@ -6,7 +6,8 @@ type GardenList = {
 
 export default {
   baby: {
-    key: "baby",
+    key: 'baby',
+    display: 'Baby Garden',
     dimensions: {
       width: 1,
       height: 1
@@ -15,6 +16,7 @@ export default {
   },
   tiny: {
     key: "tiny",
+    display: 'Tiny Garden',
     dimensions: {
       width: 2,
       height: 1

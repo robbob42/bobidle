@@ -11,11 +11,12 @@ interface GardenDimensions {
 
 export interface InitGardenOpts {
   key: string,
+  display: string,
+  dimensions: GardenDimensions,
+  active: boolean
   count?: number,
   maxCount?: number,
   requirements?: ContinuumEngine.RequirementMap,
-  dimensions: GardenDimensions,
-  active: boolean
 }
 
 export type GardenOpts = InitGardenOpts & {
@@ -40,7 +41,10 @@ export default class Garden extends GameEntity {
   drawGarden(): HTMLElement {
     const gridCols = 12 / this.dimensions.width;
     const d = document.createElement('div');
-    d.setAttribute('cds-layout', 'grid');
+    d.id = 'plots-container';
+    d.style.width = '100%';
+    d.style.textAlign = 'center';
+    // d.setAttribute('cds-layout', 'grid cols:auto gap:lg p-b:sm align:horizontal-stretch');
 
     let plotId = 1;
 
@@ -50,14 +54,14 @@ export default class Garden extends GameEntity {
         const plot = this.createPlot({key: plotId.toString(), engine: this.engine, display: `Plot ${plotId.toString()}`});
 
         // Create blank placeholder for plot timer
-        const timer = document.createElement('div');
-        timer.id = `plot-${plotId}-timerspacer`;
-        timer.style.height = '20px';
+        // const timer = document.createElement('div');
+        // timer.id = `plot-${plotId}-timerspacer`;
+        // timer.style.height = '20px';
 
         // Attach Plot to DOM
         const DOMplot = plot.drawPlot(gridCols, plotId);
         d.appendChild(DOMplot);
-        d.appendChild(timer);
+        // d.appendChild(timer);
         plotId++;
       }
     }

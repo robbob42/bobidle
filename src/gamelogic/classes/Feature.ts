@@ -1,4 +1,4 @@
-import Entity from '../../../vendor/continuum/entity';
+import GameEntity from './GameEntity';
 import { ContinuumEngine } from '../types/Continuum';
 import Gameengine from './GameEngine';
 
@@ -24,7 +24,7 @@ export interface EmitFeatureUnlocked {
   feature: Feature
 }
 
-export default class Feature extends Entity {
+export default class Feature extends GameEntity {
   display;
   parentId;
   domElement;
