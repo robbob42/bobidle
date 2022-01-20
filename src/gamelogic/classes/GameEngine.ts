@@ -14,8 +14,7 @@ interface MsgOpts {
   }
   entity?: unknown,
   entityType?: string,
-  callback?: () => void,
-  status?: string
+  callback?: () => void
 }
 
 export default class Gameengine extends Engine {
@@ -110,35 +109,49 @@ export default class Gameengine extends Engine {
   }
 
   setMessage(opts: MsgOpts) {
-    const msgDom = document.getElementById('body-message') as HTMLElement;
-    const msgContainerDom = document.getElementById('body-message-container') as HTMLElement;
-    const msgBlankDom = document.getElementById('body-message-blank') as HTMLElement;
+    const msgCard = document.getElementById('message-card');
+    const msgTitle = document.getElementById('msg-title');
+    const msgBody = document.getElementById('msg-body');
 
-    msgBlankDom.style.display = 'none';
-    msgContainerDom.style.display = 'block';
+    let bgColor = '#AAAAAA';
+    switch (opts.entityType) {
+      case 'plot':
+        bgColor = 'var(--cds-global-color-tan-900)';
+        break;
+      case 'seed':
+        bgColor = 'var(--cds-global-color-blue-900)';
+        break;
+      case 'resource':
+        bgColor = 'var(--cds-global-color-green-900)';
+        break;
+      default:
+        break;
+    }
+
+    if (msgCard) {
+      msgCard.style.display = '';
+      msgCard.style.setProperty('--background', bgColor);
+    }
+    if (msgTitle) msgTitle.innerHTML = opts.msg.title;
+    if (msgBody) msgBody.innerHTML = opts.msg.body || '';
+
     this.selectedEntity = opts.entity;
     this.selectedEntityType = opts.entityType;
 
     opts.callback && opts.callback();
-    opts.status && msgDom.setAttribute('status', opts.status);
-    msgDom.innerHTML = `<span style="font-weight: bold; text-decoration: underline">${opts.msg.title}</span><br />${opts.msg.body}`
-    if (opts.msg.DomElement) {
-      msgDom.appendChild(opts.msg.DomElement);
-    }
+    // if (opts.msg.DomElement) {
+    //   msgDom.appendChild(opts.msg.DomElement);
+    // }
   }
 
   unselect() {
-    const msgDom = document.getElementById('body-message') as HTMLElement;
-    const msgContainerDom = document.getElementById('body-message-container') as HTMLElement;
-    const msgBlankDom = document.getElementById('body-message-blank') as HTMLElement;
+    const msgDom = document.getElementById('message-card');
     const activeGarden = this.activeGarden();
 
-    msgBlankDom.style.display = 'block';
-    msgContainerDom.style.display = 'none';
     this.selectedEntity = {};
     this.selectedEntityType = '';
 
-    msgDom.innerHTML = '';
+    if (msgDom) msgDom.style.display = 'none';
 
     activeGarden.highlightAvailablePlots(false);
   }

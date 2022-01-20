@@ -1,11 +1,12 @@
-import { ContinuumEngine } from './types/Continuum';
+import { InitGameResourceOpts } from './classes/GameResource';
 
 type resourceListType = {
-  [key: string]: ContinuumEngine.ResourceOpts
+  [key: string]: InitGameResourceOpts
 }
 export default{
   radish: {
     key: "radish",
+    display: 'Radish',
     basePrice: {
       currency: "coin",
       amount: 2

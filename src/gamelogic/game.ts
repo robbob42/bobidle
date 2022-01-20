@@ -23,8 +23,8 @@ export default class Game {
 
     this.createGardens();
     this.createFeatures();
-    this.createSeeds();
     this.createResources();
+    this.createSeeds();
 
     this.ui.init();
   }

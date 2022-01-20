@@ -1,4 +1,4 @@
-import '@cds/core/alert/register.js';
+import '@cds/core/card/register.js';
 import '@cds/core/icon/register.js';
 import '@cds/core/divider/register.js';
 import '@cds/core/navigation/register.js';
@@ -33,8 +33,8 @@ export default class gameUI {
     ClarityIcons.addIcons(shoppingCartIcon);
     ClarityIcons.addIcons(dollarBillIcon);
 
-    const unselectButton = document.getElementById('unselect-button') as HTMLElement;
-    unselectButton.addEventListener('click', () => this.engine.unselect());
+    const unselectButton = document.getElementById('unselect-button');
+    unselectButton?.addEventListener('click', () => this.engine.unselect());
 
     this.activeGarden = this.engine.activeGarden();
     this.gardenElem.appendChild(this.activeGarden.drawGarden());
@@ -127,7 +127,7 @@ export default class gameUI {
           }
 
           // Update Inventory in case the inventory was just unlocked
-          if (opts.feature.key === 'lowerhalf') {
+          if (opts.feature.key === 'lowerHalf') {
             selectTab('inventory');
           }
 

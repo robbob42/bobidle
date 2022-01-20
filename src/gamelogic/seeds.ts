@@ -9,10 +9,11 @@ type FeatureList = {
 export default {
   firstSeed: {
     key: 'InventoryTab',
+    display: 'Inventory',
     productionTime: 3000,
     outputs: {
       features: {
-        lowerhalf: {
+        lowerHalf: {
           productionAmount: 1
         }
       },
@@ -30,6 +31,7 @@ export default {
   },
   resourceTab: {
     key: 'resourceTab',
+    display: 'Resources',
     productionTime: 3000,
     outputs: {
       features: {
@@ -56,6 +58,7 @@ export default {
   },
   moneyDisplay: {
     key: 'moneyDisplay',
+    display: 'Bank',
     productionTime: 3000,
     outputs: {
       features: {
@@ -77,6 +80,7 @@ export default {
   },
   marketTab: {
     key: 'marketTab',
+    display: 'Market',
     productionTime: 3000,
     outputs: {
       features: {
@@ -98,6 +102,7 @@ export default {
   },
   marketUpg1: {
     key: 'marketUpg1',
+    display: 'Market - Buy Upgrade',
     productionTime: 3000,
     outputs: {
       features: {
@@ -119,6 +124,7 @@ export default {
   },
   marketUpg2: {
     key: 'marketUpg2',
+    display: 'Market - Sell Upgrade',
     productionTime: 3000,
     outputs: {
       features: {
@@ -135,6 +141,7 @@ export default {
   },
   radish: {
     key: 'radish',
+    display: 'Radish',
     productionTime: 3000,
     baseCost: {
       currency: 'coin',

@@ -5,7 +5,8 @@ import { stringToColour, updateResources, updateMoneyDisplay, updateMarketSell }
 
 export interface InitGameResourceOpts {
   key: string,
-  basePrice?: ContinuumEngine.CurrencyOpts,
+  display: string,
+  basePrice: ContinuumEngine.CurrencyOpts,
   color?: string,
   tooltip?: {
     title?: string,
@@ -18,17 +19,20 @@ export type GameResourceOpts = InitGameResourceOpts & {
 }
 
 export default class GameResource extends Resource {
+  display;
   engine;
   color;
   tooltip;
 
   constructor(opts: GameResourceOpts) {
     super(opts);
+
+    this.display = opts.display;
     this.engine = opts.engine;
     this.color = stringToColour(opts.key);
     this.tooltip = {
-      title: `Resource: ${opts.key}`,
-      body: opts.tooltip?.body || ''
+      title: `${opts.display}`,
+      body: `Value: ${opts.basePrice.amount}`
     };
   }
 

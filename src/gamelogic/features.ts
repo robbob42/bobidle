@@ -157,18 +157,21 @@ type FeatureList = {
 export default {
   firstSeed: {
     key: 'firstseed',
+    display: 'First Seed',
     parentId: 'feature-first-seed',
     domElement: firstSeedDom,
     visible: true
   },
   lowerHalf: {
-    key: 'lowerhalf',
+    key: 'lowerHalf',
+    display: 'Lower Half',
     parentId: 'body-content',
     domElement: lowerHalfWrapper,
     visible: false
   },
   resourceTab: {
     key: 'resourceTab',
+    display: 'Resources',
     replaceId: 'navigation',
     parentId: 'lower-half',
     domElement: resourceTabsDiv,
@@ -176,6 +179,7 @@ export default {
   },
   moneyDisplay: {
     key: 'moneyDisplay',
+    display: 'Bank',
     firstChildId: 'garden-content',
     parentId: 'garden-content',
     domElement: moneyLayout,
@@ -183,6 +187,7 @@ export default {
   },
   marketTab: {
     key: 'marketTab',
+    display: 'Market',
     replaceId: 'navigation',
     parentId: 'lower-half',
     domElement: marketTabsDiv,
@@ -190,6 +195,7 @@ export default {
   },
   marketBuyTab: {
     key: 'marketBuyTab',
+    display: 'Market - Buy',
     replaceId: 'navigation',
     parentId: 'lower-half',
     domElement: marketBuyTabsDiv,
@@ -197,6 +203,7 @@ export default {
   },
   marketSellTab: {
     key: 'marketSellTab',
+    display: 'Market - Sell',
     replaceId: 'navigation',
     parentId: 'lower-half',
     domElement: marketSellTabsDiv,

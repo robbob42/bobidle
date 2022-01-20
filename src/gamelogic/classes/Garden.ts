@@ -47,7 +47,7 @@ export default class Garden extends GameEntity {
     for (let i = 1; i <= this.dimensions.height; i++) {
       for (let i = 1; i <= this.dimensions.width; i++) {
         // Create Plot object and attach it to this Garden
-        const plot = this.createPlot({key: plotId.toString(), engine: this.engine});
+        const plot = this.createPlot({key: plotId.toString(), engine: this.engine, display: `Plot ${plotId.toString()}`});
 
         // Create blank placeholder for plot timer
         const timer = document.createElement('div');

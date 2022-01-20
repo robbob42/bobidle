@@ -13,11 +13,30 @@
         <header class="body-header" cds-layout="p:md" cds-theme="dark">
           <div cds-layout="vertical gap:sm">
             <p cds-text="body center message">Everything Garden</p>
-            <p cds-text="body center secondary">Grow everything!  Just plant the seed in the plot!</p>
+            <p cds-text="body center secondary">
+              Grow everything!
+              <br />Just grab a seed
+              <br />and plant it!
+            </p>
           </div>
         </header>
-        <div id="body-content" cds-layout="vertical align: stretch">
-          <cds-alert-group
+        <div id="body-content" class="body-content" cds-layout="vertical align: stretch">
+          <cds-card id="message-card" class="message-card" cds-theme="dark" style="display: none; z-index: 9999;">
+            <div cds-layout="vertical gap:xs" style="width: 332px">
+              <h3 id="msg-title" cds-text="section">Title</h3>
+
+              <cds-divider></cds-divider>
+
+              <div id="msg-body" cds-text="body dark">Body</div>
+
+              <cds-divider></cds-divider>
+
+              <div id="msg-actions" cds-layout="horizontal gap:xs align:vertical-center">
+                <cds-button id="unselect-button" action="flat-inline">Dismiss</cds-button>
+              </div>
+            </div>
+          </cds-card>
+          <!-- <cds-alert-group
             id="body-message-container"
             type="banner"
             status="info"
@@ -30,8 +49,7 @@
               </cds-alert-actions>
             </cds-alert>
           </cds-alert-group>
-          <div id="body-message-blank" class="body-message-blank"></div>
-          <cds-divider class="body-divider" orientation="horizontal"></cds-divider>
+          <div id="body-message-blank" class="body-message-blank"></div> -->
           <div cds-layout="vertical align: horizontal-center">
             <cds-placeholder id="garden-content" cds-layout="container:fill">
               <!-- <div cds-layout="horizontal gap:md p:sm align:right">

@@ -5,6 +5,7 @@ import Gameengine from './GameEngine';
 
 export interface InitFeatureOpts {
   key: string,
+  display: string,
   parentId: string,
   domElement: HTMLElement,
   visible: boolean,
@@ -24,6 +25,7 @@ export interface EmitFeatureUnlocked {
 }
 
 export default class Feature extends Entity {
+  display;
   parentId;
   domElement;
   visible;
@@ -33,6 +35,7 @@ export default class Feature extends Entity {
   constructor(opts: FeatureOpts) {
     super("feature", opts);
 
+    this.display = opts.display;
     this.parentId = opts.parentId;
     this.domElement = opts.domElement;
     this.visible = opts.visible;

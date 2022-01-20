@@ -6,6 +6,7 @@ import GameEngine from './GameEngine';
 
 export interface InitPlotOpts {
   key: string,
+  display: string,
   count?: number,
   maxCount?: number,
   requirements?: ContinuumEngine.RequirementMap,
@@ -28,6 +29,7 @@ export interface EmitHarvested {
 }
 
 export default class Plot extends GameEntity {
+  display;
   seed: Seed | undefined;
   active;
   beginTime;
@@ -38,6 +40,7 @@ export default class Plot extends GameEntity {
   constructor(opts: PlotOpts) {
     super("plot", opts);
 
+    this.display = opts.display;
     this.active = false;
     this.timeRemaining = 0;
     this.beginTime = 0;
@@ -84,7 +87,7 @@ export default class Plot extends GameEntity {
           const plotName = `Plot ${this.key}`;
           let seedInfo = 'Currently Empty';
           if (this.seed) {
-            seedInfo = `Seed: ${this.seed.key}`
+            seedInfo = `Seed: ${this.seed.display}`
           }
           const msgOpts = {
             msg: {
@@ -138,7 +141,7 @@ export default class Plot extends GameEntity {
     const plotName = `Plot ${this.key}`;
     let seedInfo = 'Currently Empty';
     if (this.seed) {
-      seedInfo = `Seed: ${this.seed.key}`
+      seedInfo = `Seed: ${this.seed.display}`
     }
 
     const msgOpts = {

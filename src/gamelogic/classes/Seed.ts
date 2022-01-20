@@ -28,6 +28,7 @@ interface GameOutputMap {
 
 export interface InitSeedOpts {
   key: string,
+  display: string,
   productionTime: number,
   outputs: GameOutputMap,
   baseCost?: ContinuumEngine.CurrencyOpts,
@@ -47,6 +48,7 @@ export type SeedOpts = InitSeedOpts & {
 }
 
 export default class Seed extends Entity {
+  display;
   engine;
   color;
   productionTime;
@@ -57,19 +59,45 @@ export default class Seed extends Entity {
 
   constructor(opts: SeedOpts) {
     super("seed", opts);
+
+    this.display = opts.display;
     this.engine = opts.engine;
     this.color = stringToColour(opts.key);
     this.productionTime = opts.productionTime;
     this.baseCost = opts.baseCost;
     this.costCoefficient = opts.costCoefficient || 1;
     this.outputs = opts.outputs || { currencies: {}, resources: {}, producers: {}, features: {}, seeds: {} };
+
     this.tooltip = {
-      title: `Seed: ${opts.key}`,
-      body: opts.tooltip?.body || ''
+      title: '',
+      body: ''
     };
   }
 
   drawSeed(location: string): HTMLElement {
+    // Set the tooltip (must be done after the engine setup is complete)
+    let category: keyof typeof this.outputs;
+    let outputList = '';
+    for (category in this.outputs) {
+      const outputs = this.outputs[category];
+
+      for (const outputKey in outputs) {
+        const gameObj = this.engine[category][outputKey];
+
+        if (this.engine[category][outputKey] && 'display' in gameObj) {
+          outputList += `<li>${gameObj.display} x${outputs[outputKey].productionAmount}</li>`;
+        } else {
+          outputList += `<li>${outputKey} x${outputs[outputKey].productionAmount}</li>`;
+        }
+      }
+    }
+
+    this.tooltip = {
+      title: `${this.display} seed`,
+      body: `Time to grow: ${this.productionTime / 1000} seconds<br />Produces: <ul>${outputList}</ul>`
+    };
+
+    // Draw the DOM element
     const b = document.createElement('cds-icon-button');
     let click = () => {b};
 
@@ -103,7 +131,7 @@ export default class Seed extends Entity {
         if (this.engine.selectedEntity === this) {
           this.engine.unselect();
         } else {
-          const title = `Buy ${this.key}`;
+          const title = `Buy ${this.key} seed`;
           const btn = document.createElement('cds-button');
           btn.addEventListener('click', () => this.purchaseSeed());
           btn.innerHTML = 'Buy 1';
