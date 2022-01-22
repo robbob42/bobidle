@@ -1,8 +1,7 @@
-import GameEntity, { GameOutputMap, cardObj } from './GameEntity';
+import GameEntity, { GameOutputMap } from './GameEntity';
 import { ContinuumEngine } from '../types/Continuum';
 import GameEngine from './GameEngine';
-import { stringToColour, updateInventory, updateMoneyDisplay } from '../utils';
-import seeds from '../seeds';
+import { stringToColour, updateMoneyDisplay } from '../utils';
 
 
 export interface InitSeedOpts {
@@ -41,6 +40,17 @@ export default class Seed extends GameEntity {
     this.outputs = opts.outputs || { currencies: {}, resources: {}, producers: {}, features: {}, seeds: {} };
   }
 
+  incrementBy(val: number): number {
+    this.card.title = `${this.display} x ${this.count + val}`;
+    if (this.count > 0 && this.count + val === 0){
+      this.toggle(false);
+    }
+    if (this.count === 0 && this.count + val > 0) {
+      this.toggle(true);
+    }
+    return super.incrementBy(val);
+  }
+
   drawSeed(location: string) {
     let outputList = '';
     let category: keyof typeof this.outputs;
@@ -58,24 +68,36 @@ export default class Seed extends GameEntity {
       }
     }
 
-    const msg: cardObj = {
-      key: this.key,
-      type: 'seed',
-      title: `${this.display} Seed`,
-      body: `Time to grow: ${this.productionTime / 1000} seconds<br />Produces: <ul>${outputList}</ul>`,
-      actions: ''
+    const plantAction = document.createElement('cds-button');
+
+    const plantActionClick = () => {
+      const garden = this.engine.activeGarden();
+      for (const plotKey in garden.plots) {
+        if (!garden.plots[plotKey].seed){
+          garden.plots[plotKey].plantSeed(this);
+        }
+      }
     }
+    plantAction.setAttribute('action', 'flat-inline');
+    plantAction.innerHTML = 'Plant';
+    plantAction.addEventListener('click', () => plantActionClick());
+
+    // Assign each property, to ensure the Proxy is setup correctly
+    this.card.key = this.key;
+    this.card.type = 'seed';
+    this.card.title = `${this.display} x ${this.count}`;
+    this.card.body = `Time to grow: ${this.productionTime / 1000} seconds<br />Produces: <ul>${outputList}</ul>`;
 
     // Draw the DOM element
     let click = () => {null};
 
-    if (location === 'inventory') {
+    if (location === 'inventory' || location === 'feature-first-seed') {
       // Inventory Seed Button
       const callback = () => {
         this.engine.activeGarden().highlightAvailablePlots(true);
       }
       click = () => {
-        this.toggleCard(msg);
+        this.showCard = !this.showCard;
         // if (this.engine.selectedEntity === this) {
         //   this.engine.unselect();
         // } else {
@@ -97,7 +119,7 @@ export default class Seed extends GameEntity {
     } else if (location === 'market') {
       // Market Seed Button
       click = () => {
-        this.toggleCard(msg);
+        this.showCard = !this.showCard;
         // if (this.engine.selectedEntity === this) {
         //   this.engine.unselect();
         // } else {
@@ -129,7 +151,16 @@ export default class Seed extends GameEntity {
     entityElement.innerHTML = `(${this.key.charAt(0).toLowerCase()})`;
     entityElement.addEventListener('click', () => {click()});
 
-    return this.drawEntity(entityElement);
+
+    const s = document.getElementById(`${this.key}-seed-container`);
+    if (!s) {
+      const i = document.getElementById(location);
+      const seedBtn = this.drawEntity(entityElement, plantAction);
+
+      seedBtn.style.textAlign = 'center';
+      if (!this.count) seedBtn.style.display = 'none';
+      i?.appendChild(seedBtn);
+    }
   }
 
   purchaseSeed() {
@@ -139,7 +170,6 @@ export default class Seed extends GameEntity {
       this.engine.currencies[curr].incrementBy(-amt);
       const rtn = this.incrementBy(1);
 
-      if (rtn) updateInventory(this);
       if (rtn) updateMoneyDisplay(undefined, this.engine);
     }
   }

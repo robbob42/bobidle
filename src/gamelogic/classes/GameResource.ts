@@ -1,7 +1,7 @@
 import GameEntity, { cardObj } from './GameEntity';
 import GameEngine from './GameEngine';
 import { ContinuumEngine } from '../types/Continuum';
-import { stringToColour, updateResources, updateMoneyDisplay, updateMarketSell } from "../utils";
+import { stringToColour, updateBasket, updateMoneyDisplay, updateMarketSell } from "../utils";
 
 interface CalcDefObj {
   source: GameEntity,
@@ -51,24 +51,22 @@ export default class GameResource extends GameEntity {
 }
 
   drawResource(location: string): HTMLElement {
-    const msg: cardObj = {
-      key: this.key,
-      type: 'resource',
-      title: `${this.display}`,
-      body: `This is really great!`,
-      actions: ''
-    }
+    // Assign each property, to ensure the Proxy is setup correctly
+    this.card.key = this.key;
+    this.card.type = 'resource';
+    this.card.title = `${this.display}`;
+    this.card.body = `This is really great!`;
 
     // Draw the DOM element
     let click = () => {null};
 
     if (location === 'inventory') {
       click = () => {
-        this.toggleCard(msg);
+        this.toggleCard();
       }
     } else if (location === 'market') {
       click = () => {
-        this.toggleCard(msg);
+        this.toggleCard();
       }
     }
 
@@ -150,7 +148,7 @@ export default class GameResource extends GameEntity {
     if (curr && amt && this.count >= 1) {
       this.engine.currencies[curr].incrementBy(amt);
       const rtn = this.incrementBy(-1);
-      if (rtn) updateResources(this);
+      if (rtn) updateBasket(this);
       if (rtn) updateMoneyDisplay(undefined, this.engine);
       if (rtn) updateMarketSell(this);
     }

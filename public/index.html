@@ -16,102 +16,51 @@
 
       <div class="body-layout body-app-layout" cds-layout="vertical align:stretch">
         <div cds-layout="vertical align:stretch">
-          <header class="body-header" cds-layout="p:md" cds-theme="dark">
-            <div cds-layout="vertical gap:sm">
-              <p cds-text="body center message">Everything Garden</p>
-              <p cds-text="body center secondary">
-                Grow everything!
-                <br />Just grab a seed
-                <br />and plant it!
-              </p>
-            </div>
-          </header>
-          <div id="top-nav" cds-layout="align:shrink">
-            <div cds-layout="grid cols:auto gap:xs gap@xs:xl align:horizontal-stretch" class="cds-horizontal-nav nav-top">
-              <button active><cds-icon shape="tree" size="sm"></cds-icon> Garden</button>
-              <button><cds-icon shape="book" size="sm"></cds-icon> Seeds</button>
-              <button><cds-icon shape="clipboard" size="sm"></cds-icon> Achieve...</button>
-            </div>
-            <cds-divider></cds-divider>
-          </div>
-          <div id="body-content" class="body-content" cds-layout="vertical align: stretch">
-            <cds-card id="message-card" class="message-card" cds-theme="dark" style="display: none; z-index: 9999;">
-              <div cds-layout="vertical gap:xs" style="width: 332px">
-                <h3 id="msg-title" cds-text="section">Title</h3>
-
-                <cds-divider></cds-divider>
-
-                <div id="msg-body" cds-text="body dark">Body</div>
-
-                <cds-divider></cds-divider>
-
-                <div id="msg-actions" cds-layout="horizontal gap:xs align:vertical-center">
-                  <cds-button id="unselect-button" action="flat-inline">Dismiss</cds-button>
-                </div>
+          <div id="container" class="container" cds-layout="vertical align:horizontal-stretch">
+            <header class="body-header" cds-layout="p:md align:shrink" cds-theme="dark">
+              <div cds-layout="vertical gap:sm">
+                <p cds-text="body center message">Everything Garden</p>
+                <p cds-text="body center secondary">
+                  Grow everything!
+                  <br />Just grab a seed
+                  <br />and plant it!
+                </p>
               </div>
-            </cds-card>
-            <!-- <cds-alert-group
-              id="body-message-container"
-              type="banner"
-              status="info"
-              class="body-message"
-              style="display: none; --background: var(--cds-global-color-construction-600);">
-              <cds-alert>
-                <span id="body-message"></span>
-                <cds-alert-actions>
-                  <cds-button id="unselect-button" action="outline">Dismiss</cds-button>
-                </cds-alert-actions>
-              </cds-alert>
-            </cds-alert-group>
-            <div id="body-message-blank" class="body-message-blank"></div> -->
-            <div cds-layout="vertical align: horizontal-center">
-              <cds-placeholder id="garden-content" cds-layout="container:fill">
-                <!-- <div cds-layout="horizontal gap:md p:sm align:right">
-                  <cds-placeholder cds-layout="horizontal gap:md align:vertical-center">
-                    <cds-icon shape="coin-bag" size="md"></cds-icon>
-                  </cds-placeholder>
-                  <cds-placeholder id="money-display" class="coin-display"></cds-placeholder>
-                </div> -->
-                <div cds-layout="vertical gap:md p:lg">
-                  <div id="section-content" style="width: 100%; text-align: center;">
-                    <div class="garden" id="garden"></div>
-                  </div>
-                  <div id="feature-first-seed" style="width: 100%; text-align: center;"></div>
-                  <!-- <div id="feature-first-seed2" style="width: 100%; text-align: center;">
-                    <div id="InventoryTab-seed-container">
-                      <cds-icon-button aria-label="InventoryTab" class="seed-button" style="--background: white; --border-color: rgb(185, 180, 195); --color: rgb(185, 180, 195)" tabindex="0" role="button" action="solid" status="primary" size="md" aria-disabled="false">(i)</cds-icon-button>
-                      <cds-card id="InventoryTab-seed-card">
-                        <div cds-layout="vertical gap:md">
-                          <h4 id="InventoryTab-seed-card-title" cds-text="section">Card Title</h4>
-
-                          <cds-divider cds-card-remove-margin></cds-divider>
-
-                          <div id="InventoryTab-seed-card-body" cds-text="body light">
-                            Message: Can you imagine what we will be downloading in another twenty years?
-                          </div>
-
-                          <cds-divider cds-card-remove-margin></cds-divider>
-
-                          <div id="InventoryTab-seed-card-actions" cds-layout="horizontal gap:lg align:vertical-center">
-                            <cds-button action="flat-inline">Dismiss</cds-button>
-                          </div>
-                        </div>
-                      </cds-card>
+            </header>
+            <!-- <div id="top-nav" cds-layout="align:top">
+              <div cds-layout="grid cols:auto gap:xs gap@xs:xl align:horizontal-stretch" class="cds-horizontal-nav nav-top">
+                <button active><cds-icon shape="tree" size="sm"></cds-icon> Garden</button>
+                <button><cds-icon shape="book" size="sm"></cds-icon> Seeds</button>
+                <button><cds-icon shape="clipboard" size="sm"></cds-icon> Achieve...</button>
+              </div>
+              <cds-divider></cds-divider>
+            </div> -->
+            <div cds-layout="vertical align:stretch">
+              <cds-placeholder id="pages-container" cds-layout="vertical align:top">
+                <div id="home" cds-layout="vertical">
+                  <div cds-layout="vertical gap:md p:lg">
+                    <div id="section-content" style="width: 100%; text-align: center;">
+                      <div id="garden" class="garden"></div>
                     </div>
-                  </div> -->
+                    <div id="feature-first-seed" style="width: 100%; text-align: center;"></div>
+                  </div>
+                </div>
+                <div id="inventory" cds-layout="grid cols:6 cols@xs:4 gap:xs align:horizontal-center" style="display: none;">
+                  <div cds-layout="col:12 p-t:sm align:shrink">Inventory</div>
+                  <cds-divider cds-layout="col:12 p-b:lg"></cds-divider>
                 </div>
               </cds-placeholder>
             </div>
 
-            <div cds-layout="align:bottom" style="width: 100%">
+            <!-- <div id="bottom-nav" cds-layout="align:bottom" style="width: 100%;">
               <cds-divider></cds-divider>
               <div cds-layout="grid cols:auto gap:lg p-b:sm align:horizontal-stretch" class="cds-horizontal-nav nav-bottom">
                 <button active><cds-icon shape="home" size="sm"></cds-icon></button>
                 <button><cds-icon shape="blocks-group" size="sm"></cds-icon></button>
-                <!-- <button><cds-icon shape="data-cluster" size="sm"></cds-icon></button>
-                <button><cds-icon shape="store" size="sm"></cds-icon></button> -->
+                <button><cds-icon shape="data-cluster" size="sm"></cds-icon></button>
+                <button><cds-icon shape="store" size="sm"></cds-icon></button>
               </div>
-            </div>
+            </div> -->
 
             <!-- Lower Half -->
             <!-- <div id="lower-half" layout="true" tall="true" cds-layout="horizontal wrap:none align:stretch">

@@ -10,9 +10,8 @@ import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon,
 import Gameengine from './classes/GameEngine';
 import Garden from './classes/Garden';
 import { EmitPlanted, EmitHarvested } from './classes/Plot';
-import { convertHMS, selectTab, updateInventory, updateResources,
-          updateMoneyDisplay, updateMarketSell, updateMarketBuy } from './utils';
-import { EmitFeatureUnlocked } from './classes/Feature';
+import { convertHMS, updateBasket,
+          updateMoneyDisplay, updateMarketSell } from './utils';
 
 
 export default class gameUI {
@@ -71,13 +70,6 @@ export default class gameUI {
           d.setAttribute('cds-layout', 'container:center col:12');
           d.id = `plot-${opts.plot.key}-counter`;
           parent.appendChild(d);
-
-          // Hide timer placeholder
-          const placeholder = document.getElementById(`plot-${opts.plot.key}-timerspacer`) as HTMLElement;
-          placeholder.style.display = 'none';
-
-          // Update inventory
-          updateInventory(opts.seed);
         })
       this.activeGarden.plots[plot]
         .on('SEED_HARVESTED', (opts: EmitHarvested) => {
@@ -92,20 +84,9 @@ export default class gameUI {
           const timer = parent.lastElementChild as HTMLElement;
           parent.removeChild(timer);
 
-          // Show timer placeholder
-          const placeholder = document.getElementById(`plot-${opts.plot.key}-timerspacer`) as HTMLElement;
-          placeholder.style.display = '';
-
-          // Update inventory for the seed, and any of its children seed
-          updateInventory(opts.seed);
-          if (opts.seed.outputs.seeds) {
-            for (const seedKey in opts.seed.outputs.seeds) {
-              updateInventory(this.engine.seeds[seedKey]);
-            }
-          }
           if (opts.seed.outputs.resources) {
             for (const resourceKey in opts.seed.outputs.resources) {
-              updateResources(this.engine.resources[resourceKey]);
+              updateBasket(this.engine.resources[resourceKey]);
               updateMarketSell(this.engine.resources[resourceKey]);
             }
           }
@@ -117,73 +98,7 @@ export default class gameUI {
         })
     }
 
-    for(const featureKey in this.engine.features) {
-      this.engine.features[featureKey]
-        .on('FEATURE_UNLOCKED', (opts: EmitFeatureUnlocked) => {
-          const parent = document.getElementById(opts.feature.parentId) as HTMLElement;
-          if (opts.feature.firstChildId) {
-            const parent = document.getElementById(opts.feature.parentId) as HTMLElement;
-            parent.insertBefore(opts.feature.domElement, parent.firstChild);
-          } else if (opts.feature.replaceId) {
-            const replaceElement = document.getElementById(opts.feature.replaceId) as HTMLElement;
-            parent.replaceChild(opts.feature.domElement, replaceElement);
-          } else {
-            parent.appendChild(opts.feature.domElement);
-          }
-
-          // Update Inventory in case the inventory was just unlocked
-          if (opts.feature.key === 'lowerHalf') {
-            selectTab('inventory');
-          }
-
-          if (opts.feature.key === 'resourceTab') {
-            selectTab('resources');
-          }
-
-          if (opts.feature.key === 'marketBuyTab' || opts.feature.key === 'marketSellTab') {
-            const marketClick = () => {
-              const marketNav = document.getElementById('market-group');
-              if (marketNav?.getAttribute('expanded') === 'true') {
-                marketNav?.setAttribute('expanded', 'false');
-              } else {
-                marketNav?.setAttribute('expanded', 'true');
-              }
-            }
-            const market = document.getElementById('market');
-            market?.addEventListener('click', marketClick);
-          }
-
-          if (opts.feature.key === 'marketBuyTab') {
-            for (const seedKey in this.engine.seeds) {
-              const seed = this.engine.seeds[seedKey];
-
-              if (seed.baseCost) {
-                updateMarketBuy(seed);
-              }
-            }
-
-            selectTab('buy');
-          }
-
-          if (opts.feature.key === 'marketSellTab') {
-            for (const resourceKey in this.engine.resources) {
-              const resource = this.engine.resources[resourceKey];
-
-              if (resource.basePrice) {
-                updateMarketSell(resource);
-              }
-            }
-            selectTab('sell');
-          }
-
-          for (const seedKey in this.engine.seeds) {
-            const seed = this.engine.seeds[seedKey];
-            updateInventory(seed);
-          }
-        });
-    }
-
-    document.getElementById('feature-first-seed')?.appendChild(this.engine.seeds['InventoryTab'].drawSeed('inventory'));
+    this.engine.seeds['navigation'].drawSeed('feature-first-seed');
   }
 
   update() {

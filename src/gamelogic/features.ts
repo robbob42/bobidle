@@ -1,5 +1,5 @@
 import { InitFeatureOpts } from './classes/Feature';
-import { createTabsDOM, createTabContentDOM } from './utils';
+import { createNavigation } from './utils';
 
 // First Seed
 const firstSeedDom = document.createElement('span');
@@ -8,15 +8,19 @@ const firstSeedDom = document.createElement('span');
 // Only Inventory
 const tabs1DomOpts = [
   {
+    name: 'home',
+    icon: 'home'
+  },
+  {
     name: 'inventory',
     icon: 'blocks-group'
   }
 ];
-// Add Resource
+// Add Basket
 const tabs2DomOpts = [
   ...tabs1DomOpts,
   {
-    name: 'resources',
+    name: 'basket',
     icon: 'data-cluster'
   }
 ];
@@ -25,11 +29,7 @@ const tabs3DomOpts = [
   ...tabs2DomOpts,
   {
     name: 'market',
-    group: {
-      groupId: 'market-group',
-      navStartId: 'market',
-      groupIcon: 'store'
-    }
+    icon: 'store'
   }
 ];
 // Add Market Buy
@@ -99,28 +99,11 @@ const tabsContentOpts = [
     layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
   }
 ];
-const tabsDiv = createTabsDOM(tabs1DomOpts);
-const tabsContentDiv = createTabContentDOM(tabsContentOpts);
-const horizDivider = document.createElement('cds-divider');
-const lowerHalfDiv = document.createElement('div');
-const lowerHalfWrapper = document.createElement('div');
-
-lowerHalfDiv.id = 'lower-half';
-lowerHalfDiv.setAttribute('layout', 'true');
-lowerHalfDiv.setAttribute('tall', 'true');
-lowerHalfDiv.setAttribute('cds-layout', 'horizontal wrap:none align:stretch');
-lowerHalfDiv.appendChild(tabsDiv);
-lowerHalfDiv.appendChild(tabsContentDiv);
-horizDivider.setAttribute('orientation', 'horizontal');
-horizDivider.className = 'body-divider';
-horizDivider.setAttribute('cds-layout', 'align:shrink');
-lowerHalfWrapper.id = 'lower-half-wrapper';
-lowerHalfWrapper.setAttribute('cds-layout', 'vertical wrap:none align:stretch');
-lowerHalfWrapper.appendChild(horizDivider);
-lowerHalfWrapper.appendChild(lowerHalfDiv);
+const bottomNavigation = createNavigation(tabs1DomOpts);
+// const tabsContentDiv = createTabContentDOM(tabsContentOpts);
 
 // ResourceTab
-const resourceTabsDiv = createTabsDOM(tabs2DomOpts);
+const basket = createNavigation(tabs2DomOpts);
 
 // Money Display
 const moneyIcon = document.createElement('cds-icon');
@@ -141,13 +124,13 @@ moneyLayout.appendChild(moneyIconHolder);
 moneyLayout.appendChild(moneyHolder);
 
 // Market
-const marketTabsDiv = createTabsDOM(tabs3DomOpts);
+const market = createNavigation(tabs3DomOpts);
 
 // Market
-const marketBuyTabsDiv = createTabsDOM(tabs4DomOpts);
+const marketBuyTabsDiv = document.createElement('div');
 
 // Market
-const marketSellTabsDiv = createTabsDOM(tabs5DomOpts);
+const marketSellTabsDiv = document.createElement('div');
 
 
 type FeatureList = {
@@ -162,35 +145,35 @@ export default {
     domElement: firstSeedDom,
     visible: true
   },
-  lowerHalf: {
-    key: 'lowerHalf',
-    display: 'Lower Half',
-    parentId: 'body-content',
-    domElement: lowerHalfWrapper,
+  navigation: {
+    key: 'navigation',
+    display: 'Bottom Navigation Bar',
+    parentId: 'container',
+    domElement: bottomNavigation,
     visible: false
   },
-  resourceTab: {
-    key: 'resourceTab',
-    display: 'Resources',
-    replaceId: 'navigation',
-    parentId: 'lower-half',
-    domElement: resourceTabsDiv,
+  basket: {
+    key: 'basket',
+    display: 'Basket',
+    replaceId: 'bottom-nav',
+    parentId: 'container',
+    domElement: basket,
     visible: false
   },
-  moneyDisplay: {
-    key: 'moneyDisplay',
+  bank: {
+    key: 'bank',
     display: 'Bank',
-    firstChildId: 'garden-content',
-    parentId: 'garden-content',
+    firstChildId: 'garden',
+    parentId: 'garden',
     domElement: moneyLayout,
     visible: false
   },
-  marketTab: {
-    key: 'marketTab',
+  market: {
+    key: 'market',
     display: 'Market',
-    replaceId: 'navigation',
-    parentId: 'lower-half',
-    domElement: marketTabsDiv,
+    replaceId: 'bottom-nav',
+    parentId: 'container',
+    domElement: market,
     visible: false
   },
   marketBuyTab: {

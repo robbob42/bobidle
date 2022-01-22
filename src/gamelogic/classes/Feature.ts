@@ -1,6 +1,7 @@
 import GameEntity from './GameEntity';
 import { ContinuumEngine } from '../types/Continuum';
 import Gameengine from './GameEngine';
+import { navigate, updateMarketSell, updateMarketBuy } from '../utils';
 
 
 export interface InitFeatureOpts {
@@ -44,9 +45,77 @@ export default class Feature extends GameEntity {
   }
 
   incrementBy(val: number): number {
-    this.emit("FEATURE_UNLOCKED", {
-      feature: this
-    });
-    return val;
+    const parent = document.getElementById(this.parentId) as HTMLElement;
+    if (this.firstChildId) {
+      const parent = document.getElementById(this.parentId) as HTMLElement;
+      parent.insertBefore(this.domElement, parent.firstChild);
+    } else if (this.replaceId) {
+      const replaceElement = document.getElementById(this.replaceId) as HTMLElement;
+      parent.replaceChild(this.domElement, replaceElement);
+    } else {
+      parent.appendChild(this.domElement);
+    }
+
+    // Update Inventory in case the inventory was just unlocked
+    switch (this.key) {
+      case 'navigation':
+        // this.engine.seeds['basket'].incrementBy(1);
+        navigate('home');
+        break;
+
+      case 'basket':
+        // this.engine.seeds['bank'].incrementBy(1);
+        navigate(this.key);
+        break;
+
+      case 'bank':
+        // this.engine.seeds['market'].incrementBy(1);
+        break;
+
+      case 'market':
+        navigate(this.key);
+        break;
+
+      default:
+        break;
+    }
+
+    if (this.key === 'marketBuyTab' || this.key === 'marketSellTab') {
+      const marketClick = () => {
+        const marketNav = document.getElementById('market-group');
+        if (marketNav?.getAttribute('expanded') === 'true') {
+          marketNav?.setAttribute('expanded', 'false');
+        } else {
+          marketNav?.setAttribute('expanded', 'true');
+        }
+      }
+      const market = document.getElementById('market');
+      market?.addEventListener('click', marketClick);
+    }
+
+    if (this.key === 'marketBuyTab') {
+      for (const seedKey in this.engine.seeds) {
+        const seed = this.engine.seeds[seedKey];
+
+        if (seed.baseCost) {
+          updateMarketBuy(seed);
+        }
+      }
+
+      navigate('buy');
+    }
+
+    if (this.key === 'marketSellTab') {
+      for (const resourceKey in this.engine.resources) {
+        const resource = this.engine.resources[resourceKey];
+
+        if (resource.basePrice) {
+          updateMarketSell(resource);
+        }
+      }
+      navigate('sell');
+    }
+
+    return super.incrementBy(val);
   }
 }

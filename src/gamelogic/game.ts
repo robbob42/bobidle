@@ -25,6 +25,7 @@ export default class Game {
     this.createFeatures();
     this.createResources();
     this.createSeeds();
+    this.inventoryInit();
 
     this.ui.init();
   }
@@ -44,6 +45,13 @@ export default class Game {
   createSeeds() {
     for (const seed in seedList) {
       this.engine.createSeed(seedList[seed]);
+    }
+  }
+
+  inventoryInit() {
+    for (const seedKey in this.engine.seeds) {
+      const seed = this.engine.seeds[seedKey];
+      if (seed.key !== 'navigation') seed.drawSeed('inventory');
     }
   }
 

@@ -1,13 +1,13 @@
 import Entity from "../../../vendor/continuum/entity";
 import GameEngine from './GameEngine';
 import { ContinuumEngine } from '../types/Continuum';
+import { stringToColour } from '../utils';
 
 export interface cardObj {
   key: string,
   type: string,
   title: string,
-  body: string,
-  actions: string
+  body: string
 }
 
 export interface GameOutputRule {
@@ -53,11 +53,13 @@ export default class GameEntity extends Entity {
   state: GameEntityState;
   card;
   display;
+  _showCard;
 
   constructor(type: string, opts: GameEntityOpts) {
     super(type, opts);
     this.engine = opts.engine;
     this.display = opts.display;
+    this._showCard = false;
 
     this.state = {
       type: type,
@@ -72,7 +74,6 @@ export default class GameEntity extends Entity {
       type: type,
       title: '',
       body: '',
-      actions: ''
     }
     this.card = new Proxy(constructorCard,
     {
@@ -86,7 +87,16 @@ export default class GameEntity extends Entity {
     });
   }
 
-  drawEntity(entityDomElement: HTMLElement): HTMLElement {
+  set showCard(show: boolean) {
+    this.toggleCard(show);
+    this._showCard = show;
+  }
+
+  get showCard() {
+    return this._showCard;
+  }
+
+  drawEntity(entityDomElement: HTMLElement, actionsDOM?: HTMLElement): HTMLElement {
     const entityContainer = document.createElement('div');
 
     const entityCardClone = document.getElementById('cds-card') as HTMLElement;
@@ -102,16 +112,20 @@ export default class GameEntity extends Entity {
 
     dismissAction.setAttribute('action', 'flat-inline');
     dismissAction.innerHTML = 'Dismiss';
+    dismissAction.addEventListener('click', () => this.toggleCard());
     cardActions.id = `${this.key}-${this.type}-card-actions`;
     cardActions.setAttribute('cds-layout', 'horizontal gap:lg align:vertical-center');
     cardActions.appendChild(dismissAction);
+    if (actionsDOM) cardActions.appendChild(actionsDOM);
     cardDivider1.setAttribute('cds-card-remove-margin', 'true');
+    cardDivider1.style.setProperty('--color', stringToColour(this.key));
     cardDivider2.setAttribute('cds-card-remove-margin', 'true');
+    cardDivider2.style.setProperty('--color', stringToColour(this.key));
     cardBody.id = `${this.key}-${this.type}-card-body`;
-    cardBody.setAttribute('cds-text', 'body light');
+    cardBody.setAttribute('cds-text', 'body secondary');
     cardBody.innerHTML = 'Body';
     cardTitle.id = `${this.key}-${this.type}-card-title`;
-    cardTitle.setAttribute('cds-text', 'section');
+    cardTitle.setAttribute('cds-text', 'body message');
     cardTitle.innerHTML = 'Title';
     cardLayout.setAttribute('cds-layout', 'vertical gap:md');
     cardLayout.appendChild(cardTitle);
@@ -121,64 +135,93 @@ export default class GameEntity extends Entity {
     cardLayout.appendChild(cardActions);
     entityCard.id = `${this.key}-${this.type}-card`;
     entityCard.style.setProperty('--width', '100%');
+    entityCard.style.setProperty('--border', `var(--cds-alias-object-border-width-100, calc((1 / var(--cds-global-base, 20)) * 1rem)) solid ${stringToColour(this.key)}`);
     entityCard.appendChild(cardLayout);
 
+    entityContainer.id = `${this.key}-${this.type}-container`;
+    if (this.count === 0) entityContainer.style.display = 'none';
     entityContainer.appendChild(entityDomElement);
     entityContainer.appendChild(entityCard);
 
     return entityContainer;
   }
 
-  toggleCard(msg: cardObj) {
-    this.card.title = msg.title;
-    this.card.body = msg.body;
+  // If no parameter is sent, this will toggle the display, otherwise, parameter is a boolean determining display
+  toggle(force?: boolean) {
+    const entContainer = document.getElementById(`${this.key}-${this.type}-container`);
+
+    if (entContainer) {
+      const cardStatus = entContainer.style.getPropertyValue('display');
+
+      if (typeof force === 'boolean'){
+        force && entContainer.style.setProperty('display', 'block');
+        force || entContainer.style.setProperty('display', 'none');
+      } else {
+        switch (cardStatus) {
+          case '':
+          case 'block':
+            entContainer.style.setProperty('display', 'none');
+            break;
+          case 'none':
+            entContainer.style.setProperty('display', 'block');
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  toggleCard(force?: boolean) {
+    const refreshCard = { ...this.card };
+    this.card.key = '';
+    this.card.type = '';
+    this.card.title = '';
+    this.card.body = '';
+
+    this.card.key = refreshCard.key;
+    this.card.type = refreshCard.type;
+    this.card.title = refreshCard.title;
+    this.card.body = refreshCard.body;
 
     const card = document.getElementById(`${this.key}-${this.type}-card`);
 
     if (card) {
       const cardStatus = card.style.getPropertyValue('display');
-      switch (cardStatus) {
-        case 'block':
-          card.style.setProperty('display', 'none');
-          break;
-        case 'none':
-          card.style.setProperty('display', 'block');
-          break;
-        default:
-          break;
+
+      const showOnlyThisCard = () => {
+        card.style.setProperty('display', 'block');
+
+        const types: ['resources', 'features', 'seeds'] = ['resources', 'features', 'seeds']
+        types.forEach(entity => {
+          for (const objKey in this.engine[entity]) {
+            const obj = this.engine[entity][objKey];
+            if (obj.key !== this.key) obj.showCard = false;
+          }
+        });
+
+        for (const plotKey in this.engine.activeGarden().plots){
+          const plot = this.engine.activeGarden().plots[plotKey];
+          if (plot.key !== this.key) plot.showCard = false;
+        }
+      }
+
+      if (typeof force === 'boolean'){
+        force && showOnlyThisCard();
+        force || card.style.setProperty('display', 'none');
+      } else {
+        switch (cardStatus) {
+          case 'block':
+            card.style.setProperty('display', 'none');
+            break;
+          case 'none':
+            showOnlyThisCard();
+            break;
+          default:
+            break;
+        }
       }
     }
-
-    // const msgCard = document.getElementById('message-card');
-    // const msgTitle = document.getElementById('msg-title');
-    // const msgBody = document.getElementById('msg-body');
-
-    // let bgColor = '#AAAAAA';
-    // switch (opts.entityType) {
-    //   case 'plot':
-    //     bgColor = 'var(--cds-global-color-tan-900)';
-    //     break;
-    //   case 'seed':
-    //     bgColor = 'var(--cds-global-color-blue-900)';
-    //     break;
-    //   case 'resource':
-    //     bgColor = 'var(--cds-global-color-green-900)';
-    //     break;
-    //   default:
-    //     break;
-    // }
-
-    // if (msgCard) {
-    //   msgCard.style.display = '';
-    //   msgCard.style.setProperty('--background', bgColor);
-    // }
-    // if (msgTitle) msgTitle.innerHTML = opts.msg.title;
-    // if (msgBody) msgBody.innerHTML = opts.msg.body || '';
-
-    // opts.callback && opts.callback();
-    // if (opts.msg.DomElement) {
-    //   msgDom.appendChild(opts.msg.DomElement);
-    // }
   }
 
 }

@@ -7,18 +7,18 @@ type FeatureList = {
 }
 
 export default {
-  firstSeed: {
-    key: 'InventoryTab',
-    display: 'Inventory',
+  navigation: {
+    key: 'navigation',
+    display: 'Navigation Seed',
     productionTime: 3000,
     outputs: {
       features: {
-        lowerHalf: {
+        navigation: {
           productionAmount: 1
         }
       },
       seeds: {
-        resourceTab: {
+        basket: {
           productionAmount: 1
         }
       }
@@ -26,21 +26,21 @@ export default {
     tooltip: {
       body: 'Missing an Inventory?  This should do the trick!'
     },
-    color: stringToColour('InventoryTab'),
+    color: stringToColour('navigation'),
     count: 1
   },
-  resourceTab: {
-    key: 'resourceTab',
-    display: 'Resources',
+  basket: {
+    key: 'basket',
+    display: 'Basket Seed',
     productionTime: 3000,
     outputs: {
       features: {
-        resourceTab: {
+        basket: {
           productionAmount: 1
         }
       },
       seeds: {
-        moneyDisplay: {
+        bank: {
           productionAmount: 1
         }
       },
@@ -56,18 +56,18 @@ export default {
     color: stringToColour('resourceTab'),
     count: 0
   },
-  moneyDisplay: {
-    key: 'moneyDisplay',
-    display: 'Bank',
+  bank: {
+    key: 'bank',
+    display: 'Bank Seed',
     productionTime: 3000,
     outputs: {
       features: {
-        moneyDisplay: {
+        bank: {
           productionAmount: 1
         }
       },
       seeds: {
-        marketTab: {
+        market: {
           productionAmount: 1
         }
       }
@@ -78,13 +78,13 @@ export default {
     color: stringToColour('moneyDisplay'),
     count: 0
   },
-  marketTab: {
-    key: 'marketTab',
-    display: 'Market',
+  market: {
+    key: 'market',
+    display: 'Market Seed',
     productionTime: 3000,
     outputs: {
       features: {
-        marketTab: {
+        market: {
           productionAmount: 1
         }
       },
@@ -102,7 +102,7 @@ export default {
   },
   marketUpg1: {
     key: 'marketUpg1',
-    display: 'Market - Buy Upgrade',
+    display: 'Market Upgrade: Buy',
     productionTime: 3000,
     outputs: {
       features: {
@@ -124,7 +124,7 @@ export default {
   },
   marketUpg2: {
     key: 'marketUpg2',
-    display: 'Market - Sell Upgrade',
+    display: 'Market Upgrade: Sell',
     productionTime: 3000,
     outputs: {
       features: {
@@ -141,7 +141,7 @@ export default {
   },
   radish: {
     key: 'radish',
-    display: 'Radish',
+    display: 'Radish Seed',
     productionTime: 3000,
     baseCost: {
       currency: 'coin',
