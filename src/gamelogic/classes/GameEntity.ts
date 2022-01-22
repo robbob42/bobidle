@@ -112,7 +112,7 @@ export default class GameEntity extends Entity {
 
     dismissAction.setAttribute('action', 'flat-inline');
     dismissAction.innerHTML = 'Dismiss';
-    dismissAction.addEventListener('click', () => this.toggleCard());
+    dismissAction.addEventListener('click', () => this.showCard = false);
     cardActions.id = `${this.key}-${this.type}-card-actions`;
     cardActions.setAttribute('cds-layout', 'horizontal gap:lg align:vertical-center');
     cardActions.appendChild(dismissAction);
@@ -134,11 +134,14 @@ export default class GameEntity extends Entity {
     cardLayout.appendChild(cardDivider2);
     cardLayout.appendChild(cardActions);
     entityCard.id = `${this.key}-${this.type}-card`;
-    entityCard.style.setProperty('--width', '100%');
+    entityCard.style.zIndex = '999';
+    entityCard.style.position = 'absolute';
+    entityCard.style.setProperty('--width', '300px');
     entityCard.style.setProperty('--border', `var(--cds-alias-object-border-width-100, calc((1 / var(--cds-global-base, 20)) * 1rem)) solid ${stringToColour(this.key)}`);
     entityCard.appendChild(cardLayout);
 
     entityContainer.id = `${this.key}-${this.type}-container`;
+    entityContainer.style.position = 'relative';
     if (this.count === 0) entityContainer.style.display = 'none';
     entityContainer.appendChild(entityDomElement);
     entityContainer.appendChild(entityCard);
@@ -191,6 +194,17 @@ export default class GameEntity extends Entity {
 
       const showOnlyThisCard = () => {
         card.style.setProperty('display', 'block');
+
+        // Finagle the css to make sure the card is in the viewing window
+        const viewPort = document.getElementById('pages-container') as HTMLElement;
+        const cardWidth = 300;
+        const cardStartx = card.getBoundingClientRect().x;
+        const cardEndx = cardStartx + cardWidth;
+        const viewPortEndx = viewPort.getBoundingClientRect().x + viewPort.clientWidth;
+        const rightPad = 5;
+        if (cardEndx > viewPortEndx) {
+          card.style.left = (viewPortEndx - cardEndx - rightPad).toString() + 'px';
+        }
 
         const types: ['resources', 'features', 'seeds'] = ['resources', 'features', 'seeds']
         types.forEach(entity => {

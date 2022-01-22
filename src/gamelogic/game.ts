@@ -26,6 +26,7 @@ export default class Game {
     this.createResources();
     this.createSeeds();
     this.inventoryInit();
+    this.basketInit();
 
     this.ui.init();
   }
@@ -58,6 +59,13 @@ export default class Game {
   createResources() {
     for (const resource in resourceList) {
       this.engine.createGameResource(resourceList[resource]);
+    }
+  }
+
+  basketInit() {
+    for (const resourceKey in this.engine.resources) {
+      const resource = this.engine.resources[resourceKey];
+      resource.drawResource('basket');
     }
   }
 

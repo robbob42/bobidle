@@ -10,7 +10,7 @@ import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon,
 import Gameengine from './classes/GameEngine';
 import Garden from './classes/Garden';
 import { EmitPlanted, EmitHarvested } from './classes/Plot';
-import { convertHMS, updateBasket,
+import { convertHMS,
           updateMoneyDisplay, updateMarketSell } from './utils';
 
 
@@ -86,7 +86,6 @@ export default class gameUI {
 
           if (opts.seed.outputs.resources) {
             for (const resourceKey in opts.seed.outputs.resources) {
-              updateBasket(this.engine.resources[resourceKey]);
               updateMarketSell(this.engine.resources[resourceKey]);
             }
           }

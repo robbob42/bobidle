@@ -1,4 +1,4 @@
-import GameEntity, { cardObj } from './GameEntity';
+import GameEntity from './GameEntity';
 import Seed from './Seed';
 import { ContinuumEngine } from '../types/Continuum';
 import GameEngine from './GameEngine';

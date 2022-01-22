@@ -72,33 +72,7 @@ const tabs5DomOpts = [
     }
   }
 ];
-const tabsContentOpts = [
-  {
-    name: 'inventory',
-    display: 'Seeds',
-    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
-  },
-  {
-    name: 'resources',
-    display: 'Produce',
-    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
-  },
-  {
-    name: 'market',
-    display: 'Market',
-    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
-  },
-  {
-    name: 'buy',
-    display: 'Buy',
-    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
-  },
-  {
-    name: 'sell',
-    display: 'Sell',
-    layout: 'grid cols:2 gap:lg p:lg align:horizontal-center'
-  }
-];
+
 const bottomNavigation = createNavigation(tabs1DomOpts);
 // const tabsContentDiv = createTabContentDOM(tabsContentOpts);
 

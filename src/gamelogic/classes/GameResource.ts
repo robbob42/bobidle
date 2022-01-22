@@ -1,7 +1,7 @@
-import GameEntity, { cardObj } from './GameEntity';
+import GameEntity from './GameEntity';
 import GameEngine from './GameEngine';
 import { ContinuumEngine } from '../types/Continuum';
-import { stringToColour, updateBasket, updateMoneyDisplay, updateMarketSell } from "../utils";
+import { stringToColour, updateMoneyDisplay, updateMarketSell } from "../utils";
 
 interface CalcDefObj {
   source: GameEntity,
@@ -48,9 +48,21 @@ export default class GameResource extends GameEntity {
 
   get basePrice() {
     return this.state.basePrice;
-}
+  }
 
-  drawResource(location: string): HTMLElement {
+  incrementBy(val: number): number {
+    this.card.title = `${this.display} x ${this.count + val}`;
+    if (this.count > 0 && this.count + val === 0){
+      this.toggle(false);
+    }
+    if (this.count === 0 && this.count + val > 0) {
+      this.toggle(true);
+    }
+    return super.incrementBy(val);
+  }
+
+
+  drawResource(location: string) {
     // Assign each property, to ensure the Proxy is setup correctly
     this.card.key = this.key;
     this.card.type = 'resource';
@@ -60,13 +72,13 @@ export default class GameResource extends GameEntity {
     // Draw the DOM element
     let click = () => {null};
 
-    if (location === 'inventory') {
+    if (location === 'basket') {
       click = () => {
-        this.toggleCard();
+        this.showCard = !this.showCard;
       }
     } else if (location === 'market') {
       click = () => {
-        this.toggleCard();
+        this.showCard = !this.showCard;
       }
     }
 
@@ -79,7 +91,15 @@ export default class GameResource extends GameEntity {
     entityElement.innerHTML = `(${this.key.charAt(0).toLowerCase()})`;
     entityElement.addEventListener('click', () => {click()});
 
-    return this.drawEntity(entityElement);
+    const s = document.getElementById(`${this.key}-resource-container`);
+    if (!s) {
+      const i = document.getElementById(location);
+      const seedBtn = this.drawEntity(entityElement);
+
+      seedBtn.style.textAlign = 'center';
+      if (!this.count) seedBtn.style.display = 'none';
+      i?.appendChild(seedBtn);
+    }
 
     // const b = document.createElement('cds-icon-button');
     // let click = () => {b};
@@ -148,7 +168,6 @@ export default class GameResource extends GameEntity {
     if (curr && amt && this.count >= 1) {
       this.engine.currencies[curr].incrementBy(amt);
       const rtn = this.incrementBy(-1);
-      if (rtn) updateBasket(this);
       if (rtn) updateMoneyDisplay(undefined, this.engine);
       if (rtn) updateMarketSell(this);
     }

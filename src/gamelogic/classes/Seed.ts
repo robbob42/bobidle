@@ -61,10 +61,14 @@ export default class Seed extends GameEntity {
         const gameObj = this.engine[category][outputKey];
 
         if (this.engine[category][outputKey] && 'display' in gameObj) {
-          outputList += `<li>${gameObj.display} x${outputs[outputKey].productionAmount}</li>`;
+          outputList += `<li>${gameObj.display}`;
         } else {
-          outputList += `<li>${outputKey} x${outputs[outputKey].productionAmount}</li>`;
+          outputList += `<li>${outputKey}`;
         }
+        if (outputs[outputKey].productionAmount > 1) {
+          outputList += ` x ${outputs[outputKey].productionAmount}`;
+        }
+        outputList += '</li>';
       }
     }
 
@@ -92,10 +96,6 @@ export default class Seed extends GameEntity {
     let click = () => {null};
 
     if (location === 'inventory' || location === 'feature-first-seed') {
-      // Inventory Seed Button
-      const callback = () => {
-        this.engine.activeGarden().highlightAvailablePlots(true);
-      }
       click = () => {
         this.showCard = !this.showCard;
         // if (this.engine.selectedEntity === this) {
@@ -150,7 +150,6 @@ export default class Seed extends GameEntity {
     entityElement.setAttribute('style', styleStr);
     entityElement.innerHTML = `(${this.key.charAt(0).toLowerCase()})`;
     entityElement.addEventListener('click', () => {click()});
-
 
     const s = document.getElementById(`${this.key}-seed-container`);
     if (!s) {
