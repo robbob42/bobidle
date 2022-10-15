@@ -14,6 +14,11 @@ type pagesOpts = {
   }
 }[]
 
+type buttonOpts = {
+  name: string,
+  icon: string
+}
+
 export function calcIdleZombies(engine: Gameengine): number {
   return engine.resources.zombie.count - engine.resources.activezombie.count;
 }
@@ -102,6 +107,20 @@ export function createNavigation(pages: pagesOpts) {
   return bottomNavContainer;
 }
 
+export function createMarketNavigationButton(opts: buttonOpts) {
+  const buttonIcon = document.createElement('cds-icon');
+  const button = document.createElement('button');
+
+  buttonIcon.setAttribute('shape', opts.icon);
+  buttonIcon.setAttribute('size', 'sm');
+
+  button.addEventListener('click', () => marketNavigate(opts.name));
+  button.id = `navigation-${opts.name}`;
+  button.appendChild(buttonIcon);
+
+  return button;
+}
+
 export function addNavButton(name: string, icon: string) {
   const buttonIcon = document.createElement('cds-icon');
   const button = document.createElement('button');
@@ -134,6 +153,37 @@ export function navigate(pageName: string) {
 
     // Display content
     const pageContainer = document.getElementById('pages-container');
+    if (pageContainer) {
+      for (let i = 0; i < pageContainer.children.length; i++) {
+        const page = pageContainer.children[i] as HTMLElement;
+        if (pageContainer.children[i].id === pageName) {
+          page.style.removeProperty('display');
+        } else {
+          page.style.display = 'none';
+        }
+      }
+    }
+  }
+}
+
+export function marketNavigate(pageName: string) {
+  const navButton = document.getElementById(`navigation-${pageName}`);
+
+  if (navButton) {
+    // Highlight nav icon button
+    const siblings = navButton.parentElement?.children;
+    if (siblings) {
+      for (let i = 0; i < siblings.length; i++) {
+        if (siblings[i].id === `navigation-${pageName}`) {
+          siblings[i].setAttribute('active', 'true');
+        } else {
+          siblings[i].removeAttribute('active');
+        }
+      }
+    }
+
+    // Display content
+    const pageContainer = document.getElementById('market-container');
     if (pageContainer) {
       for (let i = 0; i < pageContainer.children.length; i++) {
         const page = pageContainer.children[i] as HTMLElement;

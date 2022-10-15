@@ -1,5 +1,5 @@
 import { InitFeatureOpts } from './classes/Feature';
-import { createNavigation } from './utils';
+import { createNavigation, createMarketNavigationButton } from './utils';
 
 // First Seed
 const firstSeedDom = document.createElement('span');
@@ -33,45 +33,16 @@ const tabs3DomOpts = [
   }
 ];
 // Add Market Buy
-const tabs4DomOpts = [
-  ...tabs2DomOpts,
-  {
-    name: 'market',
-    group: {
-      groupId: 'market-group',
-      navStartId: 'market',
-      groupIcon: 'store',
-      tabs: [
-        {
-          name: 'buy',
-          icon: 'shopping-cart'
-        }
-      ]
-    }
-  }
-];
+const marketTabs1DomOpts = {
+  name: 'market-buy',
+  icon: 'shopping-cart'
+};
+
 // Add Market Sell
-const tabs5DomOpts = [
-  ...tabs2DomOpts,
-  {
-    name: 'market',
-    group: {
-      groupId: 'market-group',
-      navStartId: 'market',
-      groupIcon: 'store',
-      tabs: [
-        {
-          name: 'buy',
-          icon: 'shopping-cart'
-        },
-        {
-          name: 'sell',
-          icon: 'dollar-bill'
-        }
-      ]
-    }
-  }
-];
+const marketTabs2DomOpts = {
+  name: 'market-sell',
+  icon: 'dollar-bill'
+};
 
 const bottomNavigation = createNavigation(tabs1DomOpts);
 // const tabsContentDiv = createTabContentDOM(tabsContentOpts);
@@ -100,11 +71,11 @@ moneyLayout.appendChild(moneyHolder);
 // Market
 const market = createNavigation(tabs3DomOpts);
 
-// Market
-const marketBuyTabsDiv = document.createElement('div');
+// Market - Buy
+const marketBuyTabsDiv = createMarketNavigationButton(marketTabs1DomOpts);
 
 // Market
-const marketSellTabsDiv = document.createElement('div');
+const marketSellTabsDiv = createMarketNavigationButton(marketTabs2DomOpts);
 
 
 type FeatureList = {
@@ -153,16 +124,14 @@ export default {
   marketBuyTab: {
     key: 'marketBuyTab',
     display: 'Market - Buy',
-    replaceId: 'navigation',
-    parentId: 'lower-half',
+    parentId: 'market-nav',
     domElement: marketBuyTabsDiv,
     visible: false
   },
   marketSellTab: {
     key: 'marketSellTab',
     display: 'Market - Sell',
-    replaceId: 'navigation',
-    parentId: 'lower-half',
+    parentId: 'market-nav',
     domElement: marketSellTabsDiv,
     visible: false
   }
