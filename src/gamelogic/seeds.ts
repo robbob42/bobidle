@@ -10,7 +10,7 @@ export default {
   navigation: {
     key: 'navigation',
     display: 'Navigation Seed',
-    productionTime: 3000,
+    productionTime: 5000,
     outputs: {
       features: {
         navigation: {
@@ -32,7 +32,7 @@ export default {
   basket: {
     key: 'basket',
     display: 'Basket Seed',
-    productionTime: 3000,
+    productionTime: 7000,
     outputs: {
       features: {
         basket: {
@@ -59,7 +59,7 @@ export default {
   bank: {
     key: 'bank',
     display: 'Bank Seed',
-    productionTime: 3000,
+    productionTime: 9000,
     outputs: {
       features: {
         bank: {
@@ -81,7 +81,7 @@ export default {
   market: {
     key: 'market',
     display: 'Market Seed',
-    productionTime: 3000,
+    productionTime: 11000,
     outputs: {
       features: {
         market: {
@@ -103,7 +103,7 @@ export default {
   marketUpg1: {
     key: 'marketUpg1',
     display: 'Market Upgrade: Buy',
-    productionTime: 3000,
+    productionTime: 13000,
     outputs: {
       features: {
         marketBuyTab: {
@@ -125,7 +125,7 @@ export default {
   marketUpg2: {
     key: 'marketUpg2',
     display: 'Market Upgrade: Sell',
-    productionTime: 3000,
+    productionTime: 15000,
     outputs: {
       features: {
         marketSellTab: {

@@ -46,9 +46,12 @@ interface GameEntityState extends ContinuumEngine.EntityState {
   basePrice?: ContinuumEngine.CurrencyOpts
 }
 
-// The sole purpose for this class is to ensure that 'engine' is types as the custom GameEngine.
-// In all other aspects, this just mimics the Continuum Entity
 export default class GameEntity extends Entity {
+  /**
+   * Custom class extending Continuum Entity.
+   *
+   */
+  
   engine: GameEngine;
   state: GameEntityState;
   card;

@@ -25,6 +25,12 @@ export type GameResourceOpts = InitGameResourceOpts & {
 }
 
 export default class GameResource extends GameEntity {
+  /**
+   * Custom class extending GameEntity.
+   * Not currently in use.  This will be implemented with the Resources update
+   *
+   */
+  
   display;
   engine;
   color;

@@ -24,6 +24,13 @@ export type GardenOpts = InitGardenOpts & {
 }
 
 export default class Garden extends GameEntity {
+  /**
+   * Custom class extending Continuum Entity.
+   *
+   * @param opts - Object containing default values for this Garden.  Type definition above.
+   * 
+   */
+  
   dimensions: GardenDimensions;
   active: boolean;
   plots: {
@@ -39,12 +46,16 @@ export default class Garden extends GameEntity {
   }
 
   drawGarden(): HTMLElement {
+    /**
+     * Draw the DOM UI element that will represent this garden
+     *
+     */
+    
     const gridCols = 12 / this.dimensions.width;
     const d = document.createElement('div');
     d.id = 'plots-container';
     d.style.width = '100%';
     d.style.textAlign = 'center';
-    // d.setAttribute('cds-layout', 'grid cols:auto gap:lg p-b:sm align:horizontal-stretch');
 
     let plotId = 1;
 
@@ -53,15 +64,10 @@ export default class Garden extends GameEntity {
         // Create Plot object and attach it to this Garden
         const plot = this.createPlot({key: plotId.toString(), engine: this.engine, count: 1, display: `Plot ${plotId.toString()}`});
 
-        // Create blank placeholder for plot timer
-        // const timer = document.createElement('div');
-        // timer.id = `plot-${plotId}-timerspacer`;
-        // timer.style.height = '20px';
-
         // Attach Plot to DOM
         const DOMplot = plot.drawPlot(plotId);
         d.appendChild(DOMplot);
-        // d.appendChild(timer);
+
         plotId++;
       }
     }

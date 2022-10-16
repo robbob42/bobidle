@@ -30,6 +30,13 @@ export interface EmitHarvested {
 }
 
 export default class Plot extends GameEntity {
+  /**
+   * Custom class extending Continuum Entity.
+   *
+   * @param opts - Object containing default values for this Plot.  Type definition above.
+   * 
+   */
+  
   display;
   active;
   beginTime;
@@ -78,6 +85,10 @@ export default class Plot extends GameEntity {
   }
 
   processOutputs() {
+    /**
+     * Loops through all of the outputs of the currently planted seed, and increments each one
+     */
+    
     if (this.seed && this.seed.outputs) {
       // Loop through all of the seed outputs
       // Jankiness due to making TypeScript happy
@@ -105,6 +116,13 @@ export default class Plot extends GameEntity {
   }
 
   drawPlot(plotId: number): HTMLElement {
+    /**
+     * Draw the DOM UI element that will represent this plot
+     *
+     * @param plotId - ID that will be used by the DOM element
+     * 
+     */
+    
     const harvestAction = document.createElement('cds-button');
     const harvestActionClick = () => {
       this.processOutputs();
@@ -132,30 +150,6 @@ export default class Plot extends GameEntity {
 
     const click = () => {
       this.showCard = !this.showCard;
-      // if (this.engine.selectedEntity === this && !this.seed) {
-      //   this.engine.unselect();
-      // } else {
-      //   if (this.engine.selectedEntityType === 'seed') {
-      //     this.plantSeed(this.engine.selectedEntity as Seed);
-      //   } else if (this.seed && this.timeRemaining === 0) {
-      //     this.processOutputs();
-      //   } else {
-      //     const plotName = `Plot ${this.key}`;
-      //     let seedInfo = 'Currently Empty';
-      //     if (this.seed) {
-      //       seedInfo = `Seed: ${this.seed.display}`
-      //     }
-      //     const msgOpts = {
-      //       msg: {
-      //         title: plotName,
-      //         body: seedInfo
-      //       },
-      //       entity: this,
-      //       entityType: 'plot',
-      //     }
-      //     this.engine.setMessage(msgOpts);
-      //   }
-      // }
     }
 
     const d = document.createElement('div');
@@ -192,6 +186,14 @@ export default class Plot extends GameEntity {
   }
 
   plantSeed(seed: Seed) {
+    /**
+     * Assign an instantiated Seed object to this.seed 
+     * Update all appropriate DOM elements that will reflect this change
+     *
+     * @param seed - instantiated Seed object
+     * 
+     */
+    
     this.seed = seed;
 
     const plotName = `Plot ${this.key}`;

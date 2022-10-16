@@ -18,6 +18,11 @@ interface MsgOpts {
 }
 
 export default class Gameengine extends Engine {
+  /**
+   * Custom class extending Continuum Engine.
+   *
+   */
+  
   currencies: {
     [key: string]: ContinuumEngine.Currency;
   } = {};
@@ -139,9 +144,6 @@ export default class Gameengine extends Engine {
     this.selectedEntityType = opts.entityType;
 
     opts.callback && opts.callback();
-    // if (opts.msg.DomElement) {
-    //   msgDom.appendChild(opts.msg.DomElement);
-    // }
   }
 
   unselect() {

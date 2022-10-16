@@ -22,6 +22,12 @@ export type SeedOpts = InitSeedOpts & {
 }
 
 export default class Seed extends GameEntity {
+  /**
+   * Custom class extending Continuum Entity.
+   *
+   * @param opts - Object containing default values for this Seed.  Type definition above.
+   *
+   */
   engine;
   color;
   productionTime;
@@ -41,6 +47,13 @@ export default class Seed extends GameEntity {
   }
 
   incrementBy(val: number): number {
+    /**
+     * Increment the variable in the game engine tracking the number of seeds.  Also increment the DOM display of this value
+     *
+     * @param val - The number to increment by
+     * 
+     */
+    
     this.card.title = `${this.display} x ${this.count + val}`;
     if (this.count > 0 && this.count + val === 0){
       this.toggle(false);
@@ -52,6 +65,13 @@ export default class Seed extends GameEntity {
   }
 
   drawSeed(location: string) {
+    /**
+     * Draw the DOM UI element that will represent this seed
+     *
+     * @param location - Special one-time rules to apply to specific seeds
+     * 
+     */
+    
     let outputList = '';
     let category: keyof typeof this.outputs;
     for (category in this.outputs) {
@@ -98,21 +118,6 @@ export default class Seed extends GameEntity {
     if (location === 'inventory' || location === 'feature-first-seed') {
       click = () => {
         this.showCard = !this.showCard;
-        // if (this.engine.selectedEntity === this) {
-        //   this.engine.unselect();
-        // } else {
-        //   const msgOpts = {
-        //     msg: {
-        //       title: this.card.title,
-        //       body: this.card.body
-        //     },
-        //     entity: this,
-        //     entityType: 'seed',
-        //     callback: callback,
-        //     msgStatus: 'info'
-        //   }
-        //   this.engine.setMessage(msgOpts);
-        // }
       }
 
 
@@ -120,25 +125,6 @@ export default class Seed extends GameEntity {
       // Market Seed Button
       click = () => {
         this.showCard = !this.showCard;
-        // if (this.engine.selectedEntity === this) {
-        //   this.engine.unselect();
-        // } else {
-        //   const title = `Buy ${this.key} seed`;
-        //   const btn = document.createElement('cds-button');
-        //   btn.addEventListener('click', () => this.purchaseSeed());
-        //   btn.innerHTML = 'Buy 1';
-        //   const msgOpts = {
-        //     msg: {
-        //       title: title,
-        //       body: '',
-        //       DomElement: btn
-        //     },
-        //     entity: this,
-        //     entityType: 'seed',
-        //     msgStatus: 'info'
-        //   }
-        //   this.engine.setMessage(msgOpts);
-        // }
       }
     }
 
@@ -163,6 +149,10 @@ export default class Seed extends GameEntity {
   }
 
   purchaseSeed() {
+    /**
+     * Increment seed count, decrement currency
+     */
+    
     const curr = this.baseCost?.currency;
     const amt = this.baseCost?.amount;
     if (curr && amt && this.engine.currencies[curr] && this.engine.currencies[curr].value >= amt) {

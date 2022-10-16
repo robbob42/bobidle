@@ -1,3 +1,6 @@
+  /**
+   * General utility functions used throughout the code
+   */
 import Gameengine from './classes/GameEngine';
 import Seed from './classes/Seed';
 import GameResource from './classes/GameResource';

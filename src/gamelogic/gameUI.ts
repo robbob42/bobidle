@@ -10,11 +10,17 @@ import { ClarityIcons, blockIcon, blocksGroupIcon, dataClusterIcon,
 import Gameengine from './classes/GameEngine';
 import Garden from './classes/Garden';
 import { EmitPlanted, EmitHarvested } from './classes/Plot';
-import { convertHMS,
-          updateMoneyDisplay, updateMarketSell } from './utils';
+import { convertHMS, navigate, updateMoneyDisplay, updateMarketSell } from './utils';
 
 
 export default class gameUI {
+  /**
+   * Handle the initialization of all UI elements, including Clarity icons that will be used throughout the application,
+   * and event listeners that need to be created when the game is first started.
+   *
+   * @param engine - An instance of the Continuum Game Engine
+   */
+
   engine;
   gardenElem;
   activeGarden: Garden | undefined;
@@ -25,6 +31,7 @@ export default class gameUI {
   }
 
   init() {
+    // All necessary Clarity icons imported below
     ClarityIcons.addIcons(blockIcon);
     ClarityIcons.addIcons(blocksGroupIcon);
     ClarityIcons.addIcons(dataClusterIcon);
@@ -50,6 +57,7 @@ export default class gameUI {
       }
     }
 
+    // Attach Continuum Event Listeners to the plot
     for (const plot in this.activeGarden.plots) {
       this.activeGarden.plots[plot]
         .on('SEED_PLANTED', (opts: EmitPlanted) => {
@@ -70,6 +78,11 @@ export default class gameUI {
           d.setAttribute('cds-layout', 'container:center col:12');
           d.id = `plot-${opts.plot.key}-counter`;
           parent.appendChild(d);
+
+          // Set HARVEST button to disabled
+          const plotHarvestButton = document.getElementById(`${opts.plot.key}-harvest`) as HTMLElement;
+          plotHarvestButton.setAttribute('disabled', 'true');
+          navigate('home');
         })
       this.activeGarden.plots[plot]
         .on('SEED_HARVESTED', (opts: EmitHarvested) => {

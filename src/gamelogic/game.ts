@@ -7,6 +7,11 @@ import Gameengine from './classes/GameEngine';
 
 
 export default class Game {
+  /**
+   * Initialize all objects that will be used for the game.
+   *
+   * Initial values for all objects can be found in their respecive files within this directory
+   */
   engine;
   ui;
 

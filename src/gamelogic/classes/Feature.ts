@@ -26,6 +26,12 @@ export interface EmitFeatureUnlocked {
 }
 
 export default class Feature extends GameEntity {
+  /**
+   * Custom class extending Continuum Entity.
+   *
+   * @param opts - Object containing default values for this Feature.  Type definition above.
+   *
+   */
   display;
   parentId;
   domElement;
@@ -45,7 +51,20 @@ export default class Feature extends GameEntity {
   }
 
   incrementBy(val: number): number {
+    /**
+     * `incrementBy` is the function that will be called to add this feature to the game
+     *
+     * @param val - The number to increment.  For features, this will almost always be irrelevant
+     * 
+     */
+    
     const parent = document.getElementById(this.parentId) as HTMLElement;
+
+    // Determine where this feature is going to be place in the game based on which parameters
+    // were sent in the intial constructor
+    //    firstChildId: Will select the DOM element by ID, and add this feature as the first child of that element
+    //    replaceId: Will select the DOM element by ID, and replace it with this feature
+    //    everything else: Will select the DOM element by ID, and add this feature as the last child of that element
     if (this.firstChildId) {
       const parent = document.getElementById(this.parentId) as HTMLElement;
       parent.insertBefore(this.domElement, parent.firstChild);
@@ -56,20 +75,17 @@ export default class Feature extends GameEntity {
       parent.appendChild(this.domElement);
     }
 
-    // Update Inventory in case the inventory was just unlocked
+    // In case this feature is a new tab, navigate to that tab
     switch (this.key) {
       case 'navigation':
-        // this.engine.seeds['basket'].incrementBy(1);
         navigate('home');
         break;
 
       case 'basket':
-        // this.engine.seeds['bank'].incrementBy(1);
         navigate(this.key);
         break;
 
       case 'bank':
-        // this.engine.seeds['market'].incrementBy(1);
         break;
 
       case 'market':
@@ -78,42 +94,6 @@ export default class Feature extends GameEntity {
 
       default:
         break;
-    }
-
-    if (this.key === 'marketBuyTab' || this.key === 'marketSellTab') {
-      const marketClick = () => {
-        const marketNav = document.getElementById('market-group');
-        if (marketNav?.getAttribute('expanded') === 'true') {
-          marketNav?.setAttribute('expanded', 'false');
-        } else {
-          marketNav?.setAttribute('expanded', 'true');
-        }
-      }
-      const market = document.getElementById('market');
-      market?.addEventListener('click', marketClick);
-    }
-
-    if (this.key === 'marketBuyTab') {
-      for (const seedKey in this.engine.seeds) {
-        const seed = this.engine.seeds[seedKey];
-
-        if (seed.baseCost) {
-          updateMarketBuy(seed);
-        }
-      }
-
-      navigate('buy');
-    }
-
-    if (this.key === 'marketSellTab') {
-      for (const resourceKey in this.engine.resources) {
-        const resource = this.engine.resources[resourceKey];
-
-        if (resource.basePrice) {
-          updateMarketSell(resource);
-        }
-      }
-      navigate('sell');
     }
 
     return super.incrementBy(val);
